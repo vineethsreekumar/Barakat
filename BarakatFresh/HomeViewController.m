@@ -381,6 +381,8 @@ _slideshow.delegate = self;
         // choose photo button tapped.
         LoginViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Loginview"];
         [self.navigationController pushViewController:ViewController animated:YES];
+        
+        
 
         
     }]];
