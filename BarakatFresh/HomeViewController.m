@@ -383,8 +383,6 @@ _slideshow.delegate = self;
         [self.navigationController pushViewController:ViewController animated:YES];
         
         
-
-        
     }]];
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"My Profile" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
