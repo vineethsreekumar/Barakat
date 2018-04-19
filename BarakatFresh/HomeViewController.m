@@ -19,29 +19,88 @@
 
 @end
 UIScrollView *scrollview;
+NSCache *imageCache;
 @implementation HomeViewController
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self KAslideShow];
-    self.menuScrollView.theDelegate = self;
-     self.menu_underline.hidden = NO;
-    [self.menuScrollView addItemWithTitle:@"Fruits"];
-    [self.menuScrollView addItemWithTitle:@"Fresh Vegitables"];
-    [self.menuScrollView addItemWithTitle:@"Fresh Juices"];
-    [self.menuScrollView addItemWithTitle:@"Soups and Salads"];
-    [self.menuScrollView moveMenuScrollViewToIndex:1 animated:NO];
-    for (UIButton *item in self.menuScrollView.itemsCollection) {
-        // Customize view as you want
-        [item setTitleColor:[UIColor colorWithRed:72/255.0 green:194/255.0 blue:120/255.0 alpha:1] forState:UIControlStateNormal];
-    }
-    [self loadcollectionData];
+    self.collectionview.delegate=self;
+    self.collectionview.dataSource=self;
+    [self getContentService];
+   
    // [self createcategory];
    // [self Loadtopimages];
     // Do any additional setup after loading the view.
 }
--(void)loadcollectionData
+-(void)getContentService
+{
+    
+        NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadNavigationCategory"]];
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+    
+    //Specify method of request(Get or Post)
+    [theRequest setHTTPMethod:@"GET"];
+    
+    //Pass some default parameter(like content-type etc.)
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //Now pass your own parameter
+    
+    
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSError *theError = NULL;
+              
+              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+              NSLog(@"url to send request= %@",theURL);
+              NSLog(@"navigation response%@",dataResponse);
+              self.innerdatarray = [[NSMutableArray alloc]init];
+              self.innerdatarray  = [dataResponse valueForKey:@"data"];
+              NSMutableArray *groupname = [ self.innerdatarray  valueForKey:@"groupName"];
+               NSMutableArray *groupid = [ self.innerdatarray  valueForKey:@"groupId"];
+              self.menuScrollView.theDelegate = self;
+              self.menu_underline.hidden = NO;
+              for (int i=0; i<groupname.count; i++) {
+                  [self.menuScrollView addItemWithTitle:[groupname objectAtIndex:i]];
+                  [self.menuScrollView setTag:[[groupid objectAtIndex:i] intValue]];
+              }
+              /*[self.menuScrollView addItemWithTitle:@"Fruits"];
+              [self.menuScrollView addItemWithTitle:@"Fresh Vegitables"];
+              [self.menuScrollView addItemWithTitle:@"Fresh Juices"];
+              [self.menuScrollView addItemWithTitle:@"Soups and Salads"];*/
+              [self.menuScrollView moveMenuScrollViewToIndex:1 animated:NO];
+              for (UIButton *item in self.menuScrollView.itemsCollection) {
+                  // Customize view as you want
+                  [item setTitleColor:[UIColor colorWithRed:72/255.0 green:194/255.0 blue:120/255.0 alpha:1] forState:UIControlStateNormal];
+              }
+            /*  if(self.innerdatarray.count>1)
+              {
+              [self loadcollectionData: [self.innerdatarray objectAtIndex:1]];
+              }*/
+              NSLog(@"innerresponse response%@",groupname);
+              
+          });
+          
+          //  NSLog(@"Delete webresponse=%@",res);
+          
+          
+          
+          
+          
+      }] resume];
+    
+    
+}
+
+
+-(void)loadcollectionData:(NSMutableArray*)jsonarray
 {   self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
     self.categoryContentarray =[[NSMutableArray alloc]init];
@@ -51,6 +110,30 @@ UIScrollView *scrollview;
     [self.categoryContentarray addObject:@"spinach.jpg"];
     [self.collectionview reloadData];
     
+}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat picDimension = self.view.frame.size.width / 2.0f;
+    return CGSizeMake(picDimension, picDimension+100);
+    
+ /*   CGSize newSize = CGSizeZero;
+    newSize.height = 100;
+    
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGSize screenSize = screenBounds.size;
+    
+    if(indexPath.item % 4 == 0 || indexPath.item % 4 == 3)
+    {
+        //Size : 3/4th of screen
+        newSize.width = screenSize.width * 0.23;
+    }
+    else
+    {
+        //Size : 1/4th of screen
+        newSize.width = screenSize.width * 0.72;
+        
+    }
+    return newSize;*/
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -62,10 +145,95 @@ UIScrollView *scrollview;
     static NSString *identifier = @"Cell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    UILabel *title = (UILabel *)[cell viewWithTag:1];
+    title.text = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
+    
+    UILabel *price = (UILabel *)[cell viewWithTag:2];
+    price.text =[NSString stringWithFormat:@"Price: %@ AED", [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row]];
+    
+    UILabel *weight = (UILabel *)[cell viewWithTag:9];
+    weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row]];
+
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    recipeImageView.image = [UIImage imageNamed:[self.categoryContentarray objectAtIndex:indexPath.row]];
+    NSLog(@"contentt=%@",self.categoryContentarray);
+   /*   NSURL *url = [NSURL URLWithString:[[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // retrive image on global queue
+        UIImage * img = [UIImage imageWithData:[NSData dataWithContentsOfURL:     url]];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+          
+            // assign cell image on main thread
+            recipeImageView.image = img;
+        });
+    });*/
     
+  
+    NSString *photoString = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ;
+  /*  UIImage *image = [imageCache objectForKey:photoString];
+    if (image)
+    {
+        recipeImageView.image=nil;
+    }
+    else
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            
+            NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:url]];
+            
+            if(image)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   
+                    recipeImageView.image=image;
+                });
+                
+                [imageCache setObject:image forKey:photoString];
+            }
+            else
+                recipeImageView.image=nil;
+            
+        });
+    }*/
+    
+    NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+ 
+    dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
+    
+    // Start getting the data in the background
+    dispatch_async(queue, ^{
+        NSData* photoData = [NSData dataWithContentsOfURL:url];
+        UIImage* image = [UIImage imageWithData:photoData];
+        
+        // Once we get the data, update the UI on the main thread
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            recipeImageView.image = image;
+        });
+    });
+    
+    
+   // recipeImageView.image = [UIImage imageNamed:];
+  
+    /*
+    NSURL *url = [NSURL URLWithString:[[self.categoryContentarray objectAtIndex:indexPath.row] valueForKey:@"Image"]];
+    NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            UIImage *image = [UIImage imageWithData:data];
+            if (image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   
+                        recipeImageView.image = image;
+                });
+            }
+        }
+    }];
+    [task resume];*/
+                             
+                             
      UIButton *minus = (UIButton *)[cell viewWithTag:3];
     [minus addTarget:self action:@selector(minusClickEvent:event:) forControlEvents:UIControlEventTouchUpInside];
     UIButton *plus = (UIButton *)[cell viewWithTag:5];
@@ -173,6 +341,49 @@ UIScrollView *scrollview;
 }
 
 - (void)menuMovedToItem:(UIButton *)item atIndex:(int)index {
+    
+ int groupid =  [[ [self.innerdatarray objectAtIndex:index]  valueForKey:@"groupId"] intValue];
+        NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%d&&LevelId=0",groupid]];
+        NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+        
+        //Specify method of request(Get or Post)
+        [theRequest setHTTPMethod:@"GET"];
+        
+        //Pass some default parameter(like content-type etc.)
+        [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+        
+        //Now pass your own parameter
+        
+        
+        
+        [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+          {
+              
+              
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  NSError *theError = NULL;
+                  
+                  NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+                  NSLog(@"url to send request= %@",theURL);
+                  NSLog(@"navigation response%@",dataResponse);
+                  self.categoryContentarray =[[NSMutableArray alloc]init];
+                  [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
+                  [self.collectionview reloadData];
+                 // [self loadcollectionData:dataResponse];
+              
+              });
+              
+              //  NSLog(@"Delete webresponse=%@",res);
+              
+              
+              
+              
+              
+          }] resume];
+        
+
+    
 }
 -(void)KAslideShow
 {
@@ -399,6 +610,11 @@ _slideshow.delegate = self;
     }]];
     
     [self presentViewController:actionSheet animated:YES completion:nil];
+
+}
+- (IBAction)searchview_buttonClick:(id)sender {
+    SearchViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchView"];
+    [self.navigationController pushViewController:ViewController animated:YES];
 
 }
 @end

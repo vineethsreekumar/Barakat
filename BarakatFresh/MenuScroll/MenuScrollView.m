@@ -70,7 +70,7 @@
 {
     // A menu item is made with an UIButton
     UIButton *item = [UIButton buttonWithType:UIButtonTypeCustom];
-    [item.titleLabel setFont:[UIFont boldSystemFontOfSize:17.0f]];
+    [item.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
     // Set item title
     [item setTitle:title forState:UIControlStateNormal];
     

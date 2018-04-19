@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#define kOFFSET_FOR_KEYBOARD 80.0
 
 @interface LoginViewController ()
 
@@ -53,6 +54,9 @@
     self.signin_button.layer.cornerRadius = 5;
     self.signin_button.layer.masksToBounds = YES;
     
+    self.email_txtfield.delegate=self;
+    self.password_textfield.delegate=self;
+    
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -61,13 +65,38 @@
     [self.password_textfield resignFirstResponder];
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self animateTextField:textField up:YES];
+}
 
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self animateTextField:textField up:NO];
+}
 
+-(void)animateTextField:(UITextField*)textField up:(BOOL)up
+{
+    const int movementDistance = -130; // tweak as needed
+    const float movementDuration = 0.3f; // tweak as needed
+    
+    int movement = (up ? movementDistance : -movementDistance);
+    
+    [UIView beginAnimations: @"animateTextField" context: nil];
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: movementDuration];
+    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+    [UIView commitAnimations];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)back_buttonClick:(id)sender {
+    [self.navigationController popViewControllerAnimated:NO];
+
+}
 
 - (IBAction)signin_buttonClick:(id)sender {
 }

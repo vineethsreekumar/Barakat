@@ -17,7 +17,9 @@
 - (IBAction)menu_buttonClick:(id)sender;
 - (IBAction)MyAccount_ButtonClick:(id)sender;
 @property (strong, nonatomic) IBOutlet UIScrollView *categoryScrollview;
+@property (strong, nonatomic) NSMutableArray *innerdatarray;
 @property (strong, nonatomic) NSMutableArray *categoryContentarray;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
+- (IBAction)searchview_buttonClick:(id)sender;
 
 @end

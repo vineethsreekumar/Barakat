@@ -48,7 +48,21 @@
 		85847416207D5158007C778D /* splashscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 85847415207D5158007C778D /* splashscreen.png */; };
 		8584741A207E7A37007C778D /* ForHerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85847418207E7A37007C778D /* ForHerCell.m */; };
 		8584741B207E7A37007C778D /* ForHerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85847419207E7A37007C778D /* ForHerCell.xib */; };
+		858619E32084AFCB009EB7AE /* myaccount icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 858619E12084AFCB009EB7AE /* myaccount icon@2x.png */; };
+		858619E920851AE7009EB7AE /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858619E820851AE7009EB7AE /* SideMenuViewController.m */; };
+		858619EC208533F4009EB7AE /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 858619EB208533F4009EB7AE /* CustomCell.m */; };
+		858619F020853AFA009EB7AE /* categoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 858619EE20853AFA009EB7AE /* categoryCell.m */; };
+		858619F120853AFA009EB7AE /* categoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 858619EF20853AFA009EB7AE /* categoryCell.xib */; };
+		858619F420867407009EB7AE /* UIColor+AppColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 858619F320867407009EB7AE /* UIColor+AppColors.m */; };
+		858619F820867522009EB7AE /* Chevron-Dn-Wht.png in Resources */ = {isa = PBXBuildFile; fileRef = 858619F520867522009EB7AE /* Chevron-Dn-Wht.png */; };
+		858619F920867522009EB7AE /* Chevron-Dn-Wht@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 858619F620867522009EB7AE /* Chevron-Dn-Wht@2x.png */; };
+		858619FA20867522009EB7AE /* Chevron-Dn-Wht@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 858619F720867522009EB7AE /* Chevron-Dn-Wht@3x.png */; };
+		85861A022087C3D5009EB7AE /* Searchicon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A002087C3D5009EB7AE /* Searchicon@3x.png */; };
+		85861A042087C606009EB7AE /* myaccounticon white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A032087C606009EB7AE /* myaccounticon white@3x.png */; };
+		85861A072087C7FC009EB7AE /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A062087C7FC009EB7AE /* SearchViewController.m */; };
 		85912435207FD6B1009D8051 /* spinach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 85912434207FD6B1009D8051 /* spinach.jpg */; };
+		85912438207FF632009D8051 /* back-arrow-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912436207FF632009D8051 /* back-arrow-icon@2x.png */; };
+		85912439207FF632009D8051 /* back-arrow-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912437207FF632009D8051 /* back-arrow-icon@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,7 +157,26 @@
 		85847417207E7A37007C778D /* ForHerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForHerCell.h; sourceTree = "<group>"; };
 		85847418207E7A37007C778D /* ForHerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForHerCell.m; sourceTree = "<group>"; };
 		85847419207E7A37007C778D /* ForHerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForHerCell.xib; sourceTree = "<group>"; };
+		858619E12084AFCB009EB7AE /* myaccount icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myaccount icon@2x.png"; sourceTree = "<group>"; };
+		858619E720851AE7009EB7AE /* SideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuViewController.h; sourceTree = "<group>"; };
+		858619E820851AE7009EB7AE /* SideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuViewController.m; sourceTree = "<group>"; };
+		858619EA208533F4009EB7AE /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
+		858619EB208533F4009EB7AE /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
+		858619ED20853AFA009EB7AE /* categoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = categoryCell.h; sourceTree = "<group>"; };
+		858619EE20853AFA009EB7AE /* categoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = categoryCell.m; sourceTree = "<group>"; };
+		858619EF20853AFA009EB7AE /* categoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = categoryCell.xib; sourceTree = "<group>"; };
+		858619F220867407009EB7AE /* UIColor+AppColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+AppColors.h"; sourceTree = "<group>"; };
+		858619F320867407009EB7AE /* UIColor+AppColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+AppColors.m"; sourceTree = "<group>"; };
+		858619F520867522009EB7AE /* Chevron-Dn-Wht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chevron-Dn-Wht.png"; sourceTree = "<group>"; };
+		858619F620867522009EB7AE /* Chevron-Dn-Wht@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chevron-Dn-Wht@2x.png"; sourceTree = "<group>"; };
+		858619F720867522009EB7AE /* Chevron-Dn-Wht@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chevron-Dn-Wht@3x.png"; sourceTree = "<group>"; };
+		85861A002087C3D5009EB7AE /* Searchicon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Searchicon@3x.png"; sourceTree = "<group>"; };
+		85861A032087C606009EB7AE /* myaccounticon white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myaccounticon white@3x.png"; sourceTree = "<group>"; };
+		85861A052087C7FC009EB7AE /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		85861A062087C7FC009EB7AE /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		85912434207FD6B1009D8051 /* spinach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = spinach.jpg; sourceTree = "<group>"; };
+		85912436207FF632009D8051 /* back-arrow-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@2x.png"; sourceTree = "<group>"; };
+		85912437207FF632009D8051 /* back-arrow-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +235,17 @@
 				858473D8207BF8A5007C778D /* LoginViewController.m */,
 				858473C8207BEBC6007C778D /* HomeViewController.h */,
 				858473C9207BEBC6007C778D /* HomeViewController.m */,
+				85861A052087C7FC009EB7AE /* SearchViewController.h */,
+				85861A062087C7FC009EB7AE /* SearchViewController.m */,
+				858619E720851AE7009EB7AE /* SideMenuViewController.h */,
+				858619E820851AE7009EB7AE /* SideMenuViewController.m */,
+				858619F220867407009EB7AE /* UIColor+AppColors.h */,
+				858619F320867407009EB7AE /* UIColor+AppColors.m */,
+				858619EA208533F4009EB7AE /* CustomCell.h */,
+				858619EB208533F4009EB7AE /* CustomCell.m */,
+				858619ED20853AFA009EB7AE /* categoryCell.h */,
+				858619EE20853AFA009EB7AE /* categoryCell.m */,
+				858619EF20853AFA009EB7AE /* categoryCell.xib */,
 				85847417207E7A37007C778D /* ForHerCell.h */,
 				85847418207E7A37007C778D /* ForHerCell.m */,
 				85847419207E7A37007C778D /* ForHerCell.xib */,
@@ -256,11 +300,19 @@
 				858473C0207A42D1007C778D /* bottom_image@2x.png */,
 				858473C6207B21CE007C778D /* Passwordicon@2x.png */,
 				858473C3207B2181007C778D /* Username_icon@2x.png */,
+				85912436207FF632009D8051 /* back-arrow-icon@2x.png */,
+				85912437207FF632009D8051 /* back-arrow-icon@3x.png */,
 				858473DA207C7859007C778D /* topbg@2x.png */,
 				858473DC207CB36A007C778D /* menuicon@2x.png */,
 				8584740D207CCA05007C778D /* slider-new1.jpg */,
 				8584740E207CCA05007C778D /* slider-new2.jpg */,
 				85912434207FD6B1009D8051 /* spinach.jpg */,
+				858619E12084AFCB009EB7AE /* myaccount icon@2x.png */,
+				85861A002087C3D5009EB7AE /* Searchicon@3x.png */,
+				85861A032087C606009EB7AE /* myaccounticon white@3x.png */,
+				858619F520867522009EB7AE /* Chevron-Dn-Wht.png */,
+				858619F620867522009EB7AE /* Chevron-Dn-Wht@2x.png */,
+				858619F720867522009EB7AE /* Chevron-Dn-Wht@3x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -433,17 +485,26 @@
 			files = (
 				858473DD207CB36A007C778D /* menuicon@2x.png in Resources */,
 				85912435207FD6B1009D8051 /* spinach.jpg in Resources */,
+				85912438207FF632009D8051 /* back-arrow-icon@2x.png in Resources */,
 				858473C5207B2181007C778D /* Username_icon@2x.png in Resources */,
+				858619F820867522009EB7AE /* Chevron-Dn-Wht.png in Resources */,
 				85847410207CCA05007C778D /* slider-new2.jpg in Resources */,
 				8584739320792B05007C778D /* LaunchScreen.storyboard in Resources */,
+				858619F920867522009EB7AE /* Chevron-Dn-Wht@2x.png in Resources */,
 				858473C1207A42D1007C778D /* bottom_image@2x.png in Resources */,
+				858619FA20867522009EB7AE /* Chevron-Dn-Wht@3x.png in Resources */,
 				858473DB207C7859007C778D /* topbg@2x.png in Resources */,
+				858619E32084AFCB009EB7AE /* myaccount icon@2x.png in Resources */,
 				858473C7207B21CE007C778D /* Passwordicon@2x.png in Resources */,
+				85861A022087C3D5009EB7AE /* Searchicon@3x.png in Resources */,
 				858473BF207A428E007C778D /* logo@2x.png in Resources */,
 				8584739020792B05007C778D /* Assets.xcassets in Resources */,
 				8584741B207E7A37007C778D /* ForHerCell.xib in Resources */,
 				85847416207D5158007C778D /* splashscreen.png in Resources */,
+				858619F120853AFA009EB7AE /* categoryCell.xib in Resources */,
+				85912439207FF632009D8051 /* back-arrow-icon@3x.png in Resources */,
 				8584740F207CCA05007C778D /* slider-new1.jpg in Resources */,
+				85861A042087C606009EB7AE /* myaccounticon white@3x.png in Resources */,
 				8584738E20792B05007C778D /* Main.storyboard in Resources */,
 				858473BD207A4258007C778D /* login_background@2x.png in Resources */,
 			);
@@ -473,11 +534,13 @@
 				8584740B207CC618007C778D /* UIImageView+WebCache.m in Sources */,
 				85847402207CC617007C778D /* SDWebImageDecoder.m in Sources */,
 				85847414207D2BA8007C778D /* MenuScrollView.m in Sources */,
+				858619F020853AFA009EB7AE /* categoryCell.m in Sources */,
 				85847405207CC617007C778D /* SDWebImageManager.m in Sources */,
 				858473FF207CC617007C778D /* NSData+ImageContentType.m in Sources */,
 				85847401207CC617007C778D /* SDWebImageCompat.m in Sources */,
 				858473D9207BF8A5007C778D /* LoginViewController.m in Sources */,
 				8584738B20792B05007C778D /* ViewController.m in Sources */,
+				858619F420867407009EB7AE /* UIColor+AppColors.m in Sources */,
 				8584740C207CC618007C778D /* UIView+WebCacheOperation.m in Sources */,
 				8584738820792B05007C778D /* AppDelegate.m in Sources */,
 				85847407207CC617007C778D /* UIButton+WebCache.m in Sources */,
@@ -490,11 +553,14 @@
 				858473E0207CC336007C778D /* KASlideShow.m in Sources */,
 				85847400207CC617007C778D /* SDImageCache.m in Sources */,
 				858473D4207BEC06007C778D /* MFSideMenuShadow.m in Sources */,
+				85861A072087C7FC009EB7AE /* SearchViewController.m in Sources */,
 				858473D3207BEC06007C778D /* MFSideMenuContainerViewController.m in Sources */,
 				85847408207CC617007C778D /* UIImage+GIF.m in Sources */,
 				85847403207CC617007C778D /* SDWebImageDownloader.m in Sources */,
 				858473D5207BEC06007C778D /* UIViewController+MFSideMenuAdditions.m in Sources */,
+				858619E920851AE7009EB7AE /* SideMenuViewController.m in Sources */,
 				8584741A207E7A37007C778D /* ForHerCell.m in Sources */,
+				858619EC208533F4009EB7AE /* CustomCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
