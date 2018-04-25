@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UIViewController
-
+@interface SearchViewController : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>
+@property (strong, nonatomic) IBOutlet UITextField *search_textfield;
+@property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
+@property (strong, nonatomic) NSMutableArray *categoryContentarray;
 @end

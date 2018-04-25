@@ -14,6 +14,6 @@
 @property (strong) NSArray *sectionItems;
 @property (strong) NSArray *sectionNames;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-
+@property (strong, nonatomic) NSMutableArray *imagearray;
 
 @end

@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "KASlideShow.h"
-
-@interface HomeViewController : UIViewController<KASlideShowDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+#import "NCMenu.h"
+@interface HomeViewController : UIViewController<KASlideShowDelegate,UICollectionViewDelegate,UICollectionViewDataSource,NCMenuDelegate>
 {
     NSMutableArray * datasource;
 }
@@ -20,6 +20,11 @@
 @property (strong, nonatomic) NSMutableArray *innerdatarray;
 @property (strong, nonatomic) NSMutableArray *categoryContentarray;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
+@property(nonatomic, strong) NCMenu *newsCubeMenu;
+@property (strong, nonatomic) IBOutlet UIView *menu_view;
+
 - (IBAction)searchview_buttonClick:(id)sender;
+- (IBAction)myaccount_buttonClick:(id)sender;
+- (IBAction)Home_buttonClick:(id)sender;
 
 @end

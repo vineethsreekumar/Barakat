@@ -17,7 +17,7 @@ static int const kHeaderSectionTag = 6900;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.imagearray=[[NSMutableArray alloc]initWithObjects:@"Fruitsside.png",@"VegetablesSide.png",@"cutfruits.png",@"Juices.png",@"icecreamside.png",@"Soups.png",@"party.png", nil];
 
    /* self.sectionNames = @[ @"iPhone", @"iPad", @"Apple Watch" ];
     self.sectionItems = @[ @[@"iPhone 5", @"iPhone 5s", @"iPhone 6", @"iPhone 6 Plus", @"iPhone 7", @"iPhone 7 Plus"],
@@ -61,7 +61,7 @@ static int const kHeaderSectionTag = 6900;
              NSMutableArray *innerdatarray = [[NSMutableArray alloc]init];
              innerdatarray  = [dataResponse valueForKey:@"data"];
               NSMutableArray *groupname = [innerdatarray  valueForKey:@"groupName"];
-              NSMutableArray *groupid = [ innerdatarray  valueForKey:@"groupId"];
+            //  NSMutableArray *groupid = [ innerdatarray  valueForKey:@"groupId"];
               self.sectionNames = groupname;
               self.sectionItems = [innerdatarray  valueForKey:@"itemCategories"];
               self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -134,7 +134,7 @@ static int const kHeaderSectionTag = 6900;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (self.sectionNames.count) {
-        return [self.sectionNames objectAtIndex:section];
+        return [NSString stringWithFormat:@"     %@",[self.sectionNames objectAtIndex:section]];
     }
     
     return @"";
@@ -149,10 +149,19 @@ static int const kHeaderSectionTag = 6900;
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
     header.contentView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
     header.textLabel.textColor = [UIColor whiteColor];
+    header.textLabel.font =[UIFont fontWithName:@"Helvetica Neue" size:15];
     UIImageView *viewWithTag = [self.view viewWithTag:kHeaderSectionTag + section];
     if (viewWithTag) {
         [viewWithTag removeFromSuperview];
     }
+    
+    UIImageView *sideImageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 10, 20, 20)];
+    sideImageView.image = [UIImage imageNamed:[self.imagearray objectAtIndex:section]];
+   // sideImageView.tag = kHeaderSectionTag + section;
+    [header addSubview:sideImageView];
+    
+
+    
     // add the arrow image
     CGSize headerFrame = self.view.frame.size;
     UIImageView *theImageView = [[UIImageView alloc] initWithFrame:CGRectMake(headerFrame.width - 32, 13, 18, 18)];
@@ -168,9 +177,11 @@ static int const kHeaderSectionTag = 6900;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"tableCell" forIndexPath:indexPath];
+   
     NSMutableArray *section = [self.sectionItems objectAtIndex:indexPath.section];
     
     cell.textLabel.textColor = [UIColor blackColor];
+    cell.textLabel.font =[UIFont fontWithName:@"Helvetica Neue" size:15];
     cell.textLabel.text = [NSString stringWithFormat:@"  %@",[[section objectAtIndex:indexPath.row] valueForKey:@"CategoryName"]];
     NSLog(@"headerarray=%@", section );
 

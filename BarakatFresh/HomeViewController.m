@@ -29,7 +29,8 @@ NSCache *imageCache;
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
     [self getContentService];
-   
+    [self setUpNewsCubeMenu];
+    
    // [self createcategory];
    // [self Loadtopimages];
     // Do any additional setup after loading the view.
@@ -66,7 +67,7 @@ NSCache *imageCache;
               NSMutableArray *groupname = [ self.innerdatarray  valueForKey:@"groupName"];
                NSMutableArray *groupid = [ self.innerdatarray  valueForKey:@"groupId"];
               self.menuScrollView.theDelegate = self;
-              self.menu_underline.hidden = NO;
+            //  self.menu_underline.hidden = NO;
               for (int i=0; i<groupname.count; i++) {
                   [self.menuScrollView addItemWithTitle:[groupname objectAtIndex:i]];
                   [self.menuScrollView setTag:[[groupid objectAtIndex:i] intValue]];
@@ -75,7 +76,7 @@ NSCache *imageCache;
               [self.menuScrollView addItemWithTitle:@"Fresh Vegitables"];
               [self.menuScrollView addItemWithTitle:@"Fresh Juices"];
               [self.menuScrollView addItemWithTitle:@"Soups and Salads"];*/
-              [self.menuScrollView moveMenuScrollViewToIndex:1 animated:NO];
+              [self.menuScrollView moveMenuScrollViewToIndex:0 animated:NO];
               for (UIButton *item in self.menuScrollView.itemsCollection) {
                   // Customize view as you want
                   [item setTitleColor:[UIColor colorWithRed:72/255.0 green:194/255.0 blue:120/255.0 alpha:1] forState:UIControlStateNormal];
@@ -100,6 +101,154 @@ NSCache *imageCache;
 }
 
 
+-(void)setUpNewsCubeMenu{
+    // Create NCMenuItem
+    // Base Image
+    NSArray *anArray = [NSArray arrayWithObjects:
+                        [UIImage imageNamed:@"freshfruiticon.png"],
+                        [UIImage imageNamed:@"freshvegicon.png"],
+                        [UIImage imageNamed:@"icecreamicon.png"],
+                        [UIImage imageNamed:@"freshjuiceicon.png"],
+                        [UIImage imageNamed:@"cutfruitsvegicon.png"],
+                        [UIImage imageNamed:@"soupsicon.png"],
+                        nil];
+    NSArray *selectedArray = [NSArray arrayWithObjects:
+                        [UIImage imageNamed:@"freshfruiticon selected.png"],
+                        [UIImage imageNamed:@"freshvegicon selected.png"],
+                        [UIImage imageNamed:@"icecreamiconselected.png"],
+                        [UIImage imageNamed:@"freshjuiceicon selected.png"],
+                        [UIImage imageNamed:@"cutfruitsvegiconselected.png"],
+                        [UIImage imageNamed:@"soupsiconselected.png"],
+                        nil];
+ //   UIImage *nc_button_baseImage = [UIImage imageNamed:@"Listicon.png"];
+ //   UIImage *nc_button_highlightedBaseImage = [UIImage imageNamed:@"Listicon.png"];
+    
+    // ContentImage
+ //   UIImage *nc_contentImage = [UIImage imageNamed:@"Listicon.png"];
+    
+    NSMutableArray *menus = [NSMutableArray array];
+    for (int i = 0; i < anArray.count; i++) {
+        
+        UIImage *nc_button_baseImage = [anArray objectAtIndex:i];
+        UIImage *nc_button_highlightedBaseImage =[selectedArray objectAtIndex:i];
+        
+        // ContentImage
+        UIImage *nc_contentImage =[anArray objectAtIndex:i];
+        
+
+        NCMenuItem *menuItem = [[NCMenuItem alloc] initWithImage:nc_button_baseImage highlightedImage:nc_button_highlightedBaseImage ContentImage:nc_contentImage highlightedContentImage:nc_contentImage];
+        if(i==0)
+        {
+            menuItem.highlighted=YES;
+        }
+        [menus addObject:menuItem];
+    }
+    
+    CGRect newsCubeMenuPos = CGRectMake(0,0, self.view.frame.size.width, 60);
+    _newsCubeMenu = [[NCMenu alloc] initWithFrame:newsCubeMenuPos withBackgroundColor:[UIColor clearColor] menuItems:menus];
+    [_newsCubeMenu setDelegate:self];
+    [self.menu_view addSubview:_newsCubeMenu];
+    [self loadfirstcollectionite];
+   
+    // PopUpMenus
+  /*  int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self popUpNewsCubeMenu];
+    });
+    */
+}
+
+-(void)popUpNewsCubeMenu{
+    NSLog(@"%s",__func__);
+    [UIView animateWithDuration:0.2f animations:^{
+        CGRect frame = _newsCubeMenu.frame;
+                frame.origin.y -= _newsCubeMenu.frame.size.height;
+        frame.origin.y -= frame.size.height;
+        _newsCubeMenu.frame = frame;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+-(void)loadfirstcollectionite
+{
+      NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=12&&LevelId=0"]];
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+    
+    //Specify method of request(Get or Post)
+    [theRequest setHTTPMethod:@"GET"];
+    
+    //Pass some default parameter(like content-type etc.)
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //Now pass your own parameter
+    
+    
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSError *theError = NULL;
+              
+              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+              NSLog(@"url to send request= %@",theURL);
+              NSLog(@"navigation response%@",dataResponse);
+              self.categoryContentarray =[[NSMutableArray alloc]init];
+              [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
+              [self.collectionview reloadData];
+              // [self loadcollectionData:dataResponse];
+              
+          });
+          
+      }] resume];
+    
+
+}
+-(void)newsCubeMenu:(NCMenu *)menu didSelectIndex:(NSInteger)selectedIndex{
+  
+    int groupid =  [[ [self.innerdatarray objectAtIndex:selectedIndex]  valueForKey:@"groupId"] intValue];
+    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%d&&LevelId=0",groupid]];
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+    
+    //Specify method of request(Get or Post)
+    [theRequest setHTTPMethod:@"GET"];
+    
+    //Pass some default parameter(like content-type etc.)
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //Now pass your own parameter
+    
+    
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSError *theError = NULL;
+              
+              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+              NSLog(@"url to send request= %@",theURL);
+              NSLog(@"navigation response%@",dataResponse);
+              self.categoryContentarray =[[NSMutableArray alloc]init];
+              [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
+              [self.collectionview reloadData];
+              // [self loadcollectionData:dataResponse];
+              
+          });
+          
+      }] resume];
+    
+
+}
+
+
+
+
 -(void)loadcollectionData:(NSMutableArray*)jsonarray
 {   self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
@@ -116,25 +265,7 @@ NSCache *imageCache;
     CGFloat picDimension = self.view.frame.size.width / 2.0f;
     return CGSizeMake(picDimension, picDimension+100);
     
- /*   CGSize newSize = CGSizeZero;
-    newSize.height = 100;
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGSize screenSize = screenBounds.size;
-    
-    if(indexPath.item % 4 == 0 || indexPath.item % 4 == 3)
-    {
-        //Size : 3/4th of screen
-        newSize.width = screenSize.width * 0.23;
-    }
-    else
-    {
-        //Size : 1/4th of screen
-        newSize.width = screenSize.width * 0.72;
-        
-    }
-    return newSize;*/
-}
+ }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.categoryContentarray.count;
@@ -200,7 +331,7 @@ NSCache *imageCache;
         });
     }*/
     
-    NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
  
     dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
     
@@ -239,11 +370,11 @@ NSCache *imageCache;
     UIButton *plus = (UIButton *)[cell viewWithTag:5];
     [plus addTarget:self action:@selector(plusClickEvent:event:) forControlEvents:UIControlEventTouchUpInside];
     UIView *addbutton = (UIView*)[cell viewWithTag:6];
-    addbutton.layer.cornerRadius = 15;
+    addbutton.layer.cornerRadius = 12.5;
     addbutton.layer.masksToBounds = YES;
 
     UIView *quantityview = (UIView*)[cell viewWithTag:7];
-    quantityview.layer.cornerRadius = 15;
+    quantityview.layer.cornerRadius = 12.5;
     quantityview.layer.masksToBounds = YES;
     
     return cell;
@@ -616,5 +747,62 @@ _slideshow.delegate = self;
     SearchViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchView"];
     [self.navigationController pushViewController:ViewController animated:YES];
 
+}
+
+- (IBAction)myaccount_buttonClick:(id)sender {
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, actionSheet.view.frame.size.width, actionSheet.view.frame.size.height)];
+    background.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1];
+    // [actionSheet.view addSubview:background];
+    // [actionSheet.view setBackgroundColor:[UIColor greenColor]];
+    /* UIAlertAction *firstAA       = [UIAlertAction actionWithTitle:@"Beep Beep"
+     style:UIAlertActionStyleDefault
+     handler:^( UIAlertAction *action ){
+     
+     
+     }];
+     [firstAA setValue:[UIImage imageNamed:@"menuicon.png"] forKey:@"image"];
+     [actionSheet addAction:firstAA];*/
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+        // Cancel button tappped do nothing.
+        
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Register" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // take photo button tapped.
+        
+        
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Login" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // choose photo button tapped.
+        LoginViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Loginview"];
+        [self.navigationController pushViewController:ViewController animated:YES];
+        
+        
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"My Profile" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Distructive button tapped.
+        
+        
+    }]];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Purchase History" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Distructive button tapped.
+        
+        
+    }]];
+    
+    [self presentViewController:actionSheet animated:YES completion:nil];
+
+}
+
+- (IBAction)Home_buttonClick:(id)sender {
 }
 @end
