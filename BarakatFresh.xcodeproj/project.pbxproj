@@ -94,6 +94,14 @@
 		85861A51208E7BA4009EB7AE /* partyiconselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A49208E7BA4009EB7AE /* partyiconselected@2x.png */; };
 		85861A52208E7BA4009EB7AE /* soupsicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A4A208E7BA4009EB7AE /* soupsicon@2x.png */; };
 		85861A53208E7BA4009EB7AE /* soupsiconselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A4B208E7BA4009EB7AE /* soupsiconselected@2x.png */; };
+		85861A56209040CD009EB7AE /* MenuDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A55209040CD009EB7AE /* MenuDetailViewController.m */; };
+		85861A582090F586009EB7AE /* homeimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A572090F586009EB7AE /* homeimage@2x.png */; };
+		85861A5E2090FB1D009EB7AE /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A5D2090FB1D009EB7AE /* RegisterViewController.m */; };
+		85861A6020911789009EB7AE /* thumbnail.gif in Resources */ = {isa = PBXBuildFile; fileRef = 85861A5F20911789009EB7AE /* thumbnail.gif */; };
+		85861A62209198A9009EB7AE /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A61209198A9009EB7AE /* home.png */; };
+		85861A652092E5A6009EB7AE /* a-accept-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A632092E5A6009EB7AE /* a-accept-icon@2x.png */; };
+		85861A662092E5A6009EB7AE /* b-accept-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A642092E5A6009EB7AE /* b-accept-icon@2x.png */; };
+		85861A692093B854009EB7AE /* MyAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A682093B854009EB7AE /* MyAccountsViewController.m */; };
 		85912435207FD6B1009D8051 /* spinach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 85912434207FD6B1009D8051 /* spinach.jpg */; };
 		85912438207FF632009D8051 /* back-arrow-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912436207FF632009D8051 /* back-arrow-icon@2x.png */; };
 		85912439207FF632009D8051 /* back-arrow-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912437207FF632009D8051 /* back-arrow-icon@3x.png */; };
@@ -244,6 +252,17 @@
 		85861A49208E7BA4009EB7AE /* partyiconselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "partyiconselected@2x.png"; sourceTree = "<group>"; };
 		85861A4A208E7BA4009EB7AE /* soupsicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "soupsicon@2x.png"; sourceTree = "<group>"; };
 		85861A4B208E7BA4009EB7AE /* soupsiconselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "soupsiconselected@2x.png"; sourceTree = "<group>"; };
+		85861A54209040CD009EB7AE /* MenuDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailViewController.h; sourceTree = "<group>"; };
+		85861A55209040CD009EB7AE /* MenuDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailViewController.m; sourceTree = "<group>"; };
+		85861A572090F586009EB7AE /* homeimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeimage@2x.png"; sourceTree = "<group>"; };
+		85861A5C2090FB1D009EB7AE /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		85861A5D2090FB1D009EB7AE /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		85861A5F20911789009EB7AE /* thumbnail.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = thumbnail.gif; sourceTree = "<group>"; };
+		85861A61209198A9009EB7AE /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
+		85861A632092E5A6009EB7AE /* a-accept-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "a-accept-icon@2x.png"; sourceTree = "<group>"; };
+		85861A642092E5A6009EB7AE /* b-accept-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "b-accept-icon@2x.png"; sourceTree = "<group>"; };
+		85861A672093B854009EB7AE /* MyAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountsViewController.h; sourceTree = "<group>"; };
+		85861A682093B854009EB7AE /* MyAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountsViewController.m; sourceTree = "<group>"; };
 		85912434207FD6B1009D8051 /* spinach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = spinach.jpg; sourceTree = "<group>"; };
 		85912436207FF632009D8051 /* back-arrow-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@2x.png"; sourceTree = "<group>"; };
 		85912437207FF632009D8051 /* back-arrow-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@3x.png"; sourceTree = "<group>"; };
@@ -307,8 +326,14 @@
 				858473C9207BEBC6007C778D /* HomeViewController.m */,
 				85861A052087C7FC009EB7AE /* SearchViewController.h */,
 				85861A062087C7FC009EB7AE /* SearchViewController.m */,
+				85861A672093B854009EB7AE /* MyAccountsViewController.h */,
+				85861A682093B854009EB7AE /* MyAccountsViewController.m */,
+				85861A54209040CD009EB7AE /* MenuDetailViewController.h */,
+				85861A55209040CD009EB7AE /* MenuDetailViewController.m */,
 				858619E720851AE7009EB7AE /* SideMenuViewController.h */,
 				858619E820851AE7009EB7AE /* SideMenuViewController.m */,
+				85861A5C2090FB1D009EB7AE /* RegisterViewController.h */,
+				85861A5D2090FB1D009EB7AE /* RegisterViewController.m */,
 				858619F220867407009EB7AE /* UIColor+AppColors.h */,
 				858619F320867407009EB7AE /* UIColor+AppColors.m */,
 				858619EA208533F4009EB7AE /* CustomCell.h */,
@@ -368,6 +393,7 @@
 				858473BE207A428E007C778D /* logo@2x.png */,
 				85847415207D5158007C778D /* splashscreen.png */,
 				858473BC207A4258007C778D /* login_background@2x.png */,
+				85861A5F20911789009EB7AE /* thumbnail.gif */,
 				858473C0207A42D1007C778D /* bottom_image@2x.png */,
 				858473C6207B21CE007C778D /* Passwordicon@2x.png */,
 				858473C3207B2181007C778D /* Username_icon@2x.png */,
@@ -416,6 +442,10 @@
 				85861A49208E7BA4009EB7AE /* partyiconselected@2x.png */,
 				85861A4A208E7BA4009EB7AE /* soupsicon@2x.png */,
 				85861A4B208E7BA4009EB7AE /* soupsiconselected@2x.png */,
+				85861A572090F586009EB7AE /* homeimage@2x.png */,
+				85861A632092E5A6009EB7AE /* a-accept-icon@2x.png */,
+				85861A642092E5A6009EB7AE /* b-accept-icon@2x.png */,
+				85861A61209198A9009EB7AE /* home.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -609,6 +639,7 @@
 				85861A3E208E5FE0009EB7AE /* freshfruiticon selected@2x.png in Resources */,
 				858473C5207B2181007C778D /* Username_icon@2x.png in Resources */,
 				85861A2B208D13C2009EB7AE /* Listicon@2x.png in Resources */,
+				85861A582090F586009EB7AE /* homeimage@2x.png in Resources */,
 				85861A41208E5FE0009EB7AE /* freshjuiceicon@2x.png in Resources */,
 				85861A50208E7BA4009EB7AE /* partyicon@2x.png in Resources */,
 				85861A52208E7BA4009EB7AE /* soupsicon@2x.png in Resources */,
@@ -621,6 +652,7 @@
 				858619F920867522009EB7AE /* Chevron-Dn-Wht@2x.png in Resources */,
 				85861A14208A51E9009EB7AE /* Fruitsside@2x.png in Resources */,
 				85861A43208E5FE0009EB7AE /* freshvegicon@2x.png in Resources */,
+				85861A6020911789009EB7AE /* thumbnail.gif in Resources */,
 				858473C1207A42D1007C778D /* bottom_image@2x.png in Resources */,
 				85861A3F208E5FE0009EB7AE /* freshfruiticon@2x.png in Resources */,
 				85861A12208A51E9009EB7AE /* close@2x.png in Resources */,
@@ -645,13 +677,16 @@
 				85861A26208D13C2009EB7AE /* checkout icon circle@2x.png in Resources */,
 				85861A4D208E7BA4009EB7AE /* cutfruitsvegiconselected@2x.png in Resources */,
 				858619F120853AFA009EB7AE /* categoryCell.xib in Resources */,
+				85861A62209198A9009EB7AE /* home.png in Resources */,
 				85912439207FF632009D8051 /* back-arrow-icon@3x.png in Resources */,
 				8584740F207CCA05007C778D /* slider-new1.jpg in Resources */,
+				85861A652092E5A6009EB7AE /* a-accept-icon@2x.png in Resources */,
 				85861A042087C606009EB7AE /* myaccounticon white@3x.png in Resources */,
 				85861A4F208E7BA4009EB7AE /* icecreamiconselected@2x.png in Resources */,
 				85861A0920891386009EB7AE /* Searchiconpage@2x.png in Resources */,
 				8584738E20792B05007C778D /* Main.storyboard in Resources */,
 				858473BD207A4258007C778D /* login_background@2x.png in Resources */,
+				85861A662092E5A6009EB7AE /* b-accept-icon@2x.png in Resources */,
 				85861A15208A51E9009EB7AE /* icecreamside@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,12 +713,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				8584740B207CC618007C778D /* UIImageView+WebCache.m in Sources */,
+				85861A5E2090FB1D009EB7AE /* RegisterViewController.m in Sources */,
 				85847402207CC617007C778D /* SDWebImageDecoder.m in Sources */,
 				85847414207D2BA8007C778D /* MenuScrollView.m in Sources */,
 				858619F020853AFA009EB7AE /* categoryCell.m in Sources */,
 				85847405207CC617007C778D /* SDWebImageManager.m in Sources */,
 				858473FF207CC617007C778D /* NSData+ImageContentType.m in Sources */,
 				85847401207CC617007C778D /* SDWebImageCompat.m in Sources */,
+				85861A692093B854009EB7AE /* MyAccountsViewController.m in Sources */,
 				858473D9207BF8A5007C778D /* LoginViewController.m in Sources */,
 				8584738B20792B05007C778D /* ViewController.m in Sources */,
 				858619F420867407009EB7AE /* UIColor+AppColors.m in Sources */,
@@ -694,6 +731,7 @@
 				85847404207CC617007C778D /* SDWebImageDownloaderOperation.m in Sources */,
 				8584738520792B05007C778D /* main.m in Sources */,
 				858473CA207BEBC6007C778D /* HomeViewController.m in Sources */,
+				85861A56209040CD009EB7AE /* MenuDetailViewController.m in Sources */,
 				8584740A207CC618007C778D /* UIImageView+HighlightedWebCache.m in Sources */,
 				85847409207CC618007C778D /* UIImage+MultiFormat.m in Sources */,
 				858473E0207CC336007C778D /* KASlideShow.m in Sources */,

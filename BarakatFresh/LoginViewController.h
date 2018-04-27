@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface LoginViewController : UIViewController<UITextFieldDelegate>
+{
+    UIActivityIndicatorView *indicator;
+}
 @property (strong, nonatomic) IBOutlet UITextField *email_txtfield;
 @property (strong, nonatomic) IBOutlet UITextField *password_textfield;
 @property (strong, nonatomic) IBOutlet UIButton *signin_button;
 - (IBAction)signin_buttonClick:(id)sender;
+- (IBAction)signup_buttonClick:(id)sender;
+
 
 
 @end

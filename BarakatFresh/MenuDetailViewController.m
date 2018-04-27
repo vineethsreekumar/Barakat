@@ -1,18 +1,18 @@
 //
-//  SearchViewController.m
+//  MenuDetailViewController.m
 //  BarakatFresh
 //
-//  Created by vineeth on 4/19/18.
+//  Created by vineeth on 4/25/18.
 //  Copyright © 2018 MyOrganization. All rights reserved.
 //
 
-#import "SearchViewController.h"
-
-@interface SearchViewController ()
+#import "MenuDetailViewController.h"
+#import "Config.h"
+@interface MenuDetailViewController ()
 
 @end
 
-@implementation SearchViewController
+@implementation MenuDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,8 +24,8 @@
     UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(DoneButtonPressed)];
     [pickerToolbar setItems:@[flexSpace, flexSpace, doneBtn] animated:YES];
     self.search_textfield.inputAccessoryView = pickerToolbar;
-   
-
+    
+    [self loadfirstcollectionite];
     
     UIView *viewPassIntxtFieldDate = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
     UIImageView *imageViewpass = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 25, 25)];
@@ -40,19 +40,58 @@
     
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
-   
+    
     // Do any additional setup after loading the view.
 }
+-(void)loadfirstcollectionite
+{
+    NSLog(@"passcurrentarray=%@",self.passcurrentarray);
+    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%@&&LevelId=1",[[self.passcurrentarray valueForKey:@"CategoryId"] stringValue]]];
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+    
+    //Specify method of request(Get or Post)
+    [theRequest setHTTPMethod:@"GET"];
+    
+    //Pass some default parameter(like content-type etc.)
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //Now pass your own parameter
+    
+    
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSError *theError = NULL;
+              
+              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+              NSLog(@"url to send request= %@",theURL);
+              NSLog(@"menu detail response%@",dataResponse);
+              self.categoryContentarray =[[NSMutableArray alloc]init];
+              [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
+              [self.collectionview reloadData];
+              // [self loadcollectionData:dataResponse];
+              
+          });
+          
+      }] resume];
+    
+    
+}
+
 -(void)DoneButtonPressed{
     [self.search_textfield resignFirstResponder];
 }
 
 
 - (void)textFieldDidChange:(UITextField *)textField {
-   
+    
     NSString *newString = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/GetSearchItem?searchValue=%@",newString]];
+    
+    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/GetSerachItem?searchValue=%@",newString]];
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
     
     //Specify method of request(Get or Post)
@@ -79,10 +118,10 @@
               self.categoryContentarray =[[NSMutableArray alloc]init];
               if([[dataResponse valueForKey:@"data"] isKindOfClass:[NSArray class]] && [[dataResponse valueForKey:@"data"] count] >0)
               {
-              [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"] ];
-              [self.collectionview reloadData];
+                  [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"] ];
+                  [self.collectionview reloadData];
               }
-               [self.collectionview reloadData];
+              [self.collectionview reloadData];
               
           });
           
@@ -115,8 +154,8 @@
     static NSString *identifier = @"Cell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-   // [[cell contentView] setFrame:[cell bounds]];
-   // [[cell contentView] setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    // [[cell contentView] setFrame:[cell bounds]];
+    // [[cell contentView] setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     UILabel *title = (UILabel *)[cell viewWithTag:1];
     title.text = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
     
@@ -206,18 +245,11 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)menu_buttonClick:(id)sender {
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.menuContainerViewController toggleLeftSideMenuCompletion:^{
+        
+    }];
+
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

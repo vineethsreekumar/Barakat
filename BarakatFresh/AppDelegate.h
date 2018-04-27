@@ -12,6 +12,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-
+-(void)showMessage:(NSString*)message withTitle:(NSString *)title;
 @end
 

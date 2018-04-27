@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "Config.h"
 #define kOFFSET_FOR_KEYBOARD 80.0
 
 @interface LoginViewController ()
@@ -56,7 +57,13 @@
     
     self.email_txtfield.delegate=self;
     self.password_textfield.delegate=self;
-    
+    indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 100.0, 100.0);
+    indicator.center = self.view.center;
+    [self.view addSubview:indicator];
+    [indicator bringSubviewToFront:self.view];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -99,6 +106,77 @@
 }
 
 - (IBAction)signin_buttonClick:(id)sender {
+   
+    [self Loginpostmethod];
 }
+-(void)Loginpostmethod
+{
+    NSString *username = [self.email_txtfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [self.password_textfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if(username.length == 0)
+    {
+        [uAppDelegate showMessage:@"Please enter Email" withTitle:@"Message"];
+        
+        return;
+        
+    }
+    else  if(password.length == 0)
+    {
+        
+        [uAppDelegate showMessage:@"Please enter Password" withTitle:@"Message"];
+        
+        return;
+        
+    }
+    [indicator startAnimating];
+    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+    [post setValue:username forKey:@"userName"];
+    [post setValue:password forKey:@"password"];
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
+    NSMutableURLRequest *urlrequest=[[NSMutableURLRequest alloc]init];
+   // NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"User/LoginUser"];
+    NSString *urlstring = [NSString stringWithFormat:@"%s%s?userName=%@&password=%@",baseURL,"User/LoginUser",username,password];
+   // NSString * encodedString = [urlstring stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    [urlrequest setURL:[NSURL URLWithString:urlstring]];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlrequest setHTTPMethod:@"GET"];
+   // [urlrequest setHTTPBody:jsonData];
+    [[[NSURLSession sharedSession] dataTaskWithRequest:urlrequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          NSError *error1;
+          if(data==nil)
+          {
+              return ;
+          }
+          NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
+          //  NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+          
+          NSLog(@"webresponse=%@",res);
+          if(res.count > 0)
+          {
+             
+          }
+          else
+          {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  [indicator stopAnimating];
+                  
+                  [uAppDelegate showMessage:@"Login error" withTitle:@"Message"];
+              });
+              
+              
+          }
+      }] resume];
+    
+}
+
+
+- (IBAction)signup_buttonClick:(id)sender {
+    RegisterViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Register"];
+    [self.navigationController pushViewController:ViewController animated:YES];
+}
+
 
 @end

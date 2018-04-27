@@ -15,5 +15,6 @@
 @property (strong) NSArray *sectionNames;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *imagearray;
+- (IBAction)HomeButtonClick:(id)sender;
 
 @end

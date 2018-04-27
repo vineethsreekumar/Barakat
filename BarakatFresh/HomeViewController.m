@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "MenuScrollView.h"
 #import "ForHerCell.h"
+#import "UIImage+GIF.h"
 #import "Config.h"
 
 @interface HomeViewController ()<KASlideShowDataSource, KASlideShowDelegate,MenuScrollViewDelegate>
@@ -330,11 +331,11 @@ NSCache *imageCache;
             
         });
     }*/
-    
+   recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
- 
+   
     dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
-    
+  
     // Start getting the data in the background
     dispatch_async(queue, ^{
         NSData* photoData = [NSData dataWithContentsOfURL:url];
@@ -342,6 +343,7 @@ NSCache *imageCache;
         
         // Once we get the data, update the UI on the main thread
         dispatch_sync(dispatch_get_main_queue(), ^{
+           
             recipeImageView.image = image;
         });
     });
@@ -691,19 +693,12 @@ _slideshow.delegate = self;
      }
 
 - (IBAction)MyAccount_ButtonClick:(id)sender {
+    [self customActionsheet];
+    /*
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, actionSheet.view.frame.size.width, actionSheet.view.frame.size.height)];
     background.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1];
-   // [actionSheet.view addSubview:background];
-   // [actionSheet.view setBackgroundColor:[UIColor greenColor]];
-   /* UIAlertAction *firstAA       = [UIAlertAction actionWithTitle:@"Beep Beep"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^( UIAlertAction *action ){
-                                                              
-                                                             
-                                                          }];
-    [firstAA setValue:[UIImage imageNamed:@"menuicon.png"] forKey:@"image"];
-    [actionSheet addAction:firstAA];*/
+   
 
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         
@@ -740,8 +735,34 @@ _slideshow.delegate = self;
         
     }]];
     
+   
     [self presentViewController:actionSheet animated:YES completion:nil];
-
+*/
+}
+-(void)customActionsheet
+{
+    UIAlertController *alert =
+    [UIAlertController alertControllerWithTitle:@"HI"
+                                        message:@"vineethsreekumar25@gmail.com"
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Gallery"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked Gallery");
+                                            }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Camera"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked Camera");
+                                            }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Remove Photo"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked Remove Photo");
+                                            }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 - (IBAction)searchview_buttonClick:(id)sender {
     SearchViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchView"];
@@ -750,32 +771,18 @@ _slideshow.delegate = self;
 }
 
 - (IBAction)myaccount_buttonClick:(id)sender {
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [self customActionsheet];
+   /* UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, actionSheet.view.frame.size.width, actionSheet.view.frame.size.height)];
     background.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1];
-    // [actionSheet.view addSubview:background];
-    // [actionSheet.view setBackgroundColor:[UIColor greenColor]];
-    /* UIAlertAction *firstAA       = [UIAlertAction actionWithTitle:@"Beep Beep"
-     style:UIAlertActionStyleDefault
-     handler:^( UIAlertAction *action ){
-     
-     
-     }];
-     [firstAA setValue:[UIImage imageNamed:@"menuicon.png"] forKey:@"image"];
-     [actionSheet addAction:firstAA];*/
-    
+   
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         
         // Cancel button tappped do nothing.
         
     }]];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Register" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // take photo button tapped.
-        
-        
-    }]];
+   
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Login" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
@@ -792,14 +799,8 @@ _slideshow.delegate = self;
         
         
     }]];
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Purchase History" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // Distructive button tapped.
-        
-        
-    }]];
     
-    [self presentViewController:actionSheet animated:YES completion:nil];
+    [self presentViewController:actionSheet animated:YES completion:nil];*/
 
 }
 

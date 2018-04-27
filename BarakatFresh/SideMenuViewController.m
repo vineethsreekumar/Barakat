@@ -3,6 +3,7 @@
 #import "SideMenuViewController.h"
 #import "MFSideMenu.h"
 #import "UIColor+AppColors.h"
+#import "MenuDetailViewController.h"
 
 #import "Config.h"
 static int const kHeaderSectionTag = 6900;
@@ -221,6 +222,17 @@ static int const kHeaderSectionTag = 6900;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    MenuDetailViewController *menuController = [storyboard instantiateViewControllerWithIdentifier:@"MenuDetailView"];
+     NSMutableArray *section = [self.sectionItems objectAtIndex:indexPath.section];
+    menuController.passcurrentarray=[[NSMutableArray alloc]init];
+    menuController.passcurrentarray=[section objectAtIndex:indexPath.row];
+    UINavigationController *navigationController = self.menuContainerViewController.centerViewController;
+    NSArray *controllers = [NSArray arrayWithObject:menuController];
+    navigationController.viewControllers = controllers;
+    [self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
+
+    
 }
 
 - (void)updateTableViewRowDisplay:(NSArray *)arrayOfIndexPaths {
@@ -297,4 +309,13 @@ static int const kHeaderSectionTag = 6900;
 
 
 
+- (IBAction)HomeButtonClick:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    HomeViewController *menuController = [storyboard instantiateViewControllerWithIdentifier:@"HomeView"];
+    UINavigationController *navigationController = self.menuContainerViewController.centerViewController;
+    NSArray *controllers = [NSArray arrayWithObject:menuController];
+    navigationController.viewControllers = controllers;
+    [self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
+
+}
 @end
