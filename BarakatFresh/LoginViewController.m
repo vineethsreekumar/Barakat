@@ -133,16 +133,18 @@
     [post setValue:username forKey:@"userName"];
     [post setValue:password forKey:@"password"];
     NSError *writeError = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
+   // NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
     NSMutableURLRequest *urlrequest=[[NSMutableURLRequest alloc]init];
    // NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"User/LoginUser"];
     NSString *urlstring = [NSString stringWithFormat:@"%s%s?userName=%@&password=%@",baseURL,"User/LoginUser",username,password];
    // NSString * encodedString = [urlstring stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+
+    //[request setURL:[NSURL URLWithString:urlStr]];
     [urlrequest setURL:[NSURL URLWithString:urlstring]];
     [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [urlrequest setHTTPMethod:@"GET"];
-   // [urlrequest setHTTPBody:jsonData];
+    //[urlrequest setHTTPBody:jsonData];
     [[[NSURLSession sharedSession] dataTaskWithRequest:urlrequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
       {
           NSError *error1;
@@ -151,10 +153,30 @@
               return ;
           }
           NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
-          //  NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+          if([[res valueForKey:@"data"] length]>0)
+          {
+          dispatch_async(dispatch_get_main_queue(), ^{
+                  [indicator stopAnimating];
+          NSDictionary *obj = [[res valueForKey:@"data"] objectAtIndex:0];
           
+          [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"customerId"] forKey:@"customerId"];
+          [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"userName"] forKey:@"userName"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+                    });
+          //  NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+          }
+          else
+          {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  [indicator stopAnimating];
+                  
+                  [uAppDelegate showMessage:@"Login error" withTitle:@"Message"];
+              });
+
+
+          }
           NSLog(@"webresponse=%@",res);
-          if(res.count > 0)
+        /*  if(res.count > 0)
           {
              
           }
@@ -167,7 +189,7 @@
               });
               
               
-          }
+          }*/
       }] resume];
     
 }

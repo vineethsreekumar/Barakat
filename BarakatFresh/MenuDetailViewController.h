@@ -13,4 +13,5 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
 @property (strong, nonatomic) NSMutableArray *categoryContentarray;
 @property (strong, nonatomic) NSMutableArray *passcurrentarray;
+@property (strong, nonatomic) NSMutableArray *tempcartarray;
 @end

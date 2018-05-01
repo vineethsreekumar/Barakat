@@ -11,7 +11,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property(strong,nonatomic) NSNumber *cartcount;
 -(void)showMessage:(NSString*)message withTitle:(NSString *)title;
 @end
 

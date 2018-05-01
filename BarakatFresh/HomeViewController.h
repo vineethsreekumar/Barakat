@@ -22,9 +22,11 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
 @property(nonatomic, strong) NCMenu *newsCubeMenu;
 @property (strong, nonatomic) IBOutlet UIView *menu_view;
-
+@property (strong, nonatomic) IBOutlet UILabel *cart_lbl;
+ @property (strong, nonatomic) NSMutableArray *tempcartarray;
 - (IBAction)searchview_buttonClick:(id)sender;
 - (IBAction)myaccount_buttonClick:(id)sender;
 - (IBAction)Home_buttonClick:(id)sender;
+- (IBAction)Cart_buttonClick:(id)sender;
 
 @end

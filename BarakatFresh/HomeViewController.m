@@ -29,12 +29,19 @@ NSCache *imageCache;
     [self KAslideShow];
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
+    self.cart_lbl.layer.cornerRadius = 12.5;
+    self.cart_lbl.layer.masksToBounds = YES;
+
     [self getContentService];
     [self setUpNewsCubeMenu];
     
    // [self createcategory];
    // [self Loadtopimages];
     // Do any additional setup after loading the view.
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self cartcount];
 }
 -(void)getContentService
 {
@@ -379,7 +386,98 @@ NSCache *imageCache;
     quantityview.layer.cornerRadius = 12.5;
     quantityview.layer.masksToBounds = YES;
     
+    UIButton *addcart = (UIButton *)[cell viewWithTag:6];
+    [addcart addTarget:self action:@selector(AddtoCardButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
+    
     return cell;
+}
+- (void)AddtoCardButtonClick:(id)sender event:(id)event{
+    NSSet *touches = [event allTouches];
+    
+    UITouch *touch = [touches anyObject];
+    
+    CGPoint currentTouchPosition = [touch locationInView:self.collectionview];
+    
+    NSIndexPath *indexPath = [self.collectionview indexPathForItemAtPoint: currentTouchPosition];
+    UICollectionViewCell *cell = [self.collectionview cellForItemAtIndexPath:indexPath];
+    UILabel *cartlbl = (UILabel *)[cell viewWithTag:4];
+
+   // [indicator startAnimating];
+    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+    NSString *itemid = [[self.categoryContentarray valueForKey:@"Id"]objectAtIndex:indexPath.row];
+    NSString *ItemTypeId = [[self.categoryContentarray valueForKey:@"Group"]objectAtIndex:indexPath.row];
+
+    NSString *ItemTitle = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
+
+    NSString *ItemPrice = [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row];
+
+    NSString *ItemImage = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row];
+
+    NSString *ItemUnit = [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row];
+    NSString *quantity = cartlbl.text;
+
+    [post setValue:itemid forKey:@"ItemId"];
+    [post setValue:ItemTypeId forKey:@"ItemTypeId"];
+    [post setValue:ItemTitle forKey:@"ItemTitle"];
+    [post setValue:ItemPrice forKey:@"ItemPrice"];
+    [post setValue:ItemImage forKey:@"ItemImage"];
+    [post setValue:ItemUnit forKey:@"ItemUnit"];
+     [post setValue:quantity forKey:@"ItemQty"];
+  //  [post setValue:self.confirm_password.text forKey:@"Total"];
+    self.tempcartarray=[[NSMutableArray alloc]init];
+   if( [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"])
+   {
+       NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+       NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+       [self.tempcartarray addObjectsFromArray:token];
+   }
+    [self.tempcartarray addObject:post];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
+    self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
+
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [uAppDelegate showMessage:@"Item Added to cart" withTitle:@"Message"];
+   /*
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
+    NSMutableURLRequest *urlrequest=[[NSMutableURLRequest alloc]init];
+    NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"Home/AddItemsToCart"];
+    [urlrequest setURL:[NSURL URLWithString:urlstring]];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlrequest setHTTPMethod:@"POST"];
+    [urlrequest setHTTPBody:jsonData];
+    [[[NSURLSession sharedSession] dataTaskWithRequest:urlrequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+         // [indicator stopAnimating];
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+              
+              if([outputString isEqualToString:@"\"Success\""])
+              {
+                  
+              }
+              
+          });
+      }] resume];*/
+
+
+}
+-(void)cartcount
+{
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * cart = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.cartcount=[NSNumber numberWithInteger:cart.count];
+    self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
+    if(appDelegate.cartcount==0)
+    {
+        self.cart_lbl.hidden=true;
+    }
+
 }
 
 - (IBAction)minusClickEvent:(id)sender event:(id)event {
@@ -692,53 +790,6 @@ _slideshow.delegate = self;
 
      }
 
-- (IBAction)MyAccount_ButtonClick:(id)sender {
-    [self customActionsheet];
-    /*
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, actionSheet.view.frame.size.width, actionSheet.view.frame.size.height)];
-    background.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1];
-   
-
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        
-        // Cancel button tappped do nothing.
-        
-    }]];
-    
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Register" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // take photo button tapped.
-       
-        
-    }]];
-    
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Login" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // choose photo button tapped.
-        LoginViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Loginview"];
-        [self.navigationController pushViewController:ViewController animated:YES];
-        
-        
-    }]];
-    
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"My Profile" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // Distructive button tapped.
-      
-        
-    }]];
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Purchase History" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // Distructive button tapped.
-        
-        
-    }]];
-    
-   
-    [self presentViewController:actionSheet animated:YES completion:nil];
-*/
-}
 -(void)customActionsheet
 {
     UIAlertController *alert =
@@ -746,20 +797,20 @@ _slideshow.delegate = self;
                                         message:@"vineethsreekumar25@gmail.com"
                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:@"Gallery"
+    [alert addAction:[UIAlertAction actionWithTitle:@"Profile"
                                               style:UIAlertActionStyleDefault
                                             handler:^void (UIAlertAction *action) {
-                                                NSLog(@"Clicked Gallery");
+                                                NSLog(@"Clicked Profile");
                                             }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Camera"
+    [alert addAction:[UIAlertAction actionWithTitle:@"Purchase History"
                                               style:UIAlertActionStyleDefault
                                             handler:^void (UIAlertAction *action) {
-                                                NSLog(@"Clicked Camera");
+                                                NSLog(@"Clicked Purchase History");
                                             }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Remove Photo"
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
                                               style:UIAlertActionStyleDefault
                                             handler:^void (UIAlertAction *action) {
-                                                NSLog(@"Clicked Remove Photo");
+                                                NSLog(@"Clicked Cancel");
                                             }]];
     
     [self presentViewController:alert animated:YES completion:nil];
@@ -771,8 +822,20 @@ _slideshow.delegate = self;
 }
 
 - (IBAction)myaccount_buttonClick:(id)sender {
-    [self customActionsheet];
-   /* UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+   // [self customActionsheet];
+    NSString *customerId = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"customerId"];
+    if(customerId.length>0)
+    {
+       [self customActionsheet];
+    }
+    else
+    {
+        LoginViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Loginview"];
+        [self.navigationController pushViewController:ViewController animated:YES];
+
+        /*
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIView *background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, actionSheet.view.frame.size.width, actionSheet.view.frame.size.height)];
     background.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1];
    
@@ -801,9 +864,15 @@ _slideshow.delegate = self;
     }]];
     
     [self presentViewController:actionSheet animated:YES completion:nil];*/
-
+    }
 }
 
 - (IBAction)Home_buttonClick:(id)sender {
+}
+
+- (IBAction)Cart_buttonClick:(id)sender {
+    CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
+    [self.navigationController pushViewController:ViewController animated:YES];
+
 }
 @end

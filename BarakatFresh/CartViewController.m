@@ -1,21 +1,22 @@
 //
-//  MenuDetailViewController.m
+//  CartViewController.m
 //  BarakatFresh
 //
-//  Created by vineeth on 4/25/18.
+//  Created by vineeth on 4/30/18.
 //  Copyright © 2018 MyOrganization. All rights reserved.
 //
 
-#import "MenuDetailViewController.h"
+#import "CartViewController.h"
 #import "Config.h"
-@interface MenuDetailViewController ()
+@interface CartViewController ()
 
 @end
 
-@implementation MenuDetailViewController
+@implementation CartViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
     
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
@@ -25,7 +26,7 @@
     [pickerToolbar setItems:@[flexSpace, flexSpace, doneBtn] animated:YES];
     self.search_textfield.inputAccessoryView = pickerToolbar;
     
-    [self loadfirstcollectionite];
+   // [self loadfirstcollectionite];
     
     UIView *viewPassIntxtFieldDate = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
     UIImageView *imageViewpass = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 25, 25)];
@@ -40,6 +41,11 @@
     
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    self.categoryContentarray =[[NSMutableArray alloc]init];
+    [self.categoryContentarray addObjectsFromArray:token];
+    [self.collectionview reloadData];
     
     // Do any additional setup after loading the view.
 }
@@ -156,23 +162,32 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     // [[cell contentView] setFrame:[cell bounds]];
     // [[cell contentView] setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    
+    UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    pickerToolbar.barStyle = UIBarStyleBlackOpaque;
+    [pickerToolbar sizeToFit];
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(DoneButtonPressed)];
+    [pickerToolbar setItems:@[flexSpace, flexSpace, doneBtn] animated:YES];
+    self.search_textfield.inputAccessoryView = pickerToolbar;
+    
     UILabel *title = (UILabel *)[cell viewWithTag:1];
-    title.text = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
+    title.text = [[self.categoryContentarray valueForKey:@"ItemTitle"]objectAtIndex:indexPath.row];
     
     UILabel *price = (UILabel *)[cell viewWithTag:2];
-    price.text =[NSString stringWithFormat:@"Price: %@ AED", [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row]];
+    price.text =[NSString stringWithFormat:@"Price: %@ AED", [[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row]];
     
     UILabel *weight = (UILabel *)[cell viewWithTag:9];
-    weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row]];
+    weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"ItemUnit"]objectAtIndex:indexPath.row]];
     
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    NSLog(@"contentt=%@",self.categoryContentarray);
+    NSLog(@"cart contentt=%@",self.categoryContentarray);
     recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     
-    NSString *photoString = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ;
+    NSString *photoString = [[self.categoryContentarray valueForKey:@"ItemImage"]objectAtIndex:indexPath.row] ;
     
-    NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+    NSURL *url = [NSURL URLWithString:photoString];
     
     dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
     
@@ -187,8 +202,14 @@
         });
     });
     
+    UILabel *selectedqty = (UILabel *)[cell viewWithTag:4];
+    selectedqty.text =[NSString stringWithFormat:@"%@", [[self.categoryContentarray valueForKey:@"ItemQty"]objectAtIndex:indexPath.row]];
+
+    UILabel *total = (UILabel *)[cell viewWithTag:10];
+    int carttotal= [[[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row] intValue]*[[[self.categoryContentarray valueForKey:@"ItemQty"]objectAtIndex:indexPath.row] intValue];
+    total.text =[NSString stringWithFormat:@"TotalPrice:%d", carttotal];
     
-    
+
     UIButton *minus = (UIButton *)[cell viewWithTag:3];
     [minus addTarget:self action:@selector(minusClickEvent:event:) forControlEvents:UIControlEventTouchUpInside];
     UIButton *plus = (UIButton *)[cell viewWithTag:5];
@@ -201,61 +222,7 @@
     quantityview.layer.cornerRadius = 15;
     quantityview.layer.masksToBounds = YES;
     
-    UIButton *addcart = (UIButton*)[cell viewWithTag:6];
-    [addcart addTarget:self action:@selector(AddtoCardButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
-}
-- (void)AddtoCardButtonClick:(id)sender event:(id)event{
-    NSSet *touches = [event allTouches];
-    
-    UITouch *touch = [touches anyObject];
-    
-    CGPoint currentTouchPosition = [touch locationInView:self.collectionview];
-    
-    NSIndexPath *indexPath = [self.collectionview indexPathForItemAtPoint: currentTouchPosition];
-    UICollectionViewCell *cell = [self.collectionview cellForItemAtIndexPath:indexPath];
-    UILabel *cartlbl = (UILabel *)[cell viewWithTag:4];
-    
-    // [indicator startAnimating];
-    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
-    NSString *itemid = [[self.categoryContentarray valueForKey:@"Id"]objectAtIndex:indexPath.row];
-    NSString *ItemTypeId = [[self.categoryContentarray valueForKey:@"Group"]objectAtIndex:indexPath.row];
-    
-    NSString *ItemTitle = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
-    
-    NSString *ItemPrice = [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row];
-    
-    NSString *ItemImage = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row];
-    
-    NSString *ItemUnit = [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row];
-    NSString *quantity = cartlbl.text;
-    
-    [post setValue:itemid forKey:@"ItemId"];
-    [post setValue:ItemTypeId forKey:@"ItemTypeId"];
-    [post setValue:ItemTitle forKey:@"ItemTitle"];
-    [post setValue:ItemPrice forKey:@"ItemPrice"];
-    [post setValue:ItemImage forKey:@"ItemImage"];
-    [post setValue:ItemUnit forKey:@"ItemUnit"];
-    [post setValue:quantity forKey:@"ItemQty"];
-    //  [post setValue:self.confirm_password.text forKey:@"Total"];
-    self.tempcartarray=[[NSMutableArray alloc]init];
-    if( [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"])
-    {
-        NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
-        NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        [self.tempcartarray addObjectsFromArray:token];
-    }
-    [self.tempcartarray addObject:post];
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
-    
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [uAppDelegate showMessage:@"Item Added to cart" withTitle:@"Message"];
-    
-    
 }
 
 - (IBAction)minusClickEvent:(id)sender event:(id)event {
@@ -272,6 +239,11 @@
     if(value.text.intValue>0)
     {
         value.text= [NSString stringWithFormat:@"%d",value.text.intValue-1];
+        
+        int carttotal= [[[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row] intValue]*value.text.intValue;
+        UILabel *total = (UILabel *)[cell viewWithTag:10];
+        total.text =[NSString stringWithFormat:@"TotalPrice:%d", carttotal];
+
     }
     
     
@@ -291,6 +263,10 @@
     value.text= [NSString stringWithFormat:@"%d",value.text.intValue+1];
     
     
+    int carttotal= [[[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row] intValue]*value.text.intValue;
+    UILabel *total = (UILabel *)[cell viewWithTag:10];
+    total.text =[NSString stringWithFormat:@"TotalPrice:%d", carttotal];
+
     
 }
 
@@ -299,11 +275,7 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)menu_buttonClick:(id)sender {
-    [self.menuContainerViewController toggleLeftSideMenuCompletion:^{
-        
-    }];
-
+    [self.navigationController popViewControllerAnimated:NO];
 }
-
 
 @end

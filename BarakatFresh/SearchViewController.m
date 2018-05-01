@@ -7,7 +7,7 @@
 //
 
 #import "SearchViewController.h"
-
+#import "Config.h"
 @interface SearchViewController ()
 
 @end
@@ -128,9 +128,9 @@
     
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    NSLog(@"contentt=%@",self.categoryContentarray);
+    NSLog(@"search contentt=%@",self.categoryContentarray);
     
-    
+    recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     NSString *photoString = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ;
     
     NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
@@ -157,6 +157,8 @@
     UIView *addbutton = (UIView*)[cell viewWithTag:6];
     addbutton.layer.cornerRadius = 15;
     addbutton.layer.masksToBounds = YES;
+    UIButton *addcart = (UIButton*)[cell viewWithTag:6];
+    [addcart addTarget:self action:@selector(AddtoCardButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *quantityview = (UIView*)[cell viewWithTag:7];
     quantityview.layer.cornerRadius = 15;
@@ -198,6 +200,58 @@
     value.text= [NSString stringWithFormat:@"%d",value.text.intValue+1];
     
     
+    
+}
+- (void)AddtoCardButtonClick:(id)sender event:(id)event{
+    NSSet *touches = [event allTouches];
+    
+    UITouch *touch = [touches anyObject];
+    
+    CGPoint currentTouchPosition = [touch locationInView:self.collectionview];
+    
+    NSIndexPath *indexPath = [self.collectionview indexPathForItemAtPoint: currentTouchPosition];
+    UICollectionViewCell *cell = [self.collectionview cellForItemAtIndexPath:indexPath];
+    UILabel *cartlbl = (UILabel *)[cell viewWithTag:4];
+    
+    // [indicator startAnimating];
+    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+    NSString *itemid = [[self.categoryContentarray valueForKey:@"Id"]objectAtIndex:indexPath.row];
+    NSString *ItemTypeId = [[self.categoryContentarray valueForKey:@"Group"]objectAtIndex:indexPath.row];
+    
+    NSString *ItemTitle = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
+    
+    NSString *ItemPrice = [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row];
+    
+    NSString *ItemImage = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row];
+    
+    NSString *ItemUnit = [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row];
+    NSString *quantity = cartlbl.text;
+    
+    [post setValue:itemid forKey:@"ItemId"];
+    [post setValue:ItemTypeId forKey:@"ItemTypeId"];
+    [post setValue:ItemTitle forKey:@"ItemTitle"];
+    [post setValue:ItemPrice forKey:@"ItemPrice"];
+    [post setValue:ItemImage forKey:@"ItemImage"];
+    [post setValue:ItemUnit forKey:@"ItemUnit"];
+    [post setValue:quantity forKey:@"ItemQty"];
+    //  [post setValue:self.confirm_password.text forKey:@"Total"];
+    self.tempcartarray=[[NSMutableArray alloc]init];
+    if( [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"])
+    {
+        NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+        NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        [self.tempcartarray addObjectsFromArray:token];
+    }
+    [self.tempcartarray addObject:post];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
+   
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [uAppDelegate showMessage:@"Item Added to cart" withTitle:@"Message"];
+        
     
 }
 

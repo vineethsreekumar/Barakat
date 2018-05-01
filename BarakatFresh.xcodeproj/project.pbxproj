@@ -102,6 +102,8 @@
 		85861A652092E5A6009EB7AE /* a-accept-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A632092E5A6009EB7AE /* a-accept-icon@2x.png */; };
 		85861A662092E5A6009EB7AE /* b-accept-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A642092E5A6009EB7AE /* b-accept-icon@2x.png */; };
 		85861A692093B854009EB7AE /* MyAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A682093B854009EB7AE /* MyAccountsViewController.m */; };
+		85861A7E20973473009EB7AE /* CartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A7D20973473009EB7AE /* CartViewController.m */; };
+		85861A802098717F009EB7AE /* carticon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A7F2098717F009EB7AE /* carticon@2x.png */; };
 		85912435207FD6B1009D8051 /* spinach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 85912434207FD6B1009D8051 /* spinach.jpg */; };
 		85912438207FF632009D8051 /* back-arrow-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912436207FF632009D8051 /* back-arrow-icon@2x.png */; };
 		85912439207FF632009D8051 /* back-arrow-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912437207FF632009D8051 /* back-arrow-icon@3x.png */; };
@@ -263,6 +265,9 @@
 		85861A642092E5A6009EB7AE /* b-accept-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "b-accept-icon@2x.png"; sourceTree = "<group>"; };
 		85861A672093B854009EB7AE /* MyAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountsViewController.h; sourceTree = "<group>"; };
 		85861A682093B854009EB7AE /* MyAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountsViewController.m; sourceTree = "<group>"; };
+		85861A7C20973473009EB7AE /* CartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartViewController.h; sourceTree = "<group>"; };
+		85861A7D20973473009EB7AE /* CartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartViewController.m; sourceTree = "<group>"; };
+		85861A7F2098717F009EB7AE /* carticon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carticon@2x.png"; sourceTree = "<group>"; };
 		85912434207FD6B1009D8051 /* spinach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = spinach.jpg; sourceTree = "<group>"; };
 		85912436207FF632009D8051 /* back-arrow-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@2x.png"; sourceTree = "<group>"; };
 		85912437207FF632009D8051 /* back-arrow-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@3x.png"; sourceTree = "<group>"; };
@@ -330,6 +335,8 @@
 				85861A682093B854009EB7AE /* MyAccountsViewController.m */,
 				85861A54209040CD009EB7AE /* MenuDetailViewController.h */,
 				85861A55209040CD009EB7AE /* MenuDetailViewController.m */,
+				85861A7C20973473009EB7AE /* CartViewController.h */,
+				85861A7D20973473009EB7AE /* CartViewController.m */,
 				858619E720851AE7009EB7AE /* SideMenuViewController.h */,
 				858619E820851AE7009EB7AE /* SideMenuViewController.m */,
 				85861A5C2090FB1D009EB7AE /* RegisterViewController.h */,
@@ -446,6 +453,7 @@
 				85861A632092E5A6009EB7AE /* a-accept-icon@2x.png */,
 				85861A642092E5A6009EB7AE /* b-accept-icon@2x.png */,
 				85861A61209198A9009EB7AE /* home.png */,
+				85861A7F2098717F009EB7AE /* carticon@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -686,6 +694,7 @@
 				85861A0920891386009EB7AE /* Searchiconpage@2x.png in Resources */,
 				8584738E20792B05007C778D /* Main.storyboard in Resources */,
 				858473BD207A4258007C778D /* login_background@2x.png in Resources */,
+				85861A802098717F009EB7AE /* carticon@2x.png in Resources */,
 				85861A662092E5A6009EB7AE /* b-accept-icon@2x.png in Resources */,
 				85861A15208A51E9009EB7AE /* icecreamside@2x.png in Resources */,
 			);
@@ -728,6 +737,7 @@
 				8584738820792B05007C778D /* AppDelegate.m in Sources */,
 				85847407207CC617007C778D /* UIButton+WebCache.m in Sources */,
 				85847406207CC617007C778D /* SDWebImagePrefetcher.m in Sources */,
+				85861A7E20973473009EB7AE /* CartViewController.m in Sources */,
 				85847404207CC617007C778D /* SDWebImageDownloaderOperation.m in Sources */,
 				8584738520792B05007C778D /* main.m in Sources */,
 				858473CA207BEBC6007C778D /* HomeViewController.m in Sources */,
