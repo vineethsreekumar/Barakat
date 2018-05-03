@@ -57,8 +57,8 @@ static int const kHeaderSectionTag = 6900;
               NSError *theError = NULL;
               
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-              NSLog(@"url to send request= %@",theURL);
-              NSLog(@"navigation response%@",dataResponse);
+             // NSLog(@"url to send request= %@",theURL);
+             // NSLog(@"navigation response%@",dataResponse);
              NSMutableArray *innerdatarray = [[NSMutableArray alloc]init];
              innerdatarray  = [dataResponse valueForKey:@"data"];
               NSMutableArray *groupname = [innerdatarray  valueForKey:@"groupName"];

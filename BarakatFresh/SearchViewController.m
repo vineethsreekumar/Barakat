@@ -74,8 +74,8 @@
               NSError *theError = NULL;
               
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-              NSLog(@"url to send request= %@",theURL);
-              NSLog(@"Search response%@",dataResponse);
+            //  NSLog(@"url to send request= %@",theURL);
+           //   NSLog(@"Search response%@",dataResponse);
               self.categoryContentarray =[[NSMutableArray alloc]init];
               if([[dataResponse valueForKey:@"data"] isKindOfClass:[NSArray class]] && [[dataResponse valueForKey:@"data"] count] >0)
               {
@@ -128,7 +128,7 @@
     
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    NSLog(@"search contentt=%@",self.categoryContentarray);
+   // NSLog(@"search contentt=%@",self.categoryContentarray);
     
     recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     NSString *photoString = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ;

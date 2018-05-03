@@ -69,7 +69,7 @@ NSCache *imageCache;
               
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
               NSLog(@"url to send request= %@",theURL);
-              NSLog(@"navigation response%@",dataResponse);
+            //  NSLog(@"navigation response%@",dataResponse);
               self.innerdatarray = [[NSMutableArray alloc]init];
               self.innerdatarray  = [dataResponse valueForKey:@"data"];
               NSMutableArray *groupname = [ self.innerdatarray  valueForKey:@"groupName"];
@@ -93,7 +93,7 @@ NSCache *imageCache;
               {
               [self loadcollectionData: [self.innerdatarray objectAtIndex:1]];
               }*/
-              NSLog(@"innerresponse response%@",groupname);
+             // NSLog(@"innerresponse response%@",groupname);
               
           });
           
@@ -202,8 +202,8 @@ NSCache *imageCache;
               NSError *theError = NULL;
               
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-              NSLog(@"url to send request= %@",theURL);
-              NSLog(@"navigation response%@",dataResponse);
+           //   NSLog(@"url to send request= %@",theURL);
+           //   NSLog(@"navigation response%@",dataResponse);
               self.categoryContentarray =[[NSMutableArray alloc]init];
               [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
               [self.collectionview reloadData];
@@ -240,8 +240,8 @@ NSCache *imageCache;
               NSError *theError = NULL;
               
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-              NSLog(@"url to send request= %@",theURL);
-              NSLog(@"navigation response%@",dataResponse);
+           //   NSLog(@"url to send request= %@",theURL);
+           //   NSLog(@"navigation response%@",dataResponse);
               self.categoryContentarray =[[NSMutableArray alloc]init];
               [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
               [self.collectionview reloadData];
@@ -295,7 +295,7 @@ NSCache *imageCache;
 
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    NSLog(@"contentt=%@",self.categoryContentarray);
+   // NSLog(@"contentt=%@",self.categoryContentarray);
    /*   NSURL *url = [NSURL URLWithString:[[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // retrive image on global queue
@@ -596,8 +596,8 @@ NSCache *imageCache;
                   NSError *theError = NULL;
                   
                   NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-                  NSLog(@"url to send request= %@",theURL);
-                  NSLog(@"navigation response%@",dataResponse);
+                //  NSLog(@"url to send request= %@",theURL);
+                //  NSLog(@"navigation response%@",dataResponse);
                   self.categoryContentarray =[[NSMutableArray alloc]init];
                   [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
                   [self.collectionview reloadData];

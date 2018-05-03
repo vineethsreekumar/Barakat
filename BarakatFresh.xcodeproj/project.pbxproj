@@ -104,6 +104,9 @@
 		85861A692093B854009EB7AE /* MyAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A682093B854009EB7AE /* MyAccountsViewController.m */; };
 		85861A7E20973473009EB7AE /* CartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A7D20973473009EB7AE /* CartViewController.m */; };
 		85861A802098717F009EB7AE /* carticon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85861A7F2098717F009EB7AE /* carticon@2x.png */; };
+		85861A83209ACEFA009EB7AE /* CheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A82209ACEFA009EB7AE /* CheckoutViewController.m */; };
+		85861A87209B9EF1009EB7AE /* CheckoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85861A85209B9EF1009EB7AE /* CheckoutCell.m */; };
+		85861A88209B9EF1009EB7AE /* CheckoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85861A86209B9EF1009EB7AE /* CheckoutCell.xib */; };
 		85912435207FD6B1009D8051 /* spinach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 85912434207FD6B1009D8051 /* spinach.jpg */; };
 		85912438207FF632009D8051 /* back-arrow-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912436207FF632009D8051 /* back-arrow-icon@2x.png */; };
 		85912439207FF632009D8051 /* back-arrow-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85912437207FF632009D8051 /* back-arrow-icon@3x.png */; };
@@ -268,6 +271,11 @@
 		85861A7C20973473009EB7AE /* CartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartViewController.h; sourceTree = "<group>"; };
 		85861A7D20973473009EB7AE /* CartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartViewController.m; sourceTree = "<group>"; };
 		85861A7F2098717F009EB7AE /* carticon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carticon@2x.png"; sourceTree = "<group>"; };
+		85861A81209ACEFA009EB7AE /* CheckoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutViewController.h; sourceTree = "<group>"; };
+		85861A82209ACEFA009EB7AE /* CheckoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutViewController.m; sourceTree = "<group>"; };
+		85861A84209B9EF1009EB7AE /* CheckoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckoutCell.h; sourceTree = "<group>"; };
+		85861A85209B9EF1009EB7AE /* CheckoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckoutCell.m; sourceTree = "<group>"; };
+		85861A86209B9EF1009EB7AE /* CheckoutCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckoutCell.xib; sourceTree = "<group>"; };
 		85912434207FD6B1009D8051 /* spinach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = spinach.jpg; sourceTree = "<group>"; };
 		85912436207FF632009D8051 /* back-arrow-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@2x.png"; sourceTree = "<group>"; };
 		85912437207FF632009D8051 /* back-arrow-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-arrow-icon@3x.png"; sourceTree = "<group>"; };
@@ -337,6 +345,11 @@
 				85861A55209040CD009EB7AE /* MenuDetailViewController.m */,
 				85861A7C20973473009EB7AE /* CartViewController.h */,
 				85861A7D20973473009EB7AE /* CartViewController.m */,
+				85861A81209ACEFA009EB7AE /* CheckoutViewController.h */,
+				85861A82209ACEFA009EB7AE /* CheckoutViewController.m */,
+				85861A84209B9EF1009EB7AE /* CheckoutCell.h */,
+				85861A85209B9EF1009EB7AE /* CheckoutCell.m */,
+				85861A86209B9EF1009EB7AE /* CheckoutCell.xib */,
 				858619E720851AE7009EB7AE /* SideMenuViewController.h */,
 				858619E820851AE7009EB7AE /* SideMenuViewController.m */,
 				85861A5C2090FB1D009EB7AE /* RegisterViewController.h */,
@@ -678,6 +691,7 @@
 				85861A13208A51E9009EB7AE /* cutfruits@2x.png in Resources */,
 				858473BF207A428E007C778D /* logo@2x.png in Resources */,
 				8584739020792B05007C778D /* Assets.xcassets in Resources */,
+				85861A88209B9EF1009EB7AE /* CheckoutCell.xib in Resources */,
 				8584741B207E7A37007C778D /* ForHerCell.xib in Resources */,
 				85861A17208A51E9009EB7AE /* party@2x.png in Resources */,
 				85861A51208E7BA4009EB7AE /* partyiconselected@2x.png in Resources */,
@@ -726,6 +740,7 @@
 				85847402207CC617007C778D /* SDWebImageDecoder.m in Sources */,
 				85847414207D2BA8007C778D /* MenuScrollView.m in Sources */,
 				858619F020853AFA009EB7AE /* categoryCell.m in Sources */,
+				85861A83209ACEFA009EB7AE /* CheckoutViewController.m in Sources */,
 				85847405207CC617007C778D /* SDWebImageManager.m in Sources */,
 				858473FF207CC617007C778D /* NSData+ImageContentType.m in Sources */,
 				85847401207CC617007C778D /* SDWebImageCompat.m in Sources */,
@@ -745,6 +760,7 @@
 				8584740A207CC618007C778D /* UIImageView+HighlightedWebCache.m in Sources */,
 				85847409207CC618007C778D /* UIImage+MultiFormat.m in Sources */,
 				858473E0207CC336007C778D /* KASlideShow.m in Sources */,
+				85861A87209B9EF1009EB7AE /* CheckoutCell.m in Sources */,
 				85847400207CC617007C778D /* SDImageCache.m in Sources */,
 				858473D4207BEC06007C778D /* MFSideMenuShadow.m in Sources */,
 				85861A072087C7FC009EB7AE /* SearchViewController.m in Sources */,

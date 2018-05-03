@@ -221,8 +221,26 @@
     UIView *quantityview = (UIView*)[cell viewWithTag:7];
     quantityview.layer.cornerRadius = 15;
     quantityview.layer.masksToBounds = YES;
+    UIButton *delete = (UIButton *)[cell viewWithTag:11];
+    [delete addTarget:self action:@selector(deleteClickEvent:event:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
+}
+- (IBAction)deleteClickEvent:(id)sender event:(id)event {
+    
+    NSSet *touches = [event allTouches];
+    
+    UITouch *touch = [touches anyObject];
+    
+    CGPoint currentTouchPosition = [touch locationInView:self.collectionview];
+    
+    NSIndexPath *indexPath = [self.collectionview indexPathForItemAtPoint: currentTouchPosition];
+    [self.categoryContentarray removeObjectAtIndex:indexPath.row];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.categoryContentarray];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.collectionview reloadData];
 }
 
 - (IBAction)minusClickEvent:(id)sender event:(id)event {
@@ -278,4 +296,10 @@
     [self.navigationController popViewControllerAnimated:NO];
 }
 
+- (IBAction)Checkout_buttonClick:(id)sender {
+    CheckoutViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Checkoutview"];
+    ViewController.passcontentarray = [[NSMutableArray alloc]init];
+    ViewController.passcontentarray=self.categoryContentarray;
+    [self.navigationController pushViewController:ViewController animated:YES];
+}
 @end
