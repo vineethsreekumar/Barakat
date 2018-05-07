@@ -182,7 +182,7 @@
     
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    NSLog(@"cart contentt=%@",self.categoryContentarray);
+  //  NSLog(@"cart contentt=%@",self.categoryContentarray);
     recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     
     NSString *photoString = [[self.categoryContentarray valueForKey:@"ItemImage"]objectAtIndex:indexPath.row] ;
@@ -206,8 +206,8 @@
     selectedqty.text =[NSString stringWithFormat:@"%@", [[self.categoryContentarray valueForKey:@"ItemQty"]objectAtIndex:indexPath.row]];
 
     UILabel *total = (UILabel *)[cell viewWithTag:10];
-    int carttotal= [[[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row] intValue]*[[[self.categoryContentarray valueForKey:@"ItemQty"]objectAtIndex:indexPath.row] intValue];
-    total.text =[NSString stringWithFormat:@"TotalPrice:%d", carttotal];
+    float carttotal= [[[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row] floatValue]*[[[self.categoryContentarray valueForKey:@"ItemQty"]objectAtIndex:indexPath.row] intValue];
+    total.text =[NSString stringWithFormat:@"TotalPrice:%.2f", carttotal];
     
 
     UIButton *minus = (UIButton *)[cell viewWithTag:3];

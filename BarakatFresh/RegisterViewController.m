@@ -198,13 +198,16 @@ int activetag=1;
     [post setValue:self.mobile_txtfield.text forKey:@"MobileNumber"];
     [post setValue:self.password_txtfield.text forKey:@"Password"];
     [post setValue:self.confirm_password.text forKey:@"ConfirmPassword"];
-   // [post setValue:@'1' forKey:@"TermsandCondition"];
+    [post setValue:[NSNumber numberWithBool:YES] forKey:@"TermsandCondition"];
+    [post setValue:[NSNumber numberWithBool:YES] forKey:@"IsActivated"];
+    [post setValue:[NSNumber numberWithBool:YES] forKey:@"Status"];
+    [post setValue:@"" forKey:@"GoogleMapLink"];
    
    
     NSError *writeError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
     NSMutableURLRequest *urlrequest=[[NSMutableURLRequest alloc]init];
-    NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"CustomerRegistration"];
+    NSString *urlstring = [NSString stringWithFormat:@"%s%s",subURL,"CustomerRegistration"];
     [urlrequest setURL:[NSURL URLWithString:urlstring]];
     [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -215,7 +218,8 @@ int activetag=1;
           [indicator stopAnimating];
           dispatch_async(dispatch_get_main_queue(), ^{
               NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-              
+              [uAppDelegate showMessage:@"Registraion Successful. Please follow the email to complete" withTitle:@"Message"];
+
               if([outputString isEqualToString:@"\"Success\""])
               {
                   

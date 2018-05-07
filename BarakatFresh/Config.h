@@ -11,5 +11,6 @@
 #import "UIImage+GIF.h"
 #import "CheckoutViewController.h"
 #define baseURL "http://app.barakatfresh.ae/webservice/api/"
+#define subURL "http://app.barakatfresh.ae/webservice/"
 #define uAppDelegate (AppDelegate *)[[UIApplication sharedApplication] delegate]
 

@@ -27,5 +27,6 @@
 - (IBAction)myaccount_buttonClick:(id)sender;
 - (IBAction)Home_buttonClick:(id)sender;
 - (IBAction)Cart_buttonClick:(id)sender;
+- (IBAction)cart_tabbuttonClick:(id)sender;
 
 @end

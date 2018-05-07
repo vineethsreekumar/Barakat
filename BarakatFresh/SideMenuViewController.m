@@ -51,7 +51,10 @@ static int const kHeaderSectionTag = 6900;
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
       {
-          
+          if(data==nil)
+          {
+              return ;
+          }
           
           dispatch_async(dispatch_get_main_queue(), ^{
               NSError *theError = NULL;

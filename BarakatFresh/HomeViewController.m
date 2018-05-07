@@ -196,7 +196,10 @@ NSCache *imageCache;
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
       {
-          
+          if(data==nil)
+          {
+              return ;
+          }
           
           dispatch_async(dispatch_get_main_queue(), ^{
               NSError *theError = NULL;
@@ -792,20 +795,24 @@ _slideshow.delegate = self;
 
 -(void)customActionsheet
 {
+    NSString *userName = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"userName"];
     UIAlertController *alert =
     [UIAlertController alertControllerWithTitle:@"HI"
-                                        message:@"vineethsreekumar25@gmail.com"
+                                        message:userName
                                  preferredStyle:UIAlertControllerStyleAlert];
-    
+ 
     [alert addAction:[UIAlertAction actionWithTitle:@"Profile"
                                               style:UIAlertActionStyleDefault
                                             handler:^void (UIAlertAction *action) {
                                                 NSLog(@"Clicked Profile");
                                             }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Purchase History"
+    [alert addAction:[UIAlertAction actionWithTitle:@"Logout"
                                               style:UIAlertActionStyleDefault
                                             handler:^void (UIAlertAction *action) {
-                                                NSLog(@"Clicked Purchase History");
+                                              //  NSLog(@"Clicked Purchase History");
+                                                NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+                                                [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
                                             }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
                                               style:UIAlertActionStyleDefault
@@ -871,8 +878,36 @@ _slideshow.delegate = self;
 }
 
 - (IBAction)Cart_buttonClick:(id)sender {
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    float sumtotal=0.0;
+    for (int i=0; i<contentArray.count; i++) {
+        sumtotal = sumtotal+[[[contentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[contentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+       
+    }
+    if (sumtotal<75) {
+        [uAppDelegate showMessage:@"Minimum order AED 75" withTitle:@"Message"];
+        return;
+    }
     CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
     [self.navigationController pushViewController:ViewController animated:YES];
 
+}
+
+- (IBAction)cart_tabbuttonClick:(id)sender {
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    float sumtotal=0.0;
+    for (int i=0; i<contentArray.count; i++) {
+        sumtotal = sumtotal+[[[contentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[contentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    if (sumtotal<75) {
+        [uAppDelegate showMessage:@"Minimum order AED 75" withTitle:@"Message"];
+        return;
+    }
+
+    CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
+    [self.navigationController pushViewController:ViewController animated:YES];
 }
 @end

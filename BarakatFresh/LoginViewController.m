@@ -132,7 +132,7 @@
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
     [post setValue:username forKey:@"userName"];
     [post setValue:password forKey:@"password"];
-    NSError *writeError = nil;
+   // NSError *writeError = nil;
    // NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
     NSMutableURLRequest *urlrequest=[[NSMutableURLRequest alloc]init];
    // NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"User/LoginUser"];
@@ -153,7 +153,7 @@
               return ;
           }
           NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
-          if([[res valueForKey:@"data"] length]>0)
+          if([[res valueForKey:@"data"] count]>0)
           {
           dispatch_async(dispatch_get_main_queue(), ^{
                   [indicator stopAnimating];
@@ -162,6 +162,7 @@
           [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"customerId"] forKey:@"customerId"];
           [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"userName"] forKey:@"userName"];
           [[NSUserDefaults standardUserDefaults] synchronize];
+              [self.navigationController popViewControllerAnimated:NO];
                     });
           //  NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
           }
