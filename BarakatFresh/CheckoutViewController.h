@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CheckoutViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface CheckoutViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
+{
+    NSArray *pickerData;
+}
 @property (strong, nonatomic) IBOutlet UIButton *accept_button;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 - (IBAction)submit_ButtonClick:(id)sender;
@@ -16,9 +19,11 @@
 
 
 @property(nonatomic,strong) NSMutableArray *contentArray;
+@property(nonatomic,strong) NSMutableArray *areaArray;
+@property(strong,nonatomic) UIPickerView *areaPicker;
 
 @property(strong,nonatomic) UIDatePicker *datePicker;
-@property(strong,nonatomic) UIDatePicker *timePicker;
+@property(strong,nonatomic) UIPickerView *timePicker;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *passcontentarray;
 - (IBAction)Applycoupon_buttonClick:(id)sender;

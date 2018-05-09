@@ -170,6 +170,13 @@ int activetag=1;
         
         
     }
+    else  if(self.accept_button.selected ==false)
+    {
+        [uAppDelegate showMessage:@"Please accept the terms and conditions" withTitle:@"Message"];
+        return;
+        
+        
+    }
     else
     {
         
@@ -217,12 +224,37 @@ int activetag=1;
       {
           [indicator stopAnimating];
           dispatch_async(dispatch_get_main_queue(), ^{
+               NSError *error1;
+               NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
+              if([[[res valueForKey:@"status"] stringValue] isEqual:@"-1"])
+              {
+                  NSMutableArray *error =[res valueForKey:@"error"];
+                  
+                  [uAppDelegate showMessage:[[[error valueForKey:@"ErrorMessage"] objectAtIndex:0] objectAtIndex:0]  withTitle:@"Message"];
+              }
+              if([[[res valueForKey:@"status"] stringValue] isEqual:@"0"])
+              {
+                  NSString *error =[res valueForKey:@"error"];
+                  
+                  [uAppDelegate showMessage:error  withTitle:@"Message"];
+              }
+              else
+              {
+              
               NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
               [uAppDelegate showMessage:@"Registraion Successful. Please follow the email to complete" withTitle:@"Message"];
+                  self.firstname_txtfield.text=@"";
+                  self.lastname_txtfield.text=@"";
+                  self.email_txtfield.text=@"";
+                  self.mobile_txtfield.text=@"";
+                  self.password_txtfield.text=@"";
+                  self.confirm_password.text=@"";
+                  self.accept_button.selected=false;
 
               if([outputString isEqualToString:@"\"Success\""])
               {
                   
+              }
               }
               
           });

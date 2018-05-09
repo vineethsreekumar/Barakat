@@ -19,12 +19,15 @@ int voucherdiscount=0;
 float sumtotal=0.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
+    
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
     self.contentArray = [[NSMutableArray alloc]init];
     [self.contentArray addObjectsFromArray:self.passcontentarray];
     [self.tableView reloadData];
     [self setAllViews];
+    [self loadareaData];
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
     [pickerToolbar sizeToFit];
@@ -64,6 +67,49 @@ float sumtotal=0.0;
      [self.password_textfield resignFirstResponder];
      [self.mobile_textfield resignFirstResponder];
      [self.confirm_password resignFirstResponder];
+    
+}
+-(void)loadareaData
+{
+   
+    NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"Order/GetAllArea"];
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlstring]   cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+    
+    //Specify method of request(Get or Post)
+    [theRequest setHTTPMethod:@"GET"];
+    
+    //Pass some default parameter(like content-type etc.)
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //Now pass your own parameter
+    
+    
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSError *theError = NULL;
+              
+              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+            
+              NSLog(@"are detail response%@",dataResponse);
+              self.areaPicker=[[UIPickerView alloc]init];
+               self.areaPicker.tag=2;
+              self.areaArray =[[NSMutableArray alloc]init];
+              [self.areaArray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
+             
+              self.areaPicker.dataSource = self;
+              self.areaPicker.delegate = self;
+               self.delivery_Area.inputView=self.areaPicker;
+              // [self loadcollectionData:dataResponse];
+              
+          });
+          
+      }] resume];
+    
     
 }
 
@@ -117,8 +163,8 @@ float sumtotal=0.0;
 }
 -(void)OrderItemmethod
 {
-     NSString *deliverytime = [self.datefield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSString *deliverydate = [self.time_field.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+   //  NSString *deliverytime = [self.time_field.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+     NSString *deliverydate = [self.datefield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *deliveryArea = [self.delivery_Area.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *deliveryaddress = [self.delivery_address.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *customername = [self.name.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -144,12 +190,13 @@ float sumtotal=0.0;
     }
    
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
-    [post setValue:deliverytime forKey:@"DeliveryTime"];
+    [post setValue:[NSNumber numberWithInt:(int)_time_field.tag] forKey:@"DeliveryTime"];
     [post setValue:deliverydate forKey:@"DeliveryDate"];
-     [post setValue:deliveryArea forKey:@"DeliveryArea"];
+     [post setValue:[NSNumber numberWithInt:(int)self.delivery_Area.tag] forKey:@"DeliveryArea"];
      [post setValue:deliveryaddress forKey:@"DeliveryNote"];
      [post setValue:[NSNumber numberWithBool:YES] forKey:@"TermsandConditions"];
-     [post setValue:customername forKey:@"CustomerName"];
+     [post setValue:[NSNumber numberWithInt:0] forKey:@"CustomerId"];
+    [post setValue:customername forKey:@"CustomerName"];
      [post setValue:mobile forKey:@"Mobile"];
      [post setValue:email forKey:@"Email"];
      [post setValue:deliveryaddress forKey:@"DeliveryAddress"];
@@ -158,17 +205,31 @@ float sumtotal=0.0;
      [post setValue:deliveryaddress forKey:@"BillingAddress"];
      [post setValue:@"" forKey:@"BillingLocation"];
     [post setValue:@"Dubai" forKey:@"BillingEmirate"];
+    if(customerId.length>0)
+    {
+        [post setValue:[NSNumber numberWithInt:1] forKey:@"CheckoutType"];
+    }
+    else
+    {
+       [post setValue:[NSNumber numberWithInt:2] forKey:@"CheckoutType"];
+    }
     [post setValue:[NSNumber numberWithInt:[customerId intValue]] forKey:@"CustomerId"];
-    [post setValue:[NSNumber numberWithInt:0] forKey:@"CheckoutType"];
+   
     [post setValue:[NSNumber numberWithFloat:sumtotal-voucherdiscount-coupondiscount] forKey:@"CartTotal"];
      [post setValue:[NSNumber numberWithFloat:sumtotal] forKey:@"SubTotal"];
-     [post setValue:@"" forKey:@"DeliveryCharge"];
-    if(voucherdiscount+coupondiscount>0)
+     [post setValue:[NSNumber numberWithInt:0] forKey:@"DeliveryCharge"];
+   // if(voucherdiscount+coupondiscount>0)
     {
         [post setValue:[NSNumber numberWithBool:YES] forKey:@"CouponApplied"];
         [post setValue:@"" forKey:@"Coupon"];
-        [post setValue:@"" forKey:@"DiscountApplied"];
+        [post setValue:[NSNumber numberWithInt:0] forKey:@"DiscountApplied"];
     }
+    [post setValue:[NSNumber numberWithBool:YES] forKey:@"VoucherApplied"];
+    [post setValue:@"" forKey:@"VoucherCode"];
+    
+    [post setValue:[NSNumber numberWithInt:1] forKey:@"PaymentType"];
+     [post setValue:@"" forKey:@"Latitude"];
+    [post setValue:@"" forKey:@"Longitude"];
     
 
      NSError *writeError = nil;
@@ -190,8 +251,15 @@ float sumtotal=0.0;
           NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
                    {
               dispatch_async(dispatch_get_main_queue(), ^{
+                  if([res valueForKey:@"data"])
+                  {
+                      [self addsuborder:[[res valueForKey:@"data"] intValue]];
+                  }
+                  else
+                  {
                  
-                  //[uAppDelegate showMessage:@"An error occured" withTitle:@"Message"];
+                  [uAppDelegate showMessage:@"An error occured" withTitle:@"Message"];
+                  }
                  
               });
               
@@ -201,6 +269,65 @@ float sumtotal=0.0;
         
       }] resume];
     
+}
+
+-(void)addsuborder:(int)orderid
+{
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * cartarray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  
+    for (int i=0; i<cartarray.count; i++) {
+        
+        int itemid = [[[cartarray valueForKey:@"ItemId"] objectAtIndex:i] intValue];
+        int ItemPrice = [[[cartarray valueForKey:@"ItemPrice"] objectAtIndex:i] intValue];
+         int ItemQty = [[[cartarray valueForKey:@"ItemQty"] objectAtIndex:i] intValue];
+        NSString *ItemTitle = [[cartarray valueForKey:@"ItemTitle"] objectAtIndex:i];
+    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+    [post setValue:[NSNumber numberWithInt:orderid] forKey:@"OrderId"];
+    [post setValue:[NSNumber numberWithInt:itemid] forKey:@"ItemId"];
+    [post setValue:[NSNumber numberWithInt:ItemPrice] forKey:@"Price"];
+    [post setValue:[NSNumber numberWithInt:ItemQty] forKey:@"Qty"];
+    [post setValue:ItemTitle forKey:@"ItemName"];
+    [post setValue:[NSNumber numberWithInt:0] forKey:@"PriceId"];
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
+    NSMutableURLRequest *urlrequest=[[NSMutableURLRequest alloc]init];
+    NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"Order/AddSubOrder"];
+    [urlrequest setURL:[NSURL URLWithString:urlstring]];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlrequest setHTTPMethod:@"POST"];
+    [urlrequest setHTTPBody:jsonData];
+    [[[NSURLSession sharedSession] dataTaskWithRequest:urlrequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          NSError *error1;
+          if(data==nil)
+          {
+              return ;
+          }
+          NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
+          {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  if([res valueForKey:@"data"])
+                  {
+                      
+                  }
+                  else
+                  {
+                      
+                      [uAppDelegate showMessage:@"An error occured" withTitle:@"Message"];
+                  }
+                  
+              });
+              
+              
+          }
+          NSLog(@"webresponse=%@",res);
+          
+      }] resume];
+        
+    }
+
 }
 
 
@@ -225,13 +352,20 @@ float sumtotal=0.0;
     [datePicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
     self.datefield.inputView= datePicker;
     
-    timePicker =[[UIDatePicker alloc]init];
+   /* timePicker =[[UIDatePicker alloc]init];
     timePicker.datePickerMode=UIDatePickerModeTime;
     timePicker.hidden=NO;
     //timePicker.date=[NSDate date];
     [timePicker addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
-    self.time_field.inputView= timePicker;
+    self.time_field.inputView= timePicker;*/
     
+    timePicker =[[UIPickerView alloc]init];
+    pickerData = @[@"12PM-2PM", @"2PM-4PM", @"4PM-6PM", @"5PM-7PM", @"7PM-10PM"];
+    timePicker.tag=1;
+    // Connect data
+    self.timePicker.dataSource = self;
+    self.timePicker.delegate = self;
+    self.time_field.inputView=self.timePicker;
     
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
@@ -245,7 +379,44 @@ float sumtotal=0.0;
     
     
 }
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+    {   if (pickerView.tag == 1 ){
+    return [pickerData count];
+    }
+    else
+    {
+      return [self.areaArray count];
+    }
+}
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (pickerView.tag == 1 ){
+        return[pickerData objectAtIndex:row];
+    }
+    else
+    {
+        return [[self.areaArray objectAtIndex:row] valueForKey:@"AreaName"];
+    }
+   
+}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (pickerView.tag == 1 ){
+    self.time_field.text=[pickerData objectAtIndex:row];
+    self.time_field.tag=row+1;
+    }
+    else  if (pickerView.tag == 2 )
+    {
+    self.delivery_Area.text=[[self.areaArray objectAtIndex:row] valueForKey:@"AreaName"];
+    self.delivery_Area.tag=[[[self.areaArray objectAtIndex:row] valueForKey:@"AreaId"] intValue];
+    }
+}
 
+/*
 - (void)timeChanged:(id)sender
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -253,7 +424,7 @@ float sumtotal=0.0;
     NSString *currentTime = [dateFormatter stringFromDate:self.timePicker.date];
     NSLog(@"%@", currentTime);
     self.time_field.text=currentTime;
-}
+}*/
 -(void)LabelTitle:(id)sender
 {
     NSDateFormatter *dateFormat=[[NSDateFormatter alloc]init];
