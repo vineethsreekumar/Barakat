@@ -134,6 +134,7 @@ int activetag=1;
     NSString *emailString = [self.email_txtfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *mobileString = [self.mobile_txtfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [self.password_txtfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *confirmpassword = [self.confirm_password.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if(firstnameString.length == 0)
     {
         [uAppDelegate showMessage:@"Please enter First Name" withTitle:@"Message"];
@@ -166,6 +167,13 @@ int activetag=1;
     else  if(password.length == 0)
     {
         [uAppDelegate showMessage:@"Please enter Password" withTitle:@"Message"];
+        return;
+        
+        
+    }
+    else  if(![password isEqualToString:confirmpassword])
+    {
+        [uAppDelegate showMessage:@"wrong confirm password" withTitle:@"Message"];
         return;
         
         

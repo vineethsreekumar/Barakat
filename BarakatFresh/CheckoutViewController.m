@@ -50,10 +50,71 @@ float sumtotal=0.0;
         self.subtotal_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
 
     }
+    NSString *customerId = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"customerId"];
+    if(customerId.length>0)
+    {
+        self.nameview.hidden=TRUE;
+         self.emailview.hidden=TRUE;
+         self.mobileview.hidden=TRUE;
+    }
     self.discount_lbl.text=[NSString stringWithFormat:@"AED %d",voucherdiscount];
     self.total_lbl.text=[NSString stringWithFormat:@"AED %.2f",sumtotal-voucherdiscount];
+    self.password_textfield.delegate=self;
+    
+    indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0.0, 0.0, 100.0, 100.0);
+    indicator.center = self.view.center;
+    [self.view addSubview:indicator];
+    [indicator bringSubviewToFront:self.view];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
+
     // Do any additional setup after loading the view.
 }
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+    NSString *newString = [self.email_textfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if(newString.length==0)
+    {
+        return;
+    }
+    NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%sCheckUserNameExists?userName=%@",subURL,newString]];
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+    
+    //Specify method of request(Get or Post)
+    [theRequest setHTTPMethod:@"GET"];
+    
+    //Pass some default parameter(like content-type etc.)
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //Now pass your own parameter
+    
+    
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSError *theError = NULL;
+              
+              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+            
+              
+          });
+          
+          //  NSLog(@"Delete webresponse=%@",res);
+          
+          
+          
+          
+          
+      }] resume];
+    
+    
+}
+
 -(void)DoneButtonPressed{
     [self.coupontextfield resignFirstResponder];
     [self.vouchertextfield resignFirstResponder];
@@ -187,7 +248,14 @@ float sumtotal=0.0;
         
         return;
         
+    } else  if(self.accept_button.selected ==false)
+    {
+        [uAppDelegate showMessage:@"Please accept the terms and conditions" withTitle:@"Message"];
+        return;
+        
+        
     }
+     [indicator startAnimating];
    
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
     [post setValue:[NSNumber numberWithInt:(int)_time_field.tag] forKey:@"DeliveryTime"];
@@ -195,10 +263,25 @@ float sumtotal=0.0;
      [post setValue:[NSNumber numberWithInt:(int)self.delivery_Area.tag] forKey:@"DeliveryArea"];
      [post setValue:deliveryaddress forKey:@"DeliveryNote"];
      [post setValue:[NSNumber numberWithBool:YES] forKey:@"TermsandConditions"];
+    if(customerId.length>0)
+    {
+        NSString *Mobile = [[NSUserDefaults standardUserDefaults]
+                                stringForKey:@"Mobile"];
+        NSString *userName = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"userName"];
+        [post setValue:[NSNumber numberWithInt:[customerId intValue]] forKey:@"CustomerId"];
+        [post setValue:@"vineeth" forKey:@"CustomerName"];
+        [post setValue:Mobile forKey:@"Mobile"];
+        [post setValue:userName forKey:@"Email"];
+        
+    }
+    else
+    {
      [post setValue:[NSNumber numberWithInt:0] forKey:@"CustomerId"];
     [post setValue:customername forKey:@"CustomerName"];
      [post setValue:mobile forKey:@"Mobile"];
      [post setValue:email forKey:@"Email"];
+    }
      [post setValue:deliveryaddress forKey:@"DeliveryAddress"];
      [post setValue:@"" forKey:@"DeliveryLocation"];
      [post setValue:@"Dubai" forKey:@"DeliveryEmirate"];
@@ -253,7 +336,7 @@ float sumtotal=0.0;
               dispatch_async(dispatch_get_main_queue(), ^{
                   if([res valueForKey:@"data"])
                   {
-                      [self addsuborder:[[res valueForKey:@"data"] intValue]];
+                      [self addsuborder:[[res valueForKey:@"data"] intValue] orderreferenceid:[res valueForKey:@"data1"]] ;
                   }
                   else
                   {
@@ -271,7 +354,7 @@ float sumtotal=0.0;
     
 }
 
--(void)addsuborder:(int)orderid
+-(void)addsuborder:(int)orderid orderreferenceid:(NSString*)orderreferenceid
 {
     NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
     NSMutableArray * cartarray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -310,7 +393,10 @@ float sumtotal=0.0;
               dispatch_async(dispatch_get_main_queue(), ^{
                   if([res valueForKey:@"data"])
                   {
-                      
+                      if(i==cartarray.count-1)
+                      {
+                      [self gettransactionid:orderid orderreferenceid:orderreferenceid];
+                      }
                   }
                   else
                   {
@@ -327,6 +413,55 @@ float sumtotal=0.0;
       }] resume];
         
     }
+
+}
+-(void)gettransactionid:(int)orderid orderreferenceid:(NSString*)orderreferenceid
+{
+    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+    [post setValue:[NSString stringWithFormat:@"%d",orderid] forKey:@"OrderId"];
+    [post setValue:orderreferenceid forKey:@"OrderRef"];
+    [post setValue:[NSString stringWithFormat:@"%f",sumtotal] forKey:@"Amount"];
+   
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];
+    NSMutableURLRequest *urlrequest=[[NSMutableURLRequest alloc]init];
+    NSString *urlstring = [NSString stringWithFormat:@"%s%s",baseURL,"Order/PaymentRegistration"];
+    [urlrequest setURL:[NSURL URLWithString:urlstring]];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [urlrequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlrequest setHTTPMethod:@"POST"];
+    [urlrequest setHTTPBody:jsonData];
+    [[[NSURLSession sharedSession] dataTaskWithRequest:urlrequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          NSError *error1;
+          if(data==nil)
+          {
+              return ;
+          }
+          NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
+          {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  if([res valueForKey:@"data"])
+                  {
+                      WebViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"WebView"];
+                      ViewController.transactionid=[res valueForKey:@"data"];
+                      ViewController.orderid=[NSString stringWithFormat:@"%d",orderid];
+                      [self.navigationController pushViewController:ViewController animated:YES];
+                  }
+                  else
+                  {
+                      
+                      [uAppDelegate showMessage:@"An error occured" withTitle:@"Message"];
+                  }
+                   [indicator stopAnimating];
+              });
+              
+              
+          }
+          NSLog(@"webresponse=%@",res);
+          
+      }] resume];
+    
 
 }
 

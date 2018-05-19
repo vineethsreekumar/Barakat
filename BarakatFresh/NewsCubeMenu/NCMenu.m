@@ -50,7 +50,7 @@ static CGFloat const kScrollViewItemMarginWidth = 15.0f;
     // Setting ScrollView
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
  //   NCMenuItem *menuItem = menuItems[0];
-    _scrollView.contentSize = CGSizeMake(kScrollViewFirstWidth * 2 + (kScrollViewItemMarginWidth * (menuItemsArrayCount - 1)) + 120 * menuItemsArrayCount, frame.size.height);
+    _scrollView.contentSize = CGSizeMake(kScrollViewFirstWidth * 2 + (kScrollViewItemMarginWidth * (menuItemsArrayCount - 1)) + 90 * menuItemsArrayCount, frame.size.height);
     
     // Do not show scrollIndicator
     _scrollView.showsHorizontalScrollIndicator = NO;
@@ -70,7 +70,7 @@ static CGFloat const kScrollViewItemMarginWidth = 15.0f;
     int i = 0;
     for (NCMenuItem *menuItem in _menuArray) {
         menuItem.tag = 1000 + i;
-        menuItem.center = CGPointMake(120/2 + kScrollViewFirstWidth + kScrollViewItemMarginWidth * i + 120 * i, self.frame.size.height/2);
+        menuItem.center = CGPointMake(120/2 + kScrollViewFirstWidth + kScrollViewItemMarginWidth * i + 90 * i, self.frame.size.height/2);
         menuItem.delegate = self;
         [_scrollView addSubview:menuItem];
         

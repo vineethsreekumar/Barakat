@@ -153,17 +153,31 @@
               return ;
           }
           NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
-          if([[res valueForKey:@"data"] count]>0)
+          if([res valueForKey:@"data"])
           {
+              if([[res valueForKey:@"data"] count]>0)
+              {
           dispatch_async(dispatch_get_main_queue(), ^{
                   [indicator stopAnimating];
           NSDictionary *obj = [[res valueForKey:@"data"] objectAtIndex:0];
           
           [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"customerId"] forKey:@"customerId"];
           [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"userName"] forKey:@"userName"];
+              [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"Mobile"] forKey:@"Mobile"];
+              [[NSUserDefaults standardUserDefaults] setObject:[obj valueForKey:@"FirstName"] forKey:@"FirstName"];
           [[NSUserDefaults standardUserDefaults] synchronize];
               [self.navigationController popViewControllerAnimated:NO];
                     });
+              }else
+              {
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                      [indicator stopAnimating];
+                      
+                      [uAppDelegate showMessage:@"Login error" withTitle:@"Message"];
+                  });
+                  
+ 
+              }
           //  NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
           }
           else
@@ -198,6 +212,11 @@
 
 - (IBAction)signup_buttonClick:(id)sender {
     RegisterViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Register"];
+    [self.navigationController pushViewController:ViewController animated:YES];
+}
+
+- (IBAction)forgotbuttonClick:(id)sender {
+    ForgotViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Forgotview"];
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 

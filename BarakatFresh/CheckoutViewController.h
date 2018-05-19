@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CheckoutViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface CheckoutViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
 {
     NSArray *pickerData;
+     UIActivityIndicatorView *indicator;
 }
 @property (strong, nonatomic) IBOutlet UIButton *accept_button;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
@@ -55,5 +56,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *discount_lbl;
 
 @property (strong, nonatomic) IBOutlet UILabel *total_lbl;
+@property (strong, nonatomic) IBOutlet UIView *nameview;
+@property (strong, nonatomic) IBOutlet UIView *emailview;
+@property (strong, nonatomic) IBOutlet UIView *mobileview;
 
 @end

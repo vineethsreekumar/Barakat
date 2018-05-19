@@ -17,6 +17,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *signin_button;
 - (IBAction)signin_buttonClick:(id)sender;
 - (IBAction)signup_buttonClick:(id)sender;
+- (IBAction)forgotbuttonClick:(id)sender;
 
 
 

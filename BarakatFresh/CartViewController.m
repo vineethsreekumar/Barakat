@@ -33,12 +33,7 @@
     imageViewpass.contentMode = UIViewContentModeScaleAspectFit;
     [imageViewpass setImage:[UIImage imageNamed:@"Searchiconpage.png"]];
     [viewPassIntxtFieldDate addSubview:imageViewpass];
-    self.search_textfield.leftViewMode = UITextFieldViewModeAlways;
-    self.search_textfield.leftView = viewPassIntxtFieldDate;
-    [self.search_textfield addTarget:self
-                              action:@selector(textFieldDidChange:)
-                    forControlEvents:UIControlEventEditingChanged];
-    
+   
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
     NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
@@ -49,98 +44,7 @@
     
     // Do any additional setup after loading the view.
 }
--(void)loadfirstcollectionite
-{
-    NSLog(@"passcurrentarray=%@",self.passcurrentarray);
-    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%@&&LevelId=1",[[self.passcurrentarray valueForKey:@"CategoryId"] stringValue]]];
-    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
-    
-    //Specify method of request(Get or Post)
-    [theRequest setHTTPMethod:@"GET"];
-    
-    //Pass some default parameter(like content-type etc.)
-    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
-    
-    //Now pass your own parameter
-    
-    
-    
-    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
-      {
-          
-          
-          dispatch_async(dispatch_get_main_queue(), ^{
-              NSError *theError = NULL;
-              
-              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-              NSLog(@"url to send request= %@",theURL);
-              NSLog(@"menu detail response%@",dataResponse);
-              self.categoryContentarray =[[NSMutableArray alloc]init];
-              [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
-              [self.collectionview reloadData];
-              // [self loadcollectionData:dataResponse];
-              
-          });
-          
-      }] resume];
-    
-    
-}
 
--(void)DoneButtonPressed{
-    [self.search_textfield resignFirstResponder];
-}
-
-
-- (void)textFieldDidChange:(UITextField *)textField {
-    
-    NSString *newString = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/GetSerachItem?searchValue=%@",newString]];
-    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
-    
-    //Specify method of request(Get or Post)
-    [theRequest setHTTPMethod:@"GET"];
-    
-    //Pass some default parameter(like content-type etc.)
-    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
-    
-    //Now pass your own parameter
-    
-    
-    
-    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
-      {
-          
-          
-          dispatch_async(dispatch_get_main_queue(), ^{
-              NSError *theError = NULL;
-              
-              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-              NSLog(@"url to send request= %@",theURL);
-              NSLog(@"Search response%@",dataResponse);
-              self.categoryContentarray =[[NSMutableArray alloc]init];
-              if([[dataResponse valueForKey:@"data"] isKindOfClass:[NSArray class]] && [[dataResponse valueForKey:@"data"] count] >0)
-              {
-                  [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"] ];
-                  [self.collectionview reloadData];
-              }
-              [self.collectionview reloadData];
-              
-          });
-          
-          //  NSLog(@"Delete webresponse=%@",res);
-          
-          
-          
-          
-          
-      }] resume];
-    
-    
-}
 
 
 
@@ -254,7 +158,7 @@
     NSIndexPath *indexPath = [self.collectionview indexPathForItemAtPoint: currentTouchPosition];
     UICollectionViewCell *cell = [self.collectionview cellForItemAtIndexPath:indexPath];
     UILabel *value = (UILabel *)[cell viewWithTag:4];
-    if(value.text.intValue>0)
+    if(value.text.intValue>1)
     {
         value.text= [NSString stringWithFormat:@"%d",value.text.intValue-1];
         

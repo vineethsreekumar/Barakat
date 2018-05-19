@@ -52,7 +52,8 @@
    
     NSString *newString = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/GetSearchItem?searchValue=%@",newString]];
+   // NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/GetSearchItem?searchValue=%@",newString]];
+     NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%sHome/GetSearchItem?searchValue=%@",baseURL,newString]];
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
     
     //Specify method of request(Get or Post)
@@ -124,7 +125,7 @@
     price.text =[NSString stringWithFormat:@"Price: %@ AED", [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row]];
     
     UILabel *weight = (UILabel *)[cell viewWithTag:9];
-    weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row]];
+    weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"WeightInfo"]objectAtIndex:indexPath.row]];
     
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
@@ -178,7 +179,7 @@
     NSIndexPath *indexPath = [self.collectionview indexPathForItemAtPoint: currentTouchPosition];
     UICollectionViewCell *cell = [self.collectionview cellForItemAtIndexPath:indexPath];
     UILabel *value = (UILabel *)[cell viewWithTag:4];
-    if(value.text.intValue>0)
+    if(value.text.intValue>1)
     {
         value.text= [NSString stringWithFormat:@"%d",value.text.intValue-1];
     }

@@ -17,7 +17,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-     
+    // [[UILabel appearance] setFont:[UIFont fontWithName:@"bree-serif.regular" size:54.0]];
    //self.cartcount=0;
        // Override point for customization after application launch.
     return YES;

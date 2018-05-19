@@ -35,7 +35,7 @@ static int const kHeaderSectionTag = 6900;
 -(void)getContactService
 {
     
-    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadNavigationCategory"]];
+    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"%sHome/LoadNavigationCategory",baseURL]];
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
     
     //Specify method of request(Get or Post)

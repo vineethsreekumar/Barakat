@@ -46,7 +46,8 @@ NSCache *imageCache;
 -(void)getContentService
 {
     
-        NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadNavigationCategory"]];
+        //NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadNavigationCategory"]];
+      NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%s%s",baseURL,"Home/LoadNavigationCategory"]];
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
     
     //Specify method of request(Get or Post)
@@ -69,7 +70,7 @@ NSCache *imageCache;
               
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
               NSLog(@"url to send request= %@",theURL);
-            //  NSLog(@"navigation response%@",dataResponse);
+             // NSLog(@"navigation response%@",dataResponse);
               self.innerdatarray = [[NSMutableArray alloc]init];
               self.innerdatarray  = [dataResponse valueForKey:@"data"];
               NSMutableArray *groupname = [ self.innerdatarray  valueForKey:@"groupName"];
@@ -180,7 +181,7 @@ NSCache *imageCache;
 }
 -(void)loadfirstcollectionite
 {
-      NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=12&&LevelId=0"]];
+      NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"%s%s",baseURL,"Home/LoadItemGroupBasedList?groupId=12&&LevelId=0"]];
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
     
     //Specify method of request(Get or Post)
@@ -221,7 +222,7 @@ NSCache *imageCache;
 -(void)newsCubeMenu:(NCMenu *)menu didSelectIndex:(NSInteger)selectedIndex{
   
     int groupid =  [[ [self.innerdatarray objectAtIndex:selectedIndex]  valueForKey:@"groupId"] intValue];
-    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%d&&LevelId=0",groupid]];
+    NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"%sHome/LoadItemGroupBasedList?groupId=%d&&LevelId=0",baseURL,groupid]];
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
     
     //Specify method of request(Get or Post)
@@ -271,15 +272,28 @@ NSCache *imageCache;
     [self.collectionview reloadData];
     
 }
+/*
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat picDimension = self.view.frame.size.width / 2.0f;
     return CGSizeMake(picDimension, picDimension+100);
     
- }
+ }*/
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat picDimension = self.view.frame.size.width ;
+    return CGSizeMake(picDimension, 150);
+    
+}
+
+
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.categoryContentarray.count;
+}
+- (IBAction)history_buttonClick:(id)sender {
+    HistoryViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Historyview"];
+    [self.navigationController pushViewController:ViewController animated:YES];
 }
 
 
@@ -292,6 +306,9 @@ NSCache *imageCache;
     
     UILabel *price = (UILabel *)[cell viewWithTag:2];
     price.text =[NSString stringWithFormat:@"Price: %@ AED", [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row]];
+    
+    UILabel *origin = (UILabel *)[cell viewWithTag:12];
+    origin.text =[NSString stringWithFormat:@"Origin: %@", [[self.categoryContentarray valueForKey:@"Origin"]objectAtIndex:indexPath.row]];
     
     UILabel *weight = (UILabel *)[cell viewWithTag:9];
     weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row]];
@@ -494,7 +511,7 @@ NSCache *imageCache;
     NSIndexPath *indexPath = [self.collectionview indexPathForItemAtPoint: currentTouchPosition];
     UICollectionViewCell *cell = [self.collectionview cellForItemAtIndexPath:indexPath];
     UILabel *value = (UILabel *)[cell viewWithTag:4];
-    if(value.text.intValue>0)
+    if(value.text.intValue>1)
     {
         value.text= [NSString stringWithFormat:@"%d",value.text.intValue-1];
     }
@@ -577,7 +594,8 @@ NSCache *imageCache;
 - (void)menuMovedToItem:(UIButton *)item atIndex:(int)index {
     
  int groupid =  [[ [self.innerdatarray objectAtIndex:index]  valueForKey:@"groupId"] intValue];
-        NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%d&&LevelId=0",groupid]];
+       // NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%d&&LevelId=0",groupid]];
+     NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%sHome/LoadItemGroupBasedList?groupId=%d&&LevelId=0",baseURL,groupid]];
         NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
         
         //Specify method of request(Get or Post)
@@ -632,8 +650,8 @@ NSCache *imageCache;
 // KASlideshow
 _slideshow.datasource = self;
 _slideshow.delegate = self;
-[_slideshow setDelay:1]; // Delay between transitions
-[_slideshow setTransitionDuration:1]; // Transition duration
+[_slideshow setDelay:4]; // Delay between transitions
+[_slideshow setTransitionDuration:2]; // Transition duration
 [_slideshow setTransitionType:KASlideShowTransitionSlideHorizontal]; // Choose a transition type (fade or slide)
 [_slideshow setImagesContentMode:UIViewContentModeScaleAspectFill]; // Choose a content mode for images to display
 [_slideshow addGesture:KASlideShowGestureTap]; // Gesture t
@@ -819,7 +837,6 @@ _slideshow.delegate = self;
                                             handler:^void (UIAlertAction *action) {
                                                 NSLog(@"Clicked Cancel");
                                             }]];
-    
     [self presentViewController:alert animated:YES completion:nil];
 }
 - (IBAction)searchview_buttonClick:(id)sender {
@@ -827,7 +844,15 @@ _slideshow.delegate = self;
     [self.navigationController pushViewController:ViewController animated:YES];
 
 }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
+{
+    
+    ItemDetailViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemDetailView"];
+    ViewController.passarray=[[NSMutableDictionary alloc]init];
+    ViewController.passarray=[self.categoryContentarray objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:ViewController animated:YES];
+}
 - (IBAction)myaccount_buttonClick:(id)sender {
    // [self customActionsheet];
     NSString *customerId = [[NSUserDefaults standardUserDefaults]
