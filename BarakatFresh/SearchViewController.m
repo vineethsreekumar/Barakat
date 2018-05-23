@@ -275,4 +275,15 @@
 }
 */
 
+- (IBAction)home_buttonClick:(id)sender {
+}
+
+- (IBAction)cart_buttonClick:(id)sender {
+}
+
+- (IBAction)myccount_buttonClick:(id)sender {
+}
+
+- (IBAction)more_buttonClick:(id)sender {
+}
 @end

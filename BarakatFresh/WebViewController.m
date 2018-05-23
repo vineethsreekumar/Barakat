@@ -40,12 +40,21 @@ NSData* htmlData = [data dataUsingEncoding:NSUTF8StringEncoding];
 }
 -(void)updatetransaction_service
 {
+    NSString *userName = [[NSUserDefaults standardUserDefaults]
+                             stringForKey:@"userName"];
+    NSString *Mobile = [[NSUserDefaults standardUserDefaults]
+                          stringForKey:@"Mobile"];
+    NSString *FirstName = [[NSUserDefaults standardUserDefaults]
+                        stringForKey:@"FirstName"];
     NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
     NSMutableArray * cartarray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
     [post setValue:self.orderid forKey:@"OrderId"];
     [post setValue:self.transactionid forKey:@"TransactionId"];
+    [post setValue:userName forKey:@"Email"];
+    [post setValue:Mobile forKey:@"Mobile"];
+    [post setValue:FirstName forKey:@"CustomerName"];
     
     NSError *writeError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:post options:kNilOptions error:&writeError];

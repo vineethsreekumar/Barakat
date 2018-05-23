@@ -13,4 +13,9 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
 @property (strong, nonatomic) NSMutableArray *categoryContentarray;
 @property (strong, nonatomic) NSMutableArray *tempcartarray;
+- (IBAction)home_buttonClick:(id)sender;
+- (IBAction)cart_buttonClick:(id)sender;
+- (IBAction)myccount_buttonClick:(id)sender;
+- (IBAction)more_buttonClick:(id)sender;
+
 @end

@@ -77,9 +77,16 @@
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
               NSLog(@"dataResponse webresponse=%@",dataResponse);
               NSMutableDictionary *dict =[[dataResponse valueForKey:@"data"] objectAtIndex:0];
-              self.desc_txtview.text=[dict valueForKey:@"Description"];
-               self.nutrition_txtview.text=[dict valueForKey:@"Benefits"];
-              self.storingins_txtview.text=[dict valueForKey:@"Usage"];
+             // self.desc_txtview.text=[dict valueForKey:@"Description"];
+              NSAttributedString *attributedString = [[NSAttributedString alloc]
+                                                      initWithData: [[dict valueForKey:@"Description"] dataUsingEncoding:NSUnicodeStringEncoding]
+                                                      options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                                                      documentAttributes: nil
+                                                      error: nil
+                                                      ];
+              self.desc_txtview.attributedText = attributedString;
+              self.nutrition_txtview.attributedText=[self returnattributtedstring:[dict valueForKey:@"Bebefits"]];
+              self.storingins_txtview.attributedText=[self returnattributtedstring:[dict valueForKey:@"Usage"]];;
               
           });
           
@@ -93,6 +100,16 @@
     
     
 
+}
+-(NSAttributedString*)returnattributtedstring:(NSString*)data
+{
+    NSAttributedString *attributedString = [[NSAttributedString alloc]
+                                            initWithData: [data dataUsingEncoding:NSUnicodeStringEncoding]
+                                            options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                                            documentAttributes: nil
+                                            error: nil
+                                            ];
+    return attributedString;
 }
 
 - (void)didReceiveMemoryWarning {

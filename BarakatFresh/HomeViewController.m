@@ -26,6 +26,7 @@ NSCache *imageCache;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _hasRun=true;
     [self KAslideShow];
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
@@ -33,7 +34,6 @@ NSCache *imageCache;
     self.cart_lbl.layer.masksToBounds = YES;
 
     [self getContentService];
-    [self setUpNewsCubeMenu];
     
    // [self createcategory];
    // [self Loadtopimages];
@@ -116,17 +116,21 @@ NSCache *imageCache;
     NSArray *anArray = [NSArray arrayWithObjects:
                         [UIImage imageNamed:@"freshfruiticon.png"],
                         [UIImage imageNamed:@"freshvegicon.png"],
-                        [UIImage imageNamed:@"icecreamicon.png"],
-                        [UIImage imageNamed:@"freshjuiceicon.png"],
                         [UIImage imageNamed:@"cutfruitsvegicon.png"],
+                        [UIImage imageNamed:@"freshjuiceicon.png"],
+
+                        [UIImage imageNamed:@"icecreamicon.png"],
+                        
                         [UIImage imageNamed:@"soupsicon.png"],
                         nil];
     NSArray *selectedArray = [NSArray arrayWithObjects:
                         [UIImage imageNamed:@"freshfruiticon selected.png"],
                         [UIImage imageNamed:@"freshvegicon selected.png"],
-                        [UIImage imageNamed:@"icecreamiconselected.png"],
-                        [UIImage imageNamed:@"freshjuiceicon selected.png"],
                         [UIImage imageNamed:@"cutfruitsvegiconselected.png"],
+                        [UIImage imageNamed:@"freshjuiceicon selected.png"],
+                        [UIImage imageNamed:@"icecreamiconselected.png"],
+                       
+                        
                         [UIImage imageNamed:@"soupsiconselected.png"],
                         nil];
  //   UIImage *nc_button_baseImage = [UIImage imageNamed:@"Listicon.png"];
@@ -179,6 +183,11 @@ NSCache *imageCache;
         
     }];
 }
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+        return CGSizeMake(self.view.frame.size.width, 250);
+}
+
 -(void)loadfirstcollectionite
 {
       NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"%s%s",baseURL,"Home/LoadItemGroupBasedList?groupId=12&&LevelId=0"]];
@@ -210,6 +219,11 @@ NSCache *imageCache;
            //   NSLog(@"navigation response%@",dataResponse);
               self.categoryContentarray =[[NSMutableArray alloc]init];
               [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
+              self.indexArray = [[NSMutableArray alloc]init];
+              for (int i =0; i<100; i++) {
+                  [self.indexArray addObject:[NSNumber numberWithInt:0]];
+              }
+
               [self.collectionview reloadData];
               // [self loadcollectionData:dataResponse];
               
@@ -248,7 +262,13 @@ NSCache *imageCache;
            //   NSLog(@"navigation response%@",dataResponse);
               self.categoryContentarray =[[NSMutableArray alloc]init];
               [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
+              self.indexArray = [[NSMutableArray alloc]init];
+              for (int i =0; i<100; i++) {
+                  [self.indexArray addObject:[NSNumber numberWithInt:0]];
+              }
+              
               [self.collectionview reloadData];
+              
               // [self loadcollectionData:dataResponse];
               
           });
@@ -286,7 +306,30 @@ NSCache *imageCache;
     
 }
 
-
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        
+        UICollectionReusableView *reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
+        
+        if (reusableview==nil) {
+            reusableview=[[UICollectionReusableView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        }
+       if(_hasRun==true)
+       {
+        
+        _slideshow =  [reusableview viewWithTag:200];
+        [self KAslideShow];
+        _menu_view =  [reusableview viewWithTag:201];
+         _menuScrollView =  [reusableview viewWithTag:202];
+        _menu_underline =  [reusableview viewWithTag:203];
+        [self setUpNewsCubeMenu];
+       }
+        _hasRun=false;
+        return reusableview;
+    }
+    return nil;
+}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.categoryContentarray.count;
@@ -296,11 +339,17 @@ NSCache *imageCache;
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identifier = @"Cell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    
     UILabel *title = (UILabel *)[cell viewWithTag:1];
     title.text = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
     
@@ -313,52 +362,43 @@ NSCache *imageCache;
     UILabel *weight = (UILabel *)[cell viewWithTag:9];
     weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row]];
 
+    UITextField *newweight = (UITextField *)[cell viewWithTag:13];
+    newweight.accessibilityValue = [NSString stringWithFormat:@"%ld", (long)indexPath.row];
+    UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down-arrow.png"]];
+    arrow.frame = CGRectMake(0.0, 0.0, 20, 15);
+    arrow.contentMode = UIViewContentModeScaleAspectFit;
+    newweight.delegate=self;
+    newweight.rightView = arrow;
+    newweight.rightViewMode = UITextFieldViewModeAlways;
+    
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-   // NSLog(@"contentt=%@",self.categoryContentarray);
-   /*   NSURL *url = [NSURL URLWithString:[[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // retrive image on global queue
-        UIImage * img = [UIImage imageWithData:[NSData dataWithContentsOfURL:     url]];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-          
-            // assign cell image on main thread
-            recipeImageView.image = img;
-        });
-    });*/
     
-  
-    NSString *photoString = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row] ;
-  /*  UIImage *image = [imageCache objectForKey:photoString];
-    if (image)
+   
+    NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:indexPath.row];
+    int value = [[self.indexArray objectAtIndex:indexPath.row] intValue];
+    if(temparray.count>0)
     {
-        recipeImageView.image=nil;
+        newweight.text=[[temparray objectAtIndex:value] valueForKey:@"ItemAvailable"];
     }
     else
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-            
-            NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:url]];
-            
-            if(image)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                   
-                    recipeImageView.image=image;
-                });
-                
-                [imageCache setObject:image forKey:photoString];
-            }
-            else
-                recipeImageView.image=nil;
-            
-        });
-    }*/
-   recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
+         newweight.text=@"not available";
+    }
+    
+       UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    pickerToolbar.barStyle = UIBarStyleBlackOpaque;
+    [pickerToolbar sizeToFit];
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(categoryDoneButtonPressed:)];
+    doneBtn.tag=indexPath.row;
+    [pickerToolbar setItems:@[flexSpace, flexSpace, doneBtn] animated:YES];
+    newweight.inputAccessoryView=pickerToolbar;
+    
+    NSString *photoString = [[temparray valueForKey:@"ImageFile"]objectAtIndex:[[self.indexArray objectAtIndex:indexPath.row] intValue]] ;
+    recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
    
     dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
@@ -411,6 +451,94 @@ NSCache *imageCache;
     
     return cell;
 }
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activetextfield=textField;
+    UICollectionViewCell *cell;
+    UIView *superview = textField.superview;
+    
+    while (superview) {
+        if([superview isKindOfClass:[UICollectionViewCell class]]) {
+            cell = (UICollectionViewCell *)superview;
+            break;
+        }
+        superview = superview.superview;
+    }
+
+    
+    self.activeimageview=(UIImageView *)[cell viewWithTag:100];
+    NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:[textField.accessibilityValue intValue]];
+    self.dataArray = [[NSMutableArray alloc] init];
+    // Add some data for demo purposes.
+    
+    [self.dataArray addObjectsFromArray:temparray];
+
+    UIPickerView *categoryPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+    [categoryPickerView setDataSource: self];
+    [categoryPickerView setDelegate: self];
+    categoryPickerView.showsSelectionIndicator = YES;
+    categoryPickerView.tag=[textField.accessibilityValue intValue];
+    
+    textField.inputView = categoryPickerView;
+    
+
+    
+
+
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
+    // Handle the selection
+    
+ /*   NSLog(@"%@",[self.dataArray objectAtIndex:row]);
+    self.activetextfield.text=[[self.dataArray objectAtIndex:row] valueForKey:@"ItemAvailable"];
+    self.activetextfield.accessibilityValue=[NSString stringWithFormat:@"%ld", (long)row];
+  
+    NSData* photoData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.dataArray objectAtIndex:row] valueForKey:@"ImageFile"]]];
+    UIImage* image = [UIImage imageWithData:photoData];
+    self.activeimageview.image =image;
+    pickerView.tag = row;*/
+    NSLog(@"pickertag=%ld",(long)pickerView.tag);
+    [self.indexArray replaceObjectAtIndex:pickerView.tag withObject:[NSNumber numberWithInt:(int)row]];
+  //  [self.collectionview reloadData];
+    [self.collectionview performBatchUpdates:^{
+    [self.collectionview reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:pickerView.tag inSection:0]]];
+        } completion:nil];
+
+  //  self.categorytextfield.text = [NSString stringWithFormat:@"%@",[self.dataArray objectAtIndex:row]];
+    
+    // selectedCategory = [NSString stringWithFormat:@"%@",[dataArray objectAtIndex:row]];
+}
+// tell the picker how many rows are available for a given component
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    NSLog(@"datacount%lu",(unsigned long)[self.dataArray count]);
+    return [self.dataArray count];
+}
+
+// tell the picker how many components it will have
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+// tell the picker the title for a given component
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [[self.dataArray objectAtIndex:row] valueForKey:@"ItemAvailable"];
+  
+
+    
+}
+
+// tell the picker the width of each row for a given component
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    int sectionWidth = 300;
+    
+    return sectionWidth;
+}
+
+-(void)categoryDoneButtonPressed:(id)sender{
+    [self.view endEditing:true];
+  
+}
+
 - (void)AddtoCardButtonClick:(id)sender event:(id)event{
     NSSet *touches = [event allTouches];
     
@@ -622,6 +750,7 @@ NSCache *imageCache;
                   self.categoryContentarray =[[NSMutableArray alloc]init];
                   [self.categoryContentarray addObjectsFromArray:[dataResponse valueForKey:@"data"]];
                   [self.collectionview reloadData];
+                  [self.collectionview reloadData];
                  // [self loadcollectionData:dataResponse];
               
               });
@@ -820,10 +949,17 @@ _slideshow.delegate = self;
                                         message:userName
                                  preferredStyle:UIAlertControllerStyleAlert];
  
-    [alert addAction:[UIAlertAction actionWithTitle:@"Profile"
+   /* [alert addAction:[UIAlertAction actionWithTitle:@"Profile"
                                               style:UIAlertActionStyleDefault
                                             handler:^void (UIAlertAction *action) {
                                                 NSLog(@"Clicked Profile");
+                                            }]];*/
+    [alert addAction:[UIAlertAction actionWithTitle:@"Purchase History"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked history");
+                                                HistoryViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Historyview"];
+                                                [self.navigationController pushViewController:ViewController animated:YES];
                                             }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Logout"
                                               style:UIAlertActionStyleDefault
@@ -934,5 +1070,40 @@ _slideshow.delegate = self;
 
     CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
     [self.navigationController pushViewController:ViewController animated:YES];
+}
+- (IBAction)more_buttonClick:(id)sender {
+    
+    UIAlertController *alert =
+    [UIAlertController alertControllerWithTitle:nil
+                                        message:nil
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Policies"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked Profile");
+                                                privacyViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PrivacyView"];
+                                                [self.navigationController pushViewController:ViewController animated:YES];
+                                            }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"About Us"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                AboutViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AboutView"];
+                                                [self.navigationController pushViewController:ViewController animated:YES];
+                                                //  NSLog(@"Clicked Purchase History");
+                                                
+                                            }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Contact Us"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked Cancel");
+                                            }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked Cancel");
+                                            }]];
+    [self presentViewController:alert animated:YES completion:nil];
+
 }
 @end

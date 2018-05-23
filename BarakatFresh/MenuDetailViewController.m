@@ -153,6 +153,15 @@
     [addcart addTarget:self action:@selector(AddtoCardButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
 }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+
+{
+    
+    ItemDetailViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemDetailView"];
+    ViewController.passarray=[[NSMutableDictionary alloc]init];
+    ViewController.passarray=[self.categoryContentarray objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:ViewController animated:YES];
+}
 - (void)AddtoCardButtonClick:(id)sender event:(id)event{
     NSSet *touches = [event allTouches];
     

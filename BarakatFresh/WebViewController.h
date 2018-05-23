@@ -12,5 +12,8 @@
 @property (strong, nonatomic) IBOutlet UIWebView *webview;
 @property (strong, nonatomic) NSString *transactionid;
 @property (strong, nonatomic) NSString *orderid;
+@property (strong, nonatomic) NSString *email;
+@property (strong, nonatomic) NSString *Mobile;
+@property (strong, nonatomic) NSString *CustomerName;
 
 @end
