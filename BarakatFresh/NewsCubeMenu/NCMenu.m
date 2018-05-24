@@ -70,8 +70,11 @@ static CGFloat const kScrollViewItemMarginWidth = 15.0f;
     int i = 0;
     for (NCMenuItem *menuItem in _menuArray) {
         menuItem.tag = 1000 + i;
-        menuItem.center = CGPointMake(120/2 + kScrollViewFirstWidth + kScrollViewItemMarginWidth * i + 90 * i, self.frame.size.height/2);
+        menuItem.center = CGPointMake(40 + kScrollViewFirstWidth + kScrollViewItemMarginWidth * i + 90 * i, self.frame.size.height/2);
         menuItem.delegate = self;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(menuItem.frame.origin.x+50, self.frame.size.height/2, 1, 20)];
+        imageView.backgroundColor=[UIColor lightGrayColor];
+        [_scrollView addSubview:imageView];
         [_scrollView addSubview:menuItem];
         
         i++;

@@ -85,8 +85,33 @@
                                                       error: nil
                                                       ];
               self.desc_txtview.attributedText = attributedString;
+              self.desc_txtview.delegate=self;
+            /*  CGRect frame = self.desc_txtview.frame;
+              
+              frame.size = self.desc_txtview.contentSize;
+              
+              self.desc_txtview.frame = frame;
+              
+              [self.desc_txtview sizeThatFits:CGSizeMake(self.desc_txtview.frame.size.width, CGFLOAT_MAX)];*/
+              CGSize sizeThatFitsTextView = [self.desc_txtview sizeThatFits:CGSizeMake(self.desc_txtview.frame.size.width, MAXFLOAT)];
+              
+              self.descheightconstraint.constant = sizeThatFitsTextView.height;
+
               self.nutrition_txtview.attributedText=[self returnattributtedstring:[dict valueForKey:@"Bebefits"]];
+              
+              CGSize sizeThatFitsTextView1 = [self.nutrition_txtview sizeThatFits:CGSizeMake(self.nutrition_txtview.frame.size.width, MAXFLOAT)];
+              
+              self.benifitsheightconstraint.constant = sizeThatFitsTextView1.height;
+              
+              
               self.storingins_txtview.attributedText=[self returnattributtedstring:[dict valueForKey:@"Usage"]];;
+              
+              
+              CGSize sizeThatFitsTextView2 = [self.storingins_txtview sizeThatFits:CGSizeMake(self.storingins_txtview.frame.size.width, MAXFLOAT)];
+              
+              self.useheightconstraint.constant = sizeThatFitsTextView2.height;
+
+
               
           });
           
@@ -101,6 +126,21 @@
     
 
 }
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    // [self.scrollview setContentSize:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+1500)];
+}
+- (void)textViewDidChange:(UITextView *)txtView{
+    float height = txtView.contentSize.height;
+    [UITextView beginAnimations:nil context:nil];
+    [UITextView setAnimationDuration:0.5];
+    
+    CGRect frame = txtView.frame;
+    frame.size.height = height + 10.0; //Give it some padding
+    txtView.frame = frame;
+    [UITextView commitAnimations];
+}
+
 -(NSAttributedString*)returnattributtedstring:(NSString*)data
 {
     NSAttributedString *attributedString = [[NSAttributedString alloc]

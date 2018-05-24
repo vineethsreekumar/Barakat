@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ItemDetailViewController : UIViewController
+@interface ItemDetailViewController : UIViewController<UITextViewDelegate>
 @property (nonatomic,strong) NSMutableDictionary *passarray;
 
 @property (strong, nonatomic) IBOutlet UIImageView *itemimage;
@@ -23,5 +23,9 @@
 - (IBAction)minus_buttonClick:(id)sender;
 - (IBAction)plus_buttonClick:(id)sender;
 - (IBAction)Addtocart_buttonClick:(id)sender;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *descheightconstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *benifitsheightconstraint;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollview;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *useheightconstraint;
 
 @end

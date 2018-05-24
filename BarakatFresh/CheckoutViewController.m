@@ -394,12 +394,15 @@ float sumtotal=0.0;
         
         int itemid = [[[cartarray valueForKey:@"ItemId"] objectAtIndex:i] intValue];
         int ItemPrice = [[[cartarray valueForKey:@"ItemPrice"] objectAtIndex:i] intValue];
+        int ItemPriceId = [[[cartarray valueForKey:@"ItemPriceId"] objectAtIndex:i] intValue];
+
          int ItemQty = [[[cartarray valueForKey:@"ItemQty"] objectAtIndex:i] intValue];
         NSString *ItemTitle = [[cartarray valueForKey:@"ItemTitle"] objectAtIndex:i];
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
     [post setValue:[NSNumber numberWithInt:orderid] forKey:@"OrderId"];
     [post setValue:[NSNumber numberWithInt:itemid] forKey:@"ItemId"];
     [post setValue:[NSNumber numberWithInt:ItemPrice] forKey:@"Price"];
+    [post setValue:[NSNumber numberWithInt:ItemPriceId] forKey:@"PriceId"];
     [post setValue:[NSNumber numberWithInt:ItemQty] forKey:@"Qty"];
     [post setValue:ItemTitle forKey:@"ItemName"];
     [post setValue:[NSNumber numberWithInt:0] forKey:@"PriceId"];

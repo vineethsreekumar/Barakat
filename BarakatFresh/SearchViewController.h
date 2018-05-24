@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>
+@interface SearchViewController : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITextField *search_textfield;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
 @property (strong, nonatomic) NSMutableArray *categoryContentarray;
 @property (strong, nonatomic) NSMutableArray *tempcartarray;
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) NSMutableArray *indexArray;
 - (IBAction)home_buttonClick:(id)sender;
 - (IBAction)cart_buttonClick:(id)sender;
 - (IBAction)myccount_buttonClick:(id)sender;

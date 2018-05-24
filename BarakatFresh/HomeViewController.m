@@ -353,14 +353,12 @@ NSCache *imageCache;
     UILabel *title = (UILabel *)[cell viewWithTag:1];
     title.text = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
     
-    UILabel *price = (UILabel *)[cell viewWithTag:2];
-    price.text =[NSString stringWithFormat:@"Price: %@ AED", [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row]];
+    
     
     UILabel *origin = (UILabel *)[cell viewWithTag:12];
     origin.text =[NSString stringWithFormat:@"Origin: %@", [[self.categoryContentarray valueForKey:@"Origin"]objectAtIndex:indexPath.row]];
     
-    UILabel *weight = (UILabel *)[cell viewWithTag:9];
-    weight.text =[NSString stringWithFormat:@"/ %@", [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row]];
+   
 
     UITextField *newweight = (UITextField *)[cell viewWithTag:13];
     newweight.accessibilityValue = [NSString stringWithFormat:@"%ld", (long)indexPath.row];
@@ -386,6 +384,14 @@ NSCache *imageCache;
          newweight.text=@"not available";
     }
     
+    
+    UILabel *weight = (UILabel *)[cell viewWithTag:9];
+    weight.text =[NSString stringWithFormat:@"/ %@", [[temparray objectAtIndex:value] valueForKey:@"ItemAvailable"]];
+    
+    
+    UILabel *price = (UILabel *)[cell viewWithTag:2];
+    price.text =[NSString stringWithFormat:@"Price: %@ AED", [[temparray valueForKey:@"Price"]objectAtIndex:value]];
+    
        UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
     [pickerToolbar sizeToFit];
@@ -397,7 +403,7 @@ NSCache *imageCache;
     [pickerToolbar setItems:@[flexSpace, flexSpace, doneBtn] animated:YES];
     newweight.inputAccessoryView=pickerToolbar;
     
-    NSString *photoString = [[temparray valueForKey:@"ImageFile"]objectAtIndex:[[self.indexArray objectAtIndex:indexPath.row] intValue]] ;
+    NSString *photoString = [[temparray valueForKey:@"ImageFile"]objectAtIndex:value] ;
     recipeImageView.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
    
@@ -550,6 +556,9 @@ NSCache *imageCache;
     UICollectionViewCell *cell = [self.collectionview cellForItemAtIndexPath:indexPath];
     UILabel *cartlbl = (UILabel *)[cell viewWithTag:4];
 
+    NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:indexPath.row];
+    int value = [[self.indexArray objectAtIndex:indexPath.row] intValue];
+    
    // [indicator startAnimating];
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
     NSString *itemid = [[self.categoryContentarray valueForKey:@"Id"]objectAtIndex:indexPath.row];
@@ -557,17 +566,19 @@ NSCache *imageCache;
 
     NSString *ItemTitle = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
 
-    NSString *ItemPrice = [[self.categoryContentarray valueForKey:@"Price"]objectAtIndex:indexPath.row];
+    NSString *ItemPrice = [[temparray valueForKey:@"Price"]objectAtIndex:value];
 
-    NSString *ItemImage = [[self.categoryContentarray valueForKey:@"Image"]objectAtIndex:indexPath.row];
+    NSString *ItemImage = [[temparray valueForKey:@"ImageFile"]objectAtIndex:value];
 
-    NSString *ItemUnit = [[self.categoryContentarray valueForKey:@"Unit"]objectAtIndex:indexPath.row];
+    NSString *ItemUnit = [[temparray valueForKey:@"stringWithFormat"]objectAtIndex:value];
+    NSString *priceid = [[temparray valueForKey:@"PriceId"]objectAtIndex:value];
     NSString *quantity = cartlbl.text;
 
     [post setValue:itemid forKey:@"ItemId"];
     [post setValue:ItemTypeId forKey:@"ItemTypeId"];
     [post setValue:ItemTitle forKey:@"ItemTitle"];
     [post setValue:ItemPrice forKey:@"ItemPrice"];
+    [post setValue:priceid forKey:@"ItemPriceId"];
     [post setValue:ItemImage forKey:@"ItemImage"];
     [post setValue:ItemUnit forKey:@"ItemUnit"];
      [post setValue:quantity forKey:@"ItemQty"];

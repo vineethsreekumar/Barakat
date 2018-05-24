@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MenuDetailViewController : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>
+@interface MenuDetailViewController : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (strong, nonatomic) IBOutlet UITextField *search_textfield;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionview;
 @property (strong, nonatomic) NSMutableArray *categoryContentarray;
 @property (strong, nonatomic) NSMutableArray *passcurrentarray;
 @property (strong, nonatomic) NSMutableArray *tempcartarray;
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) NSMutableArray *indexArray;
 @end
