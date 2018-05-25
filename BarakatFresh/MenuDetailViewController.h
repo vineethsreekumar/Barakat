@@ -16,4 +16,10 @@
 @property (strong, nonatomic) NSMutableArray *tempcartarray;
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property (strong, nonatomic) NSMutableArray *indexArray;
+- (IBAction)homebutton_click:(id)sender;
+- (IBAction)searchbutton_Click:(id)sender;
+- (IBAction)cartbutton_Click:(id)sender;
+- (IBAction)myaccountbutton_Click:(id)sender;
+- (IBAction)morebutton_Click:(id)sender;
+
 @end

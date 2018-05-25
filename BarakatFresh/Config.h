@@ -16,6 +16,9 @@
 #import "ItemDetailViewController.h"
 #import "AboutViewController.h"
 #import "privacyViewController.h"
+#import "DefaultViewController.h"
+#import "ContactusViewController.h"
+#import "TermsViewController.h"
 #define baseURL "http://app.barakatfresh.ae/webservice/api/"
 #define subURL "http://app.barakatfresh.ae/webservice/"
 #define uAppDelegate (AppDelegate *)[[UIApplication sharedApplication] delegate]

@@ -101,6 +101,13 @@
     
 }
 
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 2.0;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 2.0;
+}
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -409,6 +416,7 @@
     
 }
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -421,4 +429,88 @@
 }
 
 
+- (IBAction)homebutton_click:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    HomeViewController *homeController = [storyboard instantiateViewControllerWithIdentifier:@"HomeView"];
+    UINavigationController *navigationController = self.menuContainerViewController.centerViewController;
+    NSArray *controllers = [NSArray arrayWithObject:homeController];
+    navigationController.viewControllers = controllers;
+    [self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
+
+}
+
+- (IBAction)searchbutton_Click:(id)sender {
+    SearchViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchView"];
+    [self.navigationController pushViewController:ViewController animated:NO];
+}
+
+- (IBAction)cartbutton_Click:(id)sender {
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    float sumtotal=0.0;
+    for (int i=0; i<contentArray.count; i++) {
+        sumtotal = sumtotal+[[[contentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[contentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    if (sumtotal<75) {
+        [uAppDelegate showMessage:@"Minimum order AED 75" withTitle:@"Message"];
+        return;
+    }
+    CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
+    [self.navigationController pushViewController:ViewController animated:NO];
+}
+
+- (IBAction)myaccountbutton_Click:(id)sender {
+    NSString *customerId = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"customerId"];
+    if(customerId.length>0)
+    {
+        [self customActionsheet];
+    }
+    else
+    {
+        LoginViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Loginview"];
+        [self.navigationController pushViewController:ViewController animated:YES];
+    }
+}
+-(void)customActionsheet
+{
+    NSString *userName = [[NSUserDefaults standardUserDefaults]
+                          stringForKey:@"userName"];
+    UIAlertController *alert =
+    [UIAlertController alertControllerWithTitle:@"HI"
+                                        message:userName
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    /* [alert addAction:[UIAlertAction actionWithTitle:@"Profile"
+     style:UIAlertActionStyleDefault
+     handler:^void (UIAlertAction *action) {
+     NSLog(@"Clicked Profile");
+     }]];*/
+    [alert addAction:[UIAlertAction actionWithTitle:@"Purchase History"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked history");
+                                                HistoryViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Historyview"];
+                                                [self.navigationController pushViewController:ViewController animated:YES];
+                                            }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Logout"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                //  NSLog(@"Clicked Purchase History");
+                                                NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+                                                [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+                                            }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^void (UIAlertAction *action) {
+                                                NSLog(@"Clicked Cancel");
+                                            }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (IBAction)morebutton_Click:(id)sender {
+    DefaultViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DefaultView"];
+    [self.navigationController pushViewController:ViewController animated:NO];
+}
 @end

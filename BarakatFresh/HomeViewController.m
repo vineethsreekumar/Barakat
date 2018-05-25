@@ -818,22 +818,22 @@ _slideshow.delegate = self;
 
 - (void) slideShowWillShowNext:(KASlideShow *)slideShow
 {
-    NSLog(@"slideShowWillShowNext, index : %@",@(slideShow.currentIndex));
+   // NSLog(@"slideShowWillShowNext, index : %@",@(slideShow.currentIndex));
 }
 
 - (void) slideShowWillShowPrevious:(KASlideShow *)slideShow
 {
-    NSLog(@"slideShowWillShowPrevious, index : %@",@(slideShow.currentIndex));
+   // NSLog(@"slideShowWillShowPrevious, index : %@",@(slideShow.currentIndex));
 }
 
 - (void) slideShowDidShowNext:(KASlideShow *)slideShow
 {
-    NSLog(@"slideShowDidShowNext, index : %@",@(slideShow.currentIndex));
+   // NSLog(@"slideShowDidShowNext, index : %@",@(slideShow.currentIndex));
 }
 
 -(void) slideShowDidShowPrevious:(KASlideShow *)slideShow
 {
-    NSLog(@"slideShowDidShowPrevious, index : %@",@(slideShow.currentIndex));
+   // NSLog(@"slideShowDidShowPrevious, index : %@",@(slideShow.currentIndex));
 }
 
 -(void)Loadtopimages
@@ -1084,7 +1084,7 @@ _slideshow.delegate = self;
 }
 - (IBAction)more_buttonClick:(id)sender {
     
-    UIAlertController *alert =
+   /* UIAlertController *alert =
     [UIAlertController alertControllerWithTitle:nil
                                         message:nil
                                  preferredStyle:UIAlertControllerStyleAlert];
@@ -1114,7 +1114,9 @@ _slideshow.delegate = self;
                                             handler:^void (UIAlertAction *action) {
                                                 NSLog(@"Clicked Cancel");
                                             }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    [self presentViewController:alert animated:YES completion:nil];*/
+    DefaultViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DefaultView"];
+    [self.navigationController pushViewController:ViewController animated:YES];
 
 }
 @end
