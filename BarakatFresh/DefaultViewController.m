@@ -38,6 +38,7 @@
 }
 - (IBAction)contactus_buttonClick:(id)sender {
     ContactusViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ContactusView"];
+    ViewController.passtype=@"contactus";
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 - (IBAction)menu_buttonClick:(id)sender {
@@ -55,4 +56,31 @@
 }
 */
 
+- (IBAction)Desclaimer_buttonClick:(id)sender {
+    ContactusViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ContactusView"];
+    ViewController.passtype=@"desclaimer";
+    [self.navigationController pushViewController:ViewController animated:YES];
+
+}
+
+- (IBAction)ourvalues_buttonClick:(id)sender {
+    ContactusViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ContactusView"];
+    ViewController.passtype=@"ourvalues";
+    [self.navigationController pushViewController:ViewController animated:YES];
+
+}
+
+- (IBAction)paymentmethod_buttonClick:(id)sender {
+    ContactusViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ContactusView"];
+    ViewController.passtype=@"paymentmethod";
+    [self.navigationController pushViewController:ViewController animated:YES];
+
+}
+
+- (IBAction)refund_buttonClick:(id)sender {
+    ContactusViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ContactusView"];
+    ViewController.passtype=@"refund";
+    [self.navigationController pushViewController:ViewController animated:YES];
+
+}
 @end

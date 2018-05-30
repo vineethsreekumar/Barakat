@@ -16,9 +16,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if([self.passtype isEqualToString:@"contactus"])
+    {
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"Contact" ofType:@"html"];
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     [self.webview loadHTMLString:htmlString baseURL: [[NSBundle mainBundle] bundleURL]];
+    }else if([self.passtype isEqualToString:@"desclaimer"])
+    {
+        NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"Disclaimer" ofType:@"html"];
+        NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+        [self.webview loadHTMLString:htmlString baseURL: [[NSBundle mainBundle] bundleURL]];
+    }
+    else if([self.passtype isEqualToString:@"ourvalues"])
+    {
+        NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"OurValues" ofType:@"html"];
+        NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+        [self.webview loadHTMLString:htmlString baseURL: [[NSBundle mainBundle] bundleURL]];
+
+    }
+    else if([self.passtype isEqualToString:@"paymentmethod"])
+    {
+        NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"PaymentMethod" ofType:@"html"];
+        NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+        [self.webview loadHTMLString:htmlString baseURL: [[NSBundle mainBundle] bundleURL]];
+
+    }
+    else if([self.passtype isEqualToString:@"refund"])
+    {
+        NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"ReturnPolicy" ofType:@"html"];
+        NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+        [self.webview loadHTMLString:htmlString baseURL: [[NSBundle mainBundle] bundleURL]];
+
+    }
+  
+    
     // Do any additional setup after loading the view.
 }
 

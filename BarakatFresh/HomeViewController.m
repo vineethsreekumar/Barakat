@@ -302,7 +302,7 @@ NSCache *imageCache;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat picDimension = self.view.frame.size.width ;
-    return CGSizeMake(picDimension, 150);
+    return CGSizeMake(picDimension, 170);
     
 }
 
@@ -570,7 +570,7 @@ NSCache *imageCache;
 
     NSString *ItemImage = [[temparray valueForKey:@"ImageFile"]objectAtIndex:value];
 
-    NSString *ItemUnit = [[temparray valueForKey:@"stringWithFormat"]objectAtIndex:value];
+    NSString *ItemUnit = [[temparray valueForKey:@"ItemAvailable"]objectAtIndex:value];
     NSString *priceid = [[temparray valueForKey:@"PriceId"]objectAtIndex:value];
     NSString *quantity = cartlbl.text;
 
@@ -994,10 +994,14 @@ _slideshow.delegate = self;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 {
-    
+    NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:indexPath.row];
+    int value = [[self.indexArray objectAtIndex:indexPath.row] intValue];
+
     ItemDetailViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemDetailView"];
     ViewController.passarray=[[NSMutableDictionary alloc]init];
+     ViewController.innerarray=[[NSMutableArray alloc]init];
     ViewController.passarray=[self.categoryContentarray objectAtIndex:indexPath.row];
+    ViewController.innerarray=[temparray objectAtIndex:value];
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 - (IBAction)myaccount_buttonClick:(id)sender {

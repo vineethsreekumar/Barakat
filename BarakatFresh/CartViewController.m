@@ -22,7 +22,7 @@
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
     [pickerToolbar sizeToFit];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(DoneButtonPressed)];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(DoneButtonPressed:)];
     [pickerToolbar setItems:@[flexSpace, flexSpace, doneBtn] animated:YES];
     self.search_textfield.inputAccessoryView = pickerToolbar;
     
@@ -71,7 +71,7 @@
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
     [pickerToolbar sizeToFit];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(DoneButtonPressed)];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(DoneButtonPressed:)];
     [pickerToolbar setItems:@[flexSpace, flexSpace, doneBtn] animated:YES];
     self.search_textfield.inputAccessoryView = pickerToolbar;
     
@@ -130,6 +130,11 @@
     
     return cell;
 }
+-(void)DoneButtonPressed:(id)sender{
+    [self.view endEditing:true];
+    
+}
+
 - (IBAction)deleteClickEvent:(id)sender event:(id)event {
     
     NSSet *touches = [event allTouches];

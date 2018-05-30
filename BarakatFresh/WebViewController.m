@@ -46,8 +46,8 @@ NSData* htmlData = [data dataUsingEncoding:NSUTF8StringEncoding];
                           stringForKey:@"Mobile"];
     NSString *FirstName = [[NSUserDefaults standardUserDefaults]
                         stringForKey:@"FirstName"];
-    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
-    NSMutableArray * cartarray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  //  NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+  //  NSMutableArray * cartarray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
     [post setValue:self.orderid forKey:@"OrderId"];

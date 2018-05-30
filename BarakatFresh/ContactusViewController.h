@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ContactusViewController : UIViewController<UIWebViewDelegate>
+@property (strong, nonatomic) NSString *passtype;
 @property (strong, nonatomic) IBOutlet UIWebView *webview;
 
 

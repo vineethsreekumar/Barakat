@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		851DA3AD20BC6EEA00F47BFB /* Disclaimericon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3A920BC6EEA00F47BFB /* Disclaimericon@2x.png */; };
+		851DA3AE20BC6EEA00F47BFB /* ourvalueicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3AA20BC6EEA00F47BFB /* ourvalueicon@2x.png */; };
+		851DA3AF20BC6EEA00F47BFB /* paymentmethodicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3AB20BC6EEA00F47BFB /* paymentmethodicon@2x.png */; };
+		851DA3B020BC6EEA00F47BFB /* reutrnicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3AC20BC6EEA00F47BFB /* reutrnicon@2x.png */; };
+		851DA3B520BC8FFD00F47BFB /* Disclaimer.html in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3B120BC8FFD00F47BFB /* Disclaimer.html */; };
+		851DA3B620BC8FFD00F47BFB /* OurValues.html in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3B220BC8FFD00F47BFB /* OurValues.html */; };
+		851DA3B720BC8FFD00F47BFB /* PaymentMethod.html in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3B320BC8FFD00F47BFB /* PaymentMethod.html */; };
+		851DA3B820BC8FFD00F47BFB /* ReturnPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3B420BC8FFD00F47BFB /* ReturnPolicy.html */; };
 		856EAE8020AF52D600671108 /* homenew@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856EAE7F20AF52D600671108 /* homenew@2x.png */; };
 		856EAE8520AFE17600671108 /* carthomeicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856EAE8120AFE17600671108 /* carthomeicon@2x.png */; };
 		856EAE8620AFE17600671108 /* moreicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856EAE8220AFE17600671108 /* moreicon@2x.png */; };
@@ -163,6 +171,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		851DA3A920BC6EEA00F47BFB /* Disclaimericon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Disclaimericon@2x.png"; sourceTree = "<group>"; };
+		851DA3AA20BC6EEA00F47BFB /* ourvalueicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ourvalueicon@2x.png"; sourceTree = "<group>"; };
+		851DA3AB20BC6EEA00F47BFB /* paymentmethodicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paymentmethodicon@2x.png"; sourceTree = "<group>"; };
+		851DA3AC20BC6EEA00F47BFB /* reutrnicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reutrnicon@2x.png"; sourceTree = "<group>"; };
+		851DA3B120BC8FFD00F47BFB /* Disclaimer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Disclaimer.html; sourceTree = "<group>"; };
+		851DA3B220BC8FFD00F47BFB /* OurValues.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = OurValues.html; sourceTree = "<group>"; };
+		851DA3B320BC8FFD00F47BFB /* PaymentMethod.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PaymentMethod.html; sourceTree = "<group>"; };
+		851DA3B420BC8FFD00F47BFB /* ReturnPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ReturnPolicy.html; sourceTree = "<group>"; };
 		856EAE7F20AF52D600671108 /* homenew@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homenew@2x.png"; sourceTree = "<group>"; };
 		856EAE8120AFE17600671108 /* carthomeicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carthomeicon@2x.png"; sourceTree = "<group>"; };
 		856EAE8220AFE17600671108 /* moreicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moreicon@2x.png"; sourceTree = "<group>"; };
@@ -483,6 +499,10 @@
 				856EAE8920B0010300671108 /* bree-serif.regular.ttf */,
 				856EAEB520B8AD6C00671108 /* TermsandConditions.html */,
 				856EAEB720B8AD9E00671108 /* Contact.html */,
+				851DA3B120BC8FFD00F47BFB /* Disclaimer.html */,
+				851DA3B220BC8FFD00F47BFB /* OurValues.html */,
+				851DA3B320BC8FFD00F47BFB /* PaymentMethod.html */,
+				851DA3B420BC8FFD00F47BFB /* ReturnPolicy.html */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -584,6 +604,10 @@
 				856EAEA620B818CC00671108 /* privacy@2x.png */,
 				856EAEA720B818CC00671108 /* Rating@2x.png */,
 				856EAEA820B818CC00671108 /* termsofuse@2x.png */,
+				851DA3A920BC6EEA00F47BFB /* Disclaimericon@2x.png */,
+				851DA3AA20BC6EEA00F47BFB /* ourvalueicon@2x.png */,
+				851DA3AB20BC6EEA00F47BFB /* paymentmethodicon@2x.png */,
+				851DA3AC20BC6EEA00F47BFB /* reutrnicon@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -796,6 +820,7 @@
 				85861A2A208D13C2009EB7AE /* homeiconselected@2x.png in Resources */,
 				85861A42208E5FE0009EB7AE /* freshvegicon selected@2x.png in Resources */,
 				856EAE8020AF52D600671108 /* homenew@2x.png in Resources */,
+				851DA3AF20BC6EEA00F47BFB /* paymentmethodicon@2x.png in Resources */,
 				85861A4E208E7BA4009EB7AE /* icecreamicon@2x.png in Resources */,
 				85847410207CCA05007C778D /* slider-new2.jpg in Resources */,
 				8584739320792B05007C778D /* LaunchScreen.storyboard in Resources */,
@@ -807,8 +832,10 @@
 				858473C1207A42D1007C778D /* bottom_image@2x.png in Resources */,
 				85861A3F208E5FE0009EB7AE /* freshfruiticon@2x.png in Resources */,
 				85861A12208A51E9009EB7AE /* close@2x.png in Resources */,
+				851DA3AE20BC6EEA00F47BFB /* ourvalueicon@2x.png in Resources */,
 				858619FA20867522009EB7AE /* Chevron-Dn-Wht@3x.png in Resources */,
 				858473DB207C7859007C778D /* topbg@2x.png in Resources */,
+				851DA3B020BC6EEA00F47BFB /* reutrnicon@2x.png in Resources */,
 				85861A30208D18AB009EB7AE /* myaccounticontab@2x.png in Resources */,
 				858619E32084AFCB009EB7AE /* myaccount icon@2x.png in Resources */,
 				85861A4C208E7BA4009EB7AE /* cutfruitsvegicon@2x.png in Resources */,
@@ -817,13 +844,16 @@
 				85861A29208D13C2009EB7AE /* homeicon@2x.png in Resources */,
 				856EAE8520AFE17600671108 /* carthomeicon@2x.png in Resources */,
 				85861A16208A51E9009EB7AE /* Juices@2x.png in Resources */,
+				851DA3B520BC8FFD00F47BFB /* Disclaimer.html in Resources */,
 				85861A28208D13C2009EB7AE /* HistoryIcon@2x.png in Resources */,
 				856EAEAB20B818CC00671108 /* contactus@2x.png in Resources */,
 				85861A022087C3D5009EB7AE /* Searchicon@3x.png in Resources */,
 				85861A27208D13C2009EB7AE /* HistoryIcon selected@2x.png in Resources */,
 				856EAEAF20B818CC00671108 /* termsofuse@2x.png in Resources */,
 				85861A13208A51E9009EB7AE /* cutfruits@2x.png in Resources */,
+				851DA3B720BC8FFD00F47BFB /* PaymentMethod.html in Resources */,
 				858473BF207A428E007C778D /* logo@2x.png in Resources */,
+				851DA3B620BC8FFD00F47BFB /* OurValues.html in Resources */,
 				8584739020792B05007C778D /* Assets.xcassets in Resources */,
 				85861A88209B9EF1009EB7AE /* CheckoutCell.xib in Resources */,
 				856EAE9720B479E700671108 /* down-arrow@3x.png in Resources */,
@@ -843,8 +873,10 @@
 				85861A4F208E7BA4009EB7AE /* icecreamiconselected@2x.png in Resources */,
 				85861A0920891386009EB7AE /* Searchiconpage@2x.png in Resources */,
 				8584738E20792B05007C778D /* Main.storyboard in Resources */,
+				851DA3B820BC8FFD00F47BFB /* ReturnPolicy.html in Resources */,
 				858473BD207A4258007C778D /* login_background@2x.png in Resources */,
 				85861A802098717F009EB7AE /* carticon@2x.png in Resources */,
+				851DA3AD20BC6EEA00F47BFB /* Disclaimericon@2x.png in Resources */,
 				85861A662092E5A6009EB7AE /* b-accept-icon@2x.png in Resources */,
 				856EAE8A20B0010300671108 /* bree-serif.regular.ttf in Resources */,
 				856EAEAC20B818CC00671108 /* events@2x.png in Resources */,

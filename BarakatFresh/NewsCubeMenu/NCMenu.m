@@ -45,7 +45,7 @@ static CGFloat const kScrollViewItemMarginWidth = 15.0f;
     }
     
     self.backgroundColor = bgColor;
-    int menuItemsArrayCount = menuItems.count;
+    int menuItemsArrayCount = (int)menuItems.count;
     
     // Setting ScrollView
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];

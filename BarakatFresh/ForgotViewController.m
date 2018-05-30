@@ -93,7 +93,7 @@
               dispatch_async(dispatch_get_main_queue(), ^{
                   if([res valueForKey:@"data"])
                   {
-                      
+                       [uAppDelegate showMessage:@"A link has been sent to your Email to reset password" withTitle:@"Message"];
                   }
                   else
                   {
