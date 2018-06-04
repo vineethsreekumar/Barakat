@@ -378,31 +378,61 @@
     NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:indexPath.row];
     int value = [[self.indexArray objectAtIndex:indexPath.row] intValue];
     
+    NSData *cartdata= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:cartdata];
+    NSString *itemid = [[self.categoryContentarray valueForKey:@"Id"]objectAtIndex:indexPath.row];
+    NSString *priceid = [[temparray valueForKey:@"PriceId"]objectAtIndex:value];
+    NSString *ItemPrice = [[temparray valueForKey:@"Price"]objectAtIndex:value];
+    
+    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF.ItemPriceId == %@",priceid];
+    NSArray *contentArray = [token filteredArrayUsingPredicate:bPredicate];
+    NSLog(@"HERE %@",contentArray);
+    int finalquantity =0;
+    float finalprice=0.0;
+    int filteredindex=0;
+    if(contentArray.count>0)
+    {
+        int currentquantity =[[[contentArray valueForKey:@"ItemQty"] objectAtIndex:0] intValue];
+        float currentprice =[[[contentArray valueForKey:@"ItemPrice"] objectAtIndex:0] intValue];
+        
+        finalquantity= [cartlbl.text intValue] + currentquantity;
+        finalprice=currentprice+[ItemPrice floatValue];
+        NSInteger index = [token indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            return [bPredicate evaluateWithObject:obj];
+        }];
+        
+        NSLog(@"Index of object %d",index);
+        filteredindex = (int)index;
+    }
+    else
+    {
+        finalquantity = [cartlbl.text intValue];
+        finalprice=[ItemPrice floatValue];
+
+    }
+    
     // [indicator startAnimating];
     NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
-    NSString *itemid = [[self.categoryContentarray valueForKey:@"Id"]objectAtIndex:indexPath.row];
     NSString *ItemTypeId = [[self.categoryContentarray valueForKey:@"Group"]objectAtIndex:indexPath.row];
     
     NSString *ItemTitle = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
     
-    NSString *ItemPrice = [[temparray valueForKey:@"Price"]objectAtIndex:value];
     
     NSString *ItemImage = [[temparray valueForKey:@"ImageFile"]objectAtIndex:value];
     
     NSString *ItemUnit = [[temparray valueForKey:@"ItemAvailable"]objectAtIndex:value];
-    NSString *priceid = [[temparray valueForKey:@"PriceId"]objectAtIndex:value];
-    NSString *quantity = cartlbl.text;
+    NSString *quantity = [NSString stringWithFormat:@"%d",finalquantity];
     
     [post setValue:itemid forKey:@"ItemId"];
     [post setValue:ItemTypeId forKey:@"ItemTypeId"];
     [post setValue:ItemTitle forKey:@"ItemTitle"];
-    [post setValue:ItemPrice forKey:@"ItemPrice"];
+    [post setValue:[NSString stringWithFormat:@"%.2f",finalprice] forKey:@"ItemPrice"];
     [post setValue:priceid forKey:@"ItemPriceId"];
     [post setValue:ItemImage forKey:@"ItemImage"];
     [post setValue:ItemUnit forKey:@"ItemUnit"];
     [post setValue:quantity forKey:@"ItemQty"];
-
     //  [post setValue:self.confirm_password.text forKey:@"Total"];
+    
     self.tempcartarray=[[NSMutableArray alloc]init];
     if( [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"])
     {
@@ -410,7 +440,15 @@
         NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.tempcartarray addObjectsFromArray:token];
     }
-    [self.tempcartarray addObject:post];
+    if(contentArray.count>0)
+    {
+        [self.tempcartarray replaceObjectAtIndex:filteredindex withObject:post];
+    }
+    else
+    {
+        [self.tempcartarray addObject:post];
+    }
+
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
    

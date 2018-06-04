@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ItemDetailViewController : UIViewController<UITextViewDelegate,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface ItemDetailViewController : UIViewController<UITextViewDelegate,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIGestureRecognizerDelegate,UIScrollViewDelegate>
 @property (nonatomic,strong) NSMutableDictionary *passarray;
 
 @property (strong, nonatomic) IBOutlet UIImageView *itemimage;
@@ -32,5 +32,6 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *useheightconstraint;
 @property (strong, nonatomic) IBOutlet UILabel *origin_lbl;
 @property (strong, nonatomic) IBOutlet UITextField *category_txtfield;
+@property (strong, nonatomic) IBOutlet UIScrollView *innerscrollview;
 
 @end

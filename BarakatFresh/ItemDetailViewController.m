@@ -14,7 +14,8 @@
 @end
 
 @implementation ItemDetailViewController
-int selecteddetailindex=0;
+CGFloat selecteddetailindex=0.0;
+int lastScale = 0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down-arrow.png"]];
@@ -80,9 +81,45 @@ int selecteddetailindex=0;
     
     [self loaditemdescriptionanddetails];
     
-
+    self.innerscrollview.minimumZoomScale=0.5;
+    
+    self.innerscrollview.maximumZoomScale=6.0;
+    
+    self.innerscrollview.contentSize=CGSizeMake(1280, 960);
+    
+    self.innerscrollview.delegate=self;
     // Do any additional setup after loading the view.
 }
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.itemimage;
+}
+- (void)handlePinchGesture:(UIPinchGestureRecognizer *)gestureRecognizer {
+    
+    if([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        // Reset the last scale, necessary if there are multiple objects with different scales.
+        lastScale = [gestureRecognizer scale];
+    }
+    
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan ||
+        [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+        
+        CGFloat currentScale = [[[gestureRecognizer view].layer valueForKeyPath:@"transform.scale"] floatValue];
+        
+        // Constants to adjust the max/min values of zoom.
+        const CGFloat kMaxScale = 2.0;
+        const CGFloat kMinScale = 1.0;
+        
+        CGFloat newScale = 1 -  (lastScale - [gestureRecognizer scale]); // new scale is in the range (0-1)
+        newScale = MIN(newScale, kMaxScale / currentScale);
+        newScale = MAX(newScale, kMinScale / currentScale);
+        CGAffineTransform transform = CGAffineTransformScale([[gestureRecognizer view] transform], newScale, newScale);
+        [gestureRecognizer view].transform = transform;
+        
+        lastScale = [gestureRecognizer scale];  // Store the previous. scale factor for the next pinch gesture call
+    }
+}
+
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
     // Handle the selection
     
@@ -305,15 +342,44 @@ int selecteddetailindex=0;
     NSString *priceid = [[self.dataArray valueForKey:@"PriceId"]objectAtIndex:selecteddetailindex];
     NSString *quantity = self.quantity_lbl.text;
     
+    NSData *cartdata= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:cartdata];
+    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF.ItemPriceId == %@",priceid];
+    NSArray *contentArray = [token filteredArrayUsingPredicate:bPredicate];
+    NSLog(@"HERE %@",contentArray);
+    int finalquantity =0;
+    float finalprice=0.0;
+    int filteredindex=0;
+    if(contentArray.count>0)
+    {
+        int currentquantity =[[[contentArray valueForKey:@"ItemQty"] objectAtIndex:0] intValue];
+        float currentprice =[[[contentArray valueForKey:@"ItemPrice"] objectAtIndex:0] intValue];
+        
+        finalquantity= [self.quantity_lbl.text intValue] + currentquantity;
+        finalprice=currentprice+[ItemPrice floatValue];
+        NSInteger index = [token indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            return [bPredicate evaluateWithObject:obj];
+        }];
+        
+        NSLog(@"Index of object %d",index);
+        filteredindex = (int)index;
+    }
+    else
+    {
+        finalquantity = [self.quantity_lbl.text intValue];
+        finalprice=[ItemPrice floatValue];
+    }
+
+
     
     [post setValue:itemid forKey:@"ItemId"];
     [post setValue:ItemTypeId forKey:@"ItemTypeId"];
     [post setValue:ItemTitle forKey:@"ItemTitle"];
-    [post setValue:ItemPrice forKey:@"ItemPrice"];
+    [post setValue:[NSString stringWithFormat:@"%.2f",finalprice] forKey:@"ItemPrice"];
     [post setValue:priceid forKey:@"ItemPriceId"];
     [post setValue:ItemImage forKey:@"ItemImage"];
     [post setValue:ItemUnit forKey:@"ItemUnit"];
-    [post setValue:quantity forKey:@"ItemQty"];
+    [post setValue:[NSString stringWithFormat:@"%d",finalquantity] forKey:@"ItemQty"];
     
      //  [post setValue:self.confirm_password.text forKey:@"Total"];
     self.tempcartarray=[[NSMutableArray alloc]init];
@@ -323,7 +389,15 @@ int selecteddetailindex=0;
         NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.tempcartarray addObjectsFromArray:token];
     }
-    [self.tempcartarray addObject:post];
+    if(contentArray.count>0)
+    {
+        [self.tempcartarray replaceObjectAtIndex:filteredindex withObject:post];
+    }
+    else
+    {
+        [self.tempcartarray addObject:post];
+    }
+
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
    // self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
