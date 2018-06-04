@@ -22,6 +22,7 @@
  @property (strong, nonatomic) NSMutableArray *tempcartarray;
 @property (strong, nonatomic) NSMutableArray *innerarray;
 @property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) NSNumber* indexnumber;
 - (IBAction)minus_buttonClick:(id)sender;
 - (IBAction)plus_buttonClick:(id)sender;
 - (IBAction)Addtocart_buttonClick:(id)sender;

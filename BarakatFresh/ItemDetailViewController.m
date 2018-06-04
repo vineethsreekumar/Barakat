@@ -14,7 +14,7 @@
 @end
 
 @implementation ItemDetailViewController
-
+int selecteddetailindex=0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down-arrow.png"]];
@@ -24,10 +24,11 @@
     self.category_txtfield.rightView = arrow;
     self.category_txtfield.rightViewMode = UITextFieldViewModeAlways;
     self.itemtitle.text = [self.passarray valueForKey:@"Title"];
-    
+    selecteddetailindex= [self.indexnumber intValue];
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
     [pickerToolbar sizeToFit];
+    
     
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
@@ -53,7 +54,7 @@
     
     self.itemprice.text =[NSString stringWithFormat:@"Price: %@ AED", [self.innerarray valueForKey:@"Price"]];
     
-   
+    self.category_txtfield.text = [NSString stringWithFormat:@"%@",[[self.dataArray objectAtIndex:selecteddetailindex] valueForKey:@"ItemAvailable"]];
     self.itemweight.text =[NSString stringWithFormat:@"/ %@", [self.innerarray valueForKey:@"ItemAvailable"]];
     
     self.origin_lbl.text =[NSString stringWithFormat:@"Origin: %@", [self.passarray valueForKey:@"Origin"]];
@@ -93,9 +94,28 @@
      UIImage* image = [UIImage imageWithData:photoData];
      self.activeimageview.image =image;
      pickerView.tag = row;*/
+    selecteddetailindex=(int)row;
+     self.category_txtfield.text = [NSString stringWithFormat:@"%@",[[self.dataArray objectAtIndex:row] valueForKey:@"ItemAvailable"]];
     
-     self.category_txtfield.text = [NSString stringWithFormat:@"%@",[self.dataArray objectAtIndex:row]];
+    NSString *photoString = [[self.dataArray objectAtIndex:row] valueForKey:@"ImageFile"] ;
     
+    self.itemimage.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
+    NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+    
+    dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
+    
+    // Start getting the data in the background
+    dispatch_async(queue, ^{
+        NSData* photoData = [NSData dataWithContentsOfURL:url];
+        UIImage* image = [UIImage imageWithData:photoData];
+        
+        // Once we get the data, update the UI on the main thread
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            self.itemimage.image = image;
+        });
+    });
+
     // selectedCategory = [NSString stringWithFormat:@"%@",[dataArray objectAtIndex:row]];
 }
 // tell the picker how many rows are available for a given component
@@ -179,7 +199,7 @@
 
               self.nutrition_txtview.attributedText=[self returnattributtedstring:[dict valueForKey:@"Bebefits"]];
               
-              CGSize sizeThatFitsTextView1 = [self.nutrition_txtview sizeThatFits:CGSizeMake(self.nutrition_txtview.frame.size.width, MAXFLOAT)];
+              CGSize sizeThatFitsTextView1 = [self.nutrition_txtview sizeThatFits:CGSizeMake(self.nutrition_txtview.contentSize.width, MAXFLOAT)];
               
               self.benifitsheightconstraint.constant = sizeThatFitsTextView1.height;
               
@@ -277,13 +297,14 @@
     
     NSString *ItemTitle = [self.passarray valueForKey:@"Title"];
     
-    NSString *ItemPrice = [self.innerarray valueForKey:@"Price"];
+    NSString *ItemPrice = [[self.dataArray valueForKey:@"Price"]objectAtIndex:selecteddetailindex];
     
-    NSString *ItemImage = [self.innerarray valueForKey:@"ImageFile"];
+    NSString *ItemImage = [[self.dataArray valueForKey:@"ImageFile"]objectAtIndex:selecteddetailindex];
     
-    NSString *ItemUnit = [self.innerarray valueForKey:@"ItemAvailable"];
-    NSString *priceid = [self.innerarray valueForKey:@"PriceId"];
+    NSString *ItemUnit = [[self.dataArray valueForKey:@"ItemAvailable"]objectAtIndex:selecteddetailindex];
+    NSString *priceid = [[self.dataArray valueForKey:@"PriceId"]objectAtIndex:selecteddetailindex];
     NSString *quantity = self.quantity_lbl.text;
+    
     
     [post setValue:itemid forKey:@"ItemId"];
     [post setValue:ItemTypeId forKey:@"ItemTypeId"];

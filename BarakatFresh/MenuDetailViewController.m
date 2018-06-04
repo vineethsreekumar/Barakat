@@ -325,6 +325,7 @@
     ViewController.innerarray=[[NSMutableArray alloc]init];
     ViewController.passarray=[self.categoryContentarray objectAtIndex:indexPath.row];
     ViewController.innerarray=[temparray objectAtIndex:value];
+    ViewController.indexnumber = [NSNumber numberWithInt:value];
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 - (void)AddtoCardButtonClick:(id)sender event:(id)event{

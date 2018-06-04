@@ -2911,7 +2911,7 @@
                                                     <constraint firstItem="ekT-ce-CE1" firstAttribute="centerX" secondItem="kc5-L3-NRU" secondAttribute="centerX" id="Lag-QJ-G21"/>
                                                 </constraints>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="NqQ-s8-MmV">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NqQ-s8-MmV">
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="zsT-Sb-mXb">
                                                         <subviews>

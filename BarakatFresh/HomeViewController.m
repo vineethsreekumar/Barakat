@@ -1002,6 +1002,7 @@ _slideshow.delegate = self;
      ViewController.innerarray=[[NSMutableArray alloc]init];
     ViewController.passarray=[self.categoryContentarray objectAtIndex:indexPath.row];
     ViewController.innerarray=[temparray objectAtIndex:value];
+    ViewController.indexnumber = [NSNumber numberWithInt:value];
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 - (IBAction)myaccount_buttonClick:(id)sender {

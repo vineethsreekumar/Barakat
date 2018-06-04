@@ -425,7 +425,6 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 {
-    
     NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:indexPath.row];
     int value = [[self.indexArray objectAtIndex:indexPath.row] intValue];
     
@@ -434,6 +433,7 @@
     ViewController.innerarray=[[NSMutableArray alloc]init];
     ViewController.passarray=[self.categoryContentarray objectAtIndex:indexPath.row];
     ViewController.innerarray=[temparray objectAtIndex:value];
+    ViewController.indexnumber = [NSNumber numberWithInt:value];
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 
