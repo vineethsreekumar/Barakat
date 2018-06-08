@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "KASlideShow.h"
 #import "NCMenu.h"
-@interface HomeViewController : UIViewController<KASlideShowDelegate,UICollectionViewDelegate,UICollectionViewDataSource,NCMenuDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
+#import "XLPlainFlowLayout.h"
+
+@interface HomeViewController : UIViewController<KASlideShowDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,NCMenuDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
 {
     NSMutableArray * datasource;
 }

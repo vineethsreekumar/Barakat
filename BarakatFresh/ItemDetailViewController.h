@@ -33,5 +33,11 @@
 @property (strong, nonatomic) IBOutlet UILabel *origin_lbl;
 @property (strong, nonatomic) IBOutlet UITextField *category_txtfield;
 @property (strong, nonatomic) IBOutlet UIScrollView *innerscrollview;
+@property (strong, nonatomic) IBOutlet UILabel *descriptiontitle;
+@property (strong, nonatomic) IBOutlet UILabel *benifitstitle;
+@property (strong, nonatomic) IBOutlet UIButton *addbutton;
+@property (strong, nonatomic) IBOutlet UIView *quantity_view;
+
+@property (strong, nonatomic) IBOutlet UILabel *usetitle;
 
 @end

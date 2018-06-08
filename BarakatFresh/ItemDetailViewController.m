@@ -18,6 +18,29 @@ CGFloat selecteddetailindex=0.0;
 int lastScale = 0;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.addbutton.layer.cornerRadius = 20;
+    self.addbutton.layer.masksToBounds = YES;
+    
+    self.quantity_view.layer.cornerRadius = 20;
+    self.quantity_view.layer.masksToBounds = YES;
+    NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:@"DESCRIPTION"];
+    [attributeString addAttribute:NSUnderlineStyleAttributeName
+                            value:[NSNumber numberWithInt:1]
+                            range:(NSRange){0,[attributeString length]}];
+    self.descriptiontitle.attributedText=attributeString;
+    
+    NSMutableAttributedString *attributeString1 = [[NSMutableAttributedString alloc] initWithString:@"BENEFITS"];
+    [attributeString1 addAttribute:NSUnderlineStyleAttributeName
+                            value:[NSNumber numberWithInt:1]
+                            range:(NSRange){0,[attributeString1 length]}];
+    self.benifitstitle.attributedText=attributeString1;
+    
+    NSMutableAttributedString *attributeString2 = [[NSMutableAttributedString alloc] initWithString:@"USE"];
+    [attributeString2 addAttribute:NSUnderlineStyleAttributeName
+                            value:[NSNumber numberWithInt:1]
+                            range:(NSRange){0,[attributeString2 length]}];
+    self.usetitle.attributedText=attributeString2;
+    
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down-arrow.png"]];
     arrow.frame = CGRectMake(0.0, 0.0, 20, 15);
     arrow.contentMode = UIViewContentModeScaleAspectFit;
@@ -81,15 +104,31 @@ int lastScale = 0;
     
     [self loaditemdescriptionanddetails];
     
-    self.innerscrollview.minimumZoomScale=0.5;
+ /*   self.innerscrollview.minimumZoomScale=0.5;
     
     self.innerscrollview.maximumZoomScale=6.0;
     
     self.innerscrollview.contentSize=CGSizeMake(1280, 960);
     
-    self.innerscrollview.delegate=self;
+    self.innerscrollview.delegate=self;*/
+    self.itemimage.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapGesture1 = [[UITapGestureRecognizer alloc] initWithTarget:self  action:@selector(tapGesture:)];
+    
+    tapGesture1.numberOfTapsRequired = 1;
+    
+    [tapGesture1 setDelegate:self];
+    
+    [self.itemimage addGestureRecognizer:tapGesture1];
     // Do any additional setup after loading the view.
 }
+- (void) tapGesture: (id)sender
+{
+    ImagefullviewViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ImagefullView"];
+    
+    ViewController.passimage=self.itemimage.image;
+    [self.navigationController pushViewController:ViewController animated:YES];
+}
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.itemimage;

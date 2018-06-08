@@ -58,61 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BarakatFresh/CheckoutViewController.m"
-            timestampString = "548832527.889509"
+            timestampString = "550044835.091361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "543"
-            endingLineNumber = "543"
+            startingLineNumber = "527"
+            endingLineNumber = "527"
             landmarkName = "-updatetransaction_service:transactionid:"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BarakatFresh/CheckoutViewController.m"
-            timestampString = "548564061.487848"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "366"
-            endingLineNumber = "366"
-            landmarkName = "-OrderItemmethod"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__41-[CheckoutViewController OrderItemmethod]_block_invoke"
-                  moduleName = "BarakatFresh"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/BACKUP/APPS/E-BARAKET/BarakatFresh/BarakatFresh/CheckoutViewController.m"
-                  timestampString = "549839997.043179"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "367"
-                  endingLineNumber = "367"
-                  offsetFromSymbolStart = "284">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__41-[CheckoutViewController OrderItemmethod]_block_invoke_2"
-                  moduleName = "BarakatFresh"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/BACKUP/APPS/E-BARAKET/BarakatFresh/BarakatFresh/CheckoutViewController.m"
-                  timestampString = "549839997.046141"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "367"
-                  endingLineNumber = "367"
-                  offsetFromSymbolStart = "19">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

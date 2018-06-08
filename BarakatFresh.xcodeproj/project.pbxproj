@@ -15,6 +15,10 @@
 		851DA3B620BC8FFD00F47BFB /* OurValues.html in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3B220BC8FFD00F47BFB /* OurValues.html */; };
 		851DA3B720BC8FFD00F47BFB /* PaymentMethod.html in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3B320BC8FFD00F47BFB /* PaymentMethod.html */; };
 		851DA3B820BC8FFD00F47BFB /* ReturnPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 851DA3B420BC8FFD00F47BFB /* ReturnPolicy.html */; };
+		851DA3BB20C71FB000F47BFB /* ImagefullviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DA3BA20C71FB000F47BFB /* ImagefullviewViewController.m */; };
+		851DA3C020C8887000F47BFB /* SectionHeadercCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DA3BD20C8887000F47BFB /* SectionHeadercCollectionViewLayout.m */; };
+		851DA3C120C8887000F47BFB /* XDDemoCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DA3BF20C8887000F47BFB /* XDDemoCollectionViewLayout.m */; };
+		851DA3C420CAD3A200F47BFB /* XLPlainFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DA3C320CAD3A200F47BFB /* XLPlainFlowLayout.m */; };
 		856EAE8020AF52D600671108 /* homenew@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856EAE7F20AF52D600671108 /* homenew@2x.png */; };
 		856EAE8520AFE17600671108 /* carthomeicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856EAE8120AFE17600671108 /* carthomeicon@2x.png */; };
 		856EAE8620AFE17600671108 /* moreicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856EAE8220AFE17600671108 /* moreicon@2x.png */; };
@@ -179,6 +183,14 @@
 		851DA3B220BC8FFD00F47BFB /* OurValues.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = OurValues.html; sourceTree = "<group>"; };
 		851DA3B320BC8FFD00F47BFB /* PaymentMethod.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PaymentMethod.html; sourceTree = "<group>"; };
 		851DA3B420BC8FFD00F47BFB /* ReturnPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ReturnPolicy.html; sourceTree = "<group>"; };
+		851DA3B920C71FB000F47BFB /* ImagefullviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagefullviewViewController.h; sourceTree = "<group>"; };
+		851DA3BA20C71FB000F47BFB /* ImagefullviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagefullviewViewController.m; sourceTree = "<group>"; };
+		851DA3BC20C8887000F47BFB /* SectionHeadercCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeadercCollectionViewLayout.h; sourceTree = "<group>"; };
+		851DA3BD20C8887000F47BFB /* SectionHeadercCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeadercCollectionViewLayout.m; sourceTree = "<group>"; };
+		851DA3BE20C8887000F47BFB /* XDDemoCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XDDemoCollectionViewLayout.h; sourceTree = "<group>"; };
+		851DA3BF20C8887000F47BFB /* XDDemoCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XDDemoCollectionViewLayout.m; sourceTree = "<group>"; };
+		851DA3C220CAD3A200F47BFB /* XLPlainFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLPlainFlowLayout.h; sourceTree = "<group>"; };
+		851DA3C320CAD3A200F47BFB /* XLPlainFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLPlainFlowLayout.m; sourceTree = "<group>"; };
 		856EAE7F20AF52D600671108 /* homenew@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homenew@2x.png"; sourceTree = "<group>"; };
 		856EAE8120AFE17600671108 /* carthomeicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carthomeicon@2x.png"; sourceTree = "<group>"; };
 		856EAE8220AFE17600671108 /* moreicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moreicon@2x.png"; sourceTree = "<group>"; };
@@ -438,6 +450,8 @@
 				85861A55209040CD009EB7AE /* MenuDetailViewController.m */,
 				8578849B20ACAE470081E800 /* ItemDetailViewController.h */,
 				8578849C20ACAE470081E800 /* ItemDetailViewController.m */,
+				851DA3B920C71FB000F47BFB /* ImagefullviewViewController.h */,
+				851DA3BA20C71FB000F47BFB /* ImagefullviewViewController.m */,
 				85861A7C20973473009EB7AE /* CartViewController.h */,
 				85861A7D20973473009EB7AE /* CartViewController.m */,
 				85861A81209ACEFA009EB7AE /* CheckoutViewController.h */,
@@ -475,6 +489,12 @@
 				85847419207E7A37007C778D /* ForHerCell.xib */,
 				858473DE207CC336007C778D /* KASlideShow.h */,
 				858473DF207CC336007C778D /* KASlideShow.m */,
+				851DA3BC20C8887000F47BFB /* SectionHeadercCollectionViewLayout.h */,
+				851DA3BD20C8887000F47BFB /* SectionHeadercCollectionViewLayout.m */,
+				851DA3BE20C8887000F47BFB /* XDDemoCollectionViewLayout.h */,
+				851DA3BF20C8887000F47BFB /* XDDemoCollectionViewLayout.m */,
+				851DA3C220CAD3A200F47BFB /* XLPlainFlowLayout.h */,
+				851DA3C320CAD3A200F47BFB /* XLPlainFlowLayout.m */,
 				85861A31208E5648009EB7AE /* NewsCubeMenu */,
 				85847411207D2BA8007C778D /* MenuScroll */,
 				858473E1207CC617007C778D /* SDWebImage */,
@@ -915,6 +935,7 @@
 				8578849720A8A4BC0081E800 /* HistoryViewController.m in Sources */,
 				85847414207D2BA8007C778D /* MenuScrollView.m in Sources */,
 				858619F020853AFA009EB7AE /* categoryCell.m in Sources */,
+				851DA3C420CAD3A200F47BFB /* XLPlainFlowLayout.m in Sources */,
 				85861A83209ACEFA009EB7AE /* CheckoutViewController.m in Sources */,
 				85847405207CC617007C778D /* SDWebImageManager.m in Sources */,
 				8578849A20AB0AE70081E800 /* ForgotViewController.m in Sources */,
@@ -936,6 +957,7 @@
 				85847404207CC617007C778D /* SDWebImageDownloaderOperation.m in Sources */,
 				85861A9320A4AFE1009EB7AE /* WebViewController.m in Sources */,
 				8584738520792B05007C778D /* main.m in Sources */,
+				851DA3C020C8887000F47BFB /* SectionHeadercCollectionViewLayout.m in Sources */,
 				858473CA207BEBC6007C778D /* HomeViewController.m in Sources */,
 				85861A56209040CD009EB7AE /* MenuDetailViewController.m in Sources */,
 				8584740A207CC618007C778D /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -946,8 +968,10 @@
 				858473D4207BEC06007C778D /* MFSideMenuShadow.m in Sources */,
 				85861A072087C7FC009EB7AE /* SearchViewController.m in Sources */,
 				858473D3207BEC06007C778D /* MFSideMenuContainerViewController.m in Sources */,
+				851DA3C120C8887000F47BFB /* XDDemoCollectionViewLayout.m in Sources */,
 				85847408207CC617007C778D /* UIImage+GIF.m in Sources */,
 				85847403207CC617007C778D /* SDWebImageDownloader.m in Sources */,
+				851DA3BB20C71FB000F47BFB /* ImagefullviewViewController.m in Sources */,
 				858473D5207BEC06007C778D /* UIViewController+MFSideMenuAdditions.m in Sources */,
 				858619E920851AE7009EB7AE /* SideMenuViewController.m in Sources */,
 				85861A37208E5648009EB7AE /* NCMenuItem.m in Sources */,

@@ -28,17 +28,27 @@ NSCache *imageCache;
     [super viewDidLoad];
     _hasRun=true;
     [self KAslideShow];
+    XLPlainFlowLayout *layout = [XLPlainFlowLayout new];
+    layout.itemSize = CGSizeMake(100, 100);
+    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    layout.naviHeight = 41;
+    self.collectionview.collectionViewLayout =layout;
+
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
     self.cart_lbl.layer.cornerRadius = 12.5;
     self.cart_lbl.layer.masksToBounds = YES;
 
     [self getContentService];
-    
+  
    // [self createcategory];
    // [self Loadtopimages];
     // Do any additional setup after loading the view.
 }
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 2;
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [self cartcount];
@@ -183,10 +193,6 @@ NSCache *imageCache;
         
     }];
 }
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-        return CGSizeMake(self.view.frame.size.width, 250);
-}
 
 -(void)loadfirstcollectionite
 {
@@ -308,9 +314,9 @@ NSCache *imageCache;
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+    UICollectionReusableView *reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
+   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         
-        UICollectionReusableView *reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
         
         if (reusableview==nil) {
             reusableview=[[UICollectionReusableView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
@@ -318,34 +324,66 @@ NSCache *imageCache;
        if(_hasRun==true)
        {
         
-        _slideshow =  [reusableview viewWithTag:200];
-        [self KAslideShow];
+      
         _menu_view =  [reusableview viewWithTag:201];
          _menuScrollView =  [reusableview viewWithTag:202];
         _menu_underline =  [reusableview viewWithTag:203];
         [self setUpNewsCubeMenu];
        }
         _hasRun=false;
-        return reusableview;
+       
     }
-    return nil;
+
+
+    return reusableview;
+   /* UICollectionViewLayoutAttributes *attributes = [self.superclass layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
+    
+    attributes.frame = CGRectMake(0, 0, 100, 100);
+    attributes.zIndex = 1024;
+    
+    return attributes;*/
+   // return nil;
+}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    if(section==1)
+    {
+        return CGSizeMake(0, 70);
+    }
+    else
+    {
+        return CGSizeMake(0, 0);
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if(section==0)
+    {
+        return 1;
+    }
+    else{
     return self.categoryContentarray.count;
+    }
 }
 - (IBAction)history_buttonClick:(id)sender {
     HistoryViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Historyview"];
     [self.navigationController pushViewController:ViewController animated:YES];
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
-
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section==0)
+    {
+        static NSString *identifier = @"slidingcell";
+        
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+
+        _slideshow =  [cell viewWithTag:200];
+        [self KAslideShow];
+        return cell;
+    }
+    else
+    {
     static NSString *identifier = @"Cell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
@@ -456,6 +494,7 @@ NSCache *imageCache;
     [addcart addTarget:self action:@selector(AddtoCardButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
+    }
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {

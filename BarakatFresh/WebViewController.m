@@ -76,7 +76,18 @@ NSData* htmlData = [data dataUsingEncoding:NSUTF8StringEncoding];
           NSMutableArray *res=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error1];
           {
               dispatch_async(dispatch_get_main_queue(), ^{
-                  
+                  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"CART"];
+
+                  [self.navigationController popToRootViewControllerAnimated:NO];
+                  NSString *data = [NSString stringWithFormat:@"%@",[res valueForKey:@"data"]];
+                  if ([data length] > 0) {
+                      [uAppDelegate showMessage:@"Your order has been placed successfully" withTitle:@"Message"];
+                  }
+                  else
+                  {
+                      [uAppDelegate showMessage:@"An error occured" withTitle:@"Message"];
+                  }
+
               });
               
               
