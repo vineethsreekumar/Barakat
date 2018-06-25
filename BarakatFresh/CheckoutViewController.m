@@ -19,7 +19,24 @@ int voucherdiscount=0;
 float sumtotal=0.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    self.nameview.layer.cornerRadius = 5;
+    self.nameview.layer.masksToBounds = YES;
+    self.emailview.layer.cornerRadius = 5;
+    self.emailview.layer.masksToBounds = YES;
+    self.mobileview.layer.cornerRadius = 5;
+    self.mobileview.layer.masksToBounds = YES;
+    self.deliveryareaview.layer.cornerRadius = 5;
+    self.deliveryareaview.layer.masksToBounds = YES;
+    self.landmarkview.layer.cornerRadius = 5;
+    self.landmarkview.layer.masksToBounds = YES;
+    self.dateview.layer.cornerRadius = 5;
+    self.dateview.layer.masksToBounds = YES;
+    self.timeview.layer.cornerRadius = 5;
+    self.timeview.layer.masksToBounds = YES;
+    
+    self.delivery_Area.delegate=self;
+    self.email_textfield.delegate=self;
+    self.mobile_textfield.delegate=self;
     self.creditdebitbutton.selected=true;
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
@@ -60,6 +77,9 @@ float sumtotal=0.0;
     }
     self.discount_lbl.text=[NSString stringWithFormat:@"AED %d",voucherdiscount];
     self.total_lbl.text=[NSString stringWithFormat:@"AED %.2f",sumtotal-voucherdiscount];
+    float vatval = (((sumtotal-coupondiscount)/105)*5);
+    NSString *vatstring = [NSString stringWithFormat:@"Above invoice inclusive VAT @ 5%% %.2f",vatval];
+    self.vat_lbl.text=vatstring;
     self.password_textfield.delegate=self;
     
     indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -68,11 +88,69 @@ float sumtotal=0.0;
     [self.view addSubview:indicator];
     [indicator bringSubviewToFront:self.view];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = TRUE;
-
+   
     // Do any additional setup after loading the view.
 }
--(void)textFieldDidBeginEditing:(UITextField *)textField {
-    
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    if(textField==self.delivery_Area)
+    {
+        NSString *newString = [self.delivery_Area.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if(newString.length==0)
+        {
+            return;
+        }
+        NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%sOrder/GetSlotByArea?AreaId=%ld",baseURL,(long)self.delivery_Area.tag]];
+        NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+        
+        //Specify method of request(Get or Post)
+        [theRequest setHTTPMethod:@"GET"];
+        
+        //Pass some default parameter(like content-type etc.)
+        [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+        
+        //Now pass your own parameter
+        
+        
+        
+        [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+          {
+              
+              
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  NSError *theError = NULL;
+                  
+                  NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+                  if([dataResponse valueForKey:@"data"])
+                  {
+                      pickerData =[[NSArray alloc]init];
+                      timePicker =[[UIPickerView alloc]init];
+                      pickerData =[dataResponse valueForKey:@"data"];
+
+                      //  pickerData = @[@"12PM-2PM", @"2PM-4PM", @"4PM-6PM", @"5PM-7PM", @"7PM-10PM"];
+                      timePicker.tag=1;
+                      // Connect data
+                      self.timePicker.dataSource = self;
+                      self.timePicker.delegate = self;
+                      self.time_field.inputView=self.timePicker;
+                      self.time_field.text=@"";
+                  }
+                  else
+                  {
+                      
+                  }
+              });
+              
+              //  NSLog(@"Delete webresponse=%@",res);
+              
+              
+              
+              
+              
+          }] resume];
+    }
+    if(textField==self.email_textfield)
+    {
     NSString *newString = [self.email_textfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if(newString.length==0)
     {
@@ -100,8 +178,16 @@ float sumtotal=0.0;
               NSError *theError = NULL;
               
               NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
-            
+            if([[dataResponse valueForKey:@"data"] isEqualToString:@"success"])
+            {
+                self.mobile_textfield.text=@"";
+
+            [uAppDelegate showMessage:@"Invalid Email" withTitle:@"Message"];
+            }
+            else
+            {
               
+            }
           });
           
           //  NSLog(@"Delete webresponse=%@",res);
@@ -112,7 +198,56 @@ float sumtotal=0.0;
           
       }] resume];
     
-    
+    }
+    if(textField==self.mobile_textfield)
+    {
+        NSString *newString = [self.mobile_textfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if(newString.length==0)
+        {
+            return;
+        }
+        NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%sCheckMobileNumber?mobileNumber=%@",subURL,newString]];
+        NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+        
+        //Specify method of request(Get or Post)
+        [theRequest setHTTPMethod:@"GET"];
+        
+        //Pass some default parameter(like content-type etc.)
+        [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+        
+        //Now pass your own parameter
+        
+        
+        
+        [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+          {
+              
+              
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  NSError *theError = NULL;
+                  
+                  NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+                  if([[dataResponse valueForKey:@"data"] isEqualToString:@"success"])
+                  {
+                      [uAppDelegate showMessage:@"Invalid mobile" withTitle:@"Message"];
+                      self.mobile_textfield.text=@"";
+                  }
+                  else
+                  {
+                      
+                  }
+              });
+              
+              //  NSLog(@"Delete webresponse=%@",res);
+              
+              
+              
+              
+              
+          }] resume];
+        
+    }
 }
 
 -(void)DoneButtonPressed{
@@ -285,6 +420,14 @@ float sumtotal=0.0;
         {
             
             [uAppDelegate showMessage:@"Please enter Customer Name" withTitle:@"Message"];
+            
+            return;
+            
+        }
+        else  if(mobile.length > 9)
+        {
+            
+            [uAppDelegate showMessage:@"Mobile number should not exceed 9 digits" withTitle:@"Message"];
             
             return;
             
@@ -582,6 +725,9 @@ float sumtotal=0.0;
 {
     datePicker =[[UIDatePicker alloc]init];
     datePicker.datePickerMode=UIDatePickerModeDate;
+    NSDate *tomorrow = [NSDate dateWithTimeInterval:(24*60*60) sinceDate:[NSDate date]];
+
+    [datePicker setMinimumDate: tomorrow];
     datePicker.hidden=NO;
     datePicker.date=[NSDate date];
     [datePicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
@@ -594,13 +740,7 @@ float sumtotal=0.0;
     [timePicker addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
     self.time_field.inputView= timePicker;*/
     
-    timePicker =[[UIPickerView alloc]init];
-    pickerData = @[@"12PM-2PM", @"2PM-4PM", @"4PM-6PM", @"5PM-7PM", @"7PM-10PM"];
-    timePicker.tag=1;
-    // Connect data
-    self.timePicker.dataSource = self;
-    self.timePicker.delegate = self;
-    self.time_field.inputView=self.timePicker;
+   
     
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
@@ -630,7 +770,7 @@ float sumtotal=0.0;
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     if (pickerView.tag == 1 ){
-        return[pickerData objectAtIndex:row];
+        return [[pickerData objectAtIndex:row] valueForKey:@"slotTime"];
     }
     else
     {
@@ -641,8 +781,8 @@ float sumtotal=0.0;
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if (pickerView.tag == 1 ){
-    self.time_field.text=[pickerData objectAtIndex:row];
-    self.time_field.tag=row+1;
+    self.time_field.text=[[pickerData objectAtIndex:row] valueForKey:@"slotTime"];
+    self.time_field.tag=[[[pickerData objectAtIndex:row] valueForKey:@"slotId"] intValue];;
     }
     else  if (pickerView.tag == 2 )
     {
@@ -734,7 +874,9 @@ float sumtotal=0.0;
                   self.coupon_deletebutton.hidden=false;
                   self.coupontextfield.userInteractionEnabled=false;
                   self.discount_lbl.text=[NSString stringWithFormat:@"AED %d",coupondiscount];
+                  
                   self.total_lbl.text=[NSString stringWithFormat:@"AED %.2f",sumtotal-coupondiscount];
+                 
                   NSString *coupon = [NSString stringWithFormat:@"Applied coupon of %d",coupondiscount];
                   [uAppDelegate showMessage:coupon withTitle:@"Message"];
               });

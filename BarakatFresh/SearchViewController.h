@@ -19,5 +19,8 @@
 - (IBAction)cart_buttonClick:(id)sender;
 - (IBAction)myccount_buttonClick:(id)sender;
 - (IBAction)more_buttonClick:(id)sender;
+- (IBAction)Cart_buttonClick:(id)sender ;
 
+@property (strong, nonatomic) IBOutlet UILabel *cart_lbl;
+@property (strong, nonatomic) IBOutlet UILabel *sum_lbl;
 @end

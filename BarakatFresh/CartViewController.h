@@ -15,5 +15,5 @@
 @property (strong, nonatomic) NSMutableArray *passcurrentarray;
 - (IBAction)Checkout_buttonClick:(id)sender;
 
-
+@property (strong, nonatomic) NSMutableArray *tempcartarray;
 @end

@@ -21,5 +21,7 @@
 - (IBAction)cartbutton_Click:(id)sender;
 - (IBAction)myaccountbutton_Click:(id)sender;
 - (IBAction)morebutton_Click:(id)sender;
-
+@property (strong, nonatomic) IBOutlet UILabel *cart_lbl;
+- (IBAction)top_cartbuttonClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *sum_lbl;
 @end

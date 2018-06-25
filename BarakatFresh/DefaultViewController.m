@@ -83,4 +83,18 @@
     [self.navigationController pushViewController:ViewController animated:YES];
 
 }
+- (IBAction)facebook_buttonClick:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.facebook.com/BarakatFreshandEasy"]];
+
+}
+- (IBAction)insta_buttonClick:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.instagram.com/barakatme"]];
+}
+- (IBAction)twitter_buttonClick:(id)sender {
+     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/BarakatME"]];
+}
+- (IBAction)youtube_buttonClick:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.youtube.com/embed/Et-PEBODxxs"]];
+}
+
 @end

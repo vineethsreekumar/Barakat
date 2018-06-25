@@ -30,7 +30,7 @@ NSCache *imageCache;
     [self KAslideShow];
     XLPlainFlowLayout *layout = [XLPlainFlowLayout new];
     layout.itemSize = CGSizeMake(100, 100);
-    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+   // layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     layout.naviHeight = 41;
     self.collectionview.collectionViewLayout =layout;
 
@@ -52,6 +52,14 @@ NSCache *imageCache;
 -(void)viewWillAppear:(BOOL)animated
 {
     [self cartcount];
+    NSData *data1= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * newcontentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+    float sumtotal=0.0;
+    for (int i=0; i<newcontentArray.count; i++) {
+        sumtotal = sumtotal+[[[newcontentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[newcontentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    self.sum_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
 }
 -(void)getContentService
 {
@@ -377,7 +385,6 @@ NSCache *imageCache;
         static NSString *identifier = @"slidingcell";
         
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-
         _slideshow =  [cell viewWithTag:200];
         [self KAslideShow];
         return cell;
@@ -617,7 +624,7 @@ if(contentArray.count>0)
     float currentprice =[[[contentArray valueForKey:@"ItemPrice"] objectAtIndex:0] intValue];
 
     finalquantity= [cartlbl.text intValue] + currentquantity;
-    finalprice=currentprice+[ItemPrice floatValue];
+    finalprice=currentprice;
     NSInteger index = [token indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         return [bPredicate evaluateWithObject:obj];
     }];
@@ -676,6 +683,14 @@ if(contentArray.count>0)
 
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    NSData *data1= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * newcontentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+    float sumtotal=0.0;
+    for (int i=0; i<newcontentArray.count; i++) {
+        sumtotal = sumtotal+[[[newcontentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[newcontentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    self.sum_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
     [uAppDelegate showMessage:@"Item Added to cart" withTitle:@"Message"];
    /*
     NSError *writeError = nil;
@@ -1134,24 +1149,13 @@ _slideshow.delegate = self;
 }
 
 - (IBAction)Cart_buttonClick:(id)sender {
-    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
-    NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    float sumtotal=0.0;
-    for (int i=0; i<contentArray.count; i++) {
-        sumtotal = sumtotal+[[[contentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[contentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
-       
-    }
-    if (sumtotal<75) {
-        [uAppDelegate showMessage:@"Minimum order AED 75" withTitle:@"Message"];
-        return;
-    }
-    CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
+       CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
     [self.navigationController pushViewController:ViewController animated:YES];
 
 }
 
 - (IBAction)cart_tabbuttonClick:(id)sender {
-    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+  /*  NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
     NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     float sumtotal=0.0;
     for (int i=0; i<contentArray.count; i++) {
@@ -1161,7 +1165,7 @@ _slideshow.delegate = self;
     if (sumtotal<75) {
         [uAppDelegate showMessage:@"Minimum order AED 75" withTitle:@"Message"];
         return;
-    }
+    }*/
 
     CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
     [self.navigationController pushViewController:ViewController animated:YES];

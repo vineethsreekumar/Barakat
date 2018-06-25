@@ -36,5 +36,6 @@
 - (IBAction)Home_buttonClick:(id)sender;
 - (IBAction)Cart_buttonClick:(id)sender;
 - (IBAction)cart_tabbuttonClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *sum_lbl;
 
 @end

@@ -45,22 +45,41 @@
     // Do any additional setup after loading the view.
 }
 
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 2;
+}
 
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.categoryContentarray.count;
+    if (section==0) {
+       return self.categoryContentarray.count;
+    }
+    else{
+        return 1;
+    }
+   
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(indexPath.section==0)
+    {
     CGFloat picDimension = self.view.frame.size.width ;
     return CGSizeMake(picDimension, 130);
+    }
+    else
+    {
+        CGFloat picDimension = self.view.frame.size.width ;
+        return CGSizeMake(picDimension, 160);
+    }
     
 }
 
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section==0)
+    {
     static NSString *identifier = @"Cell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
@@ -129,7 +148,37 @@
     [delete addTarget:self action:@selector(deleteClickEvent:event:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
+    }
+    else
+    {
+        static NSString *identifier = @"totalcell";
+        
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+        NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+        NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        float sumtotal=0.0;
+        for (int i=0; i<contentArray.count; i++) {
+            sumtotal = sumtotal+[[[contentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[contentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+            
+        }
+        
+        UILabel *sumtotallbl =(UILabel*)[cell viewWithTag:1];
+        sumtotallbl.text=[NSString stringWithFormat:@"% .2f AED",sumtotal];
+        UILabel *totallbl =(UILabel*)[cell viewWithTag:2];
+        totallbl.text=[NSString stringWithFormat:@"% .2f AED",sumtotal];
+        UILabel *vatlbl =(UILabel*)[cell viewWithTag:3];
+        float vatval = (((sumtotal-0)/105)*5);
+        NSString *vatstring = [NSString stringWithFormat:@"Above invoice inclusive VAT @ 5%% %.2f",vatval];
+        vatlbl.text=vatstring;
+        UIButton *checkout =(UIButton*)[cell viewWithTag:4];
+       // checkout.layer.cornerRadius = 17;
+      //  checkout.layer.masksToBounds = YES;
+        [checkout addTarget:self action:@selector(Checkout_buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        return cell;
+    }
 }
+
 -(void)DoneButtonPressed:(id)sender{
     [self.view endEditing:true];
     
@@ -170,6 +219,75 @@
         int carttotal= [[[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row] intValue]*value.text.intValue;
         UILabel *total = (UILabel *)[cell viewWithTag:10];
         total.text =[NSString stringWithFormat:@"TotalPrice:%d", carttotal];
+        
+    
+        NSData *cartdata= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+        NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:cartdata];
+        NSString *itemid = [[self.categoryContentarray valueForKey:@"ItemId"]objectAtIndex:indexPath.row];
+        NSString *priceid = [[self.categoryContentarray valueForKey:@"ItemPriceId"]objectAtIndex:indexPath.row];
+        NSString *ItemPrice = [[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row];
+        
+        NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF.ItemPriceId == %@",priceid];
+        NSArray *contentArray = [token filteredArrayUsingPredicate:bPredicate];
+        NSLog(@"HERE %@",contentArray);
+        int finalquantity =0;
+        float finalprice=0.0;
+        int filteredindex=0;
+        if(contentArray.count>0)
+        {
+            int currentquantity =[[[contentArray valueForKey:@"ItemQty"] objectAtIndex:0] intValue];
+            float currentprice =[[[contentArray valueForKey:@"ItemPrice"] objectAtIndex:0] intValue];
+            
+            finalquantity= currentquantity - 1;
+            finalprice=currentprice;
+            NSInteger index = [token indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                return [bPredicate evaluateWithObject:obj];
+            }];
+            
+            NSLog(@"Index of object %d",index);
+            filteredindex = (int)index;
+        }
+        NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+        NSString *ItemTypeId = [[self.categoryContentarray valueForKey:@"ItemTypeId"]objectAtIndex:indexPath.row];
+        
+        NSString *ItemTitle = [[self.categoryContentarray valueForKey:@"ItemTitle"]objectAtIndex:indexPath.row];
+        
+        
+        NSString *ItemImage = [[self.categoryContentarray valueForKey:@"ItemImage"]objectAtIndex:indexPath.row];
+        
+        NSString *ItemUnit = [[self.categoryContentarray valueForKey:@"ItemUnit"]objectAtIndex:indexPath.row];
+        NSString *quantity = [NSString stringWithFormat:@"%d",finalquantity];
+        
+        [post setValue:itemid forKey:@"ItemId"];
+        [post setValue:ItemTypeId forKey:@"ItemTypeId"];
+        [post setValue:ItemTitle forKey:@"ItemTitle"];
+        [post setValue:[NSString stringWithFormat:@"%.2f",finalprice] forKey:@"ItemPrice"];
+        [post setValue:priceid forKey:@"ItemPriceId"];
+        [post setValue:ItemImage forKey:@"ItemImage"];
+        [post setValue:ItemUnit forKey:@"ItemUnit"];
+        [post setValue:quantity forKey:@"ItemQty"];
+        //  [post setValue:self.confirm_password.text forKey:@"Total"];
+        
+        self.tempcartarray=[[NSMutableArray alloc]init];
+        if( [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"])
+        {
+            NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+            NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            [self.tempcartarray addObjectsFromArray:token];
+        }
+        if(contentArray.count>0)
+        {
+            [self.tempcartarray replaceObjectAtIndex:filteredindex withObject:post];
+        }
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.categoryContentarray=[[NSMutableArray alloc]init];
+        self.categoryContentarray=self.tempcartarray;
+        //  [self.categoryContentarray replaceObjectAtIndex:filteredindex withObject:post];
+        [self.collectionview reloadData];
+    
 
     }
     
@@ -195,6 +313,75 @@
     total.text =[NSString stringWithFormat:@"TotalPrice:%d", carttotal];
 
     
+    
+    
+   
+    NSData *cartdata= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:cartdata];
+    NSString *itemid = [[self.categoryContentarray valueForKey:@"ItemId"]objectAtIndex:indexPath.row];
+    NSString *priceid = [[self.categoryContentarray valueForKey:@"ItemPriceId"]objectAtIndex:indexPath.row];
+    NSString *ItemPrice = [[self.categoryContentarray valueForKey:@"ItemPrice"]objectAtIndex:indexPath.row];
+    
+    NSPredicate *bPredicate = [NSPredicate predicateWithFormat:@"SELF.ItemPriceId == %@",priceid];
+    NSArray *contentArray = [token filteredArrayUsingPredicate:bPredicate];
+    NSLog(@"HERE %@",contentArray);
+    int finalquantity =0;
+    float finalprice=0.0;
+    int filteredindex=0;
+    if(contentArray.count>0)
+    {
+        int currentquantity =[[[contentArray valueForKey:@"ItemQty"] objectAtIndex:0] intValue];
+        float currentprice =[[[contentArray valueForKey:@"ItemPrice"] objectAtIndex:0] intValue];
+        
+        finalquantity= currentquantity + 1;
+        finalprice=currentprice;
+        NSInteger index = [token indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            return [bPredicate evaluateWithObject:obj];
+        }];
+        
+        NSLog(@"Index of object %d",index);
+        filteredindex = (int)index;
+    }
+    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+    NSString *ItemTypeId = [[self.categoryContentarray valueForKey:@"ItemTypeId"]objectAtIndex:indexPath.row];
+    
+    NSString *ItemTitle = [[self.categoryContentarray valueForKey:@"ItemTitle"]objectAtIndex:indexPath.row];
+    
+    
+    NSString *ItemImage = [[self.categoryContentarray valueForKey:@"ItemImage"]objectAtIndex:indexPath.row];
+    
+    NSString *ItemUnit = [[self.categoryContentarray valueForKey:@"ItemUnit"]objectAtIndex:indexPath.row];
+    NSString *quantity = [NSString stringWithFormat:@"%d",finalquantity];
+    
+    [post setValue:itemid forKey:@"ItemId"];
+    [post setValue:ItemTypeId forKey:@"ItemTypeId"];
+    [post setValue:ItemTitle forKey:@"ItemTitle"];
+    [post setValue:[NSString stringWithFormat:@"%.2f",finalprice] forKey:@"ItemPrice"];
+    [post setValue:priceid forKey:@"ItemPriceId"];
+    [post setValue:ItemImage forKey:@"ItemImage"];
+    [post setValue:ItemUnit forKey:@"ItemUnit"];
+    [post setValue:quantity forKey:@"ItemQty"];
+    //  [post setValue:self.confirm_password.text forKey:@"Total"];
+    
+    self.tempcartarray=[[NSMutableArray alloc]init];
+    if( [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"])
+    {
+        NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+        NSMutableArray * token = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        [self.tempcartarray addObjectsFromArray:token];
+    }
+    if(contentArray.count>0)
+    {
+        [self.tempcartarray replaceObjectAtIndex:filteredindex withObject:post];
+    }
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.categoryContentarray=[[NSMutableArray alloc]init];
+    self.categoryContentarray=self.tempcartarray;
+  //  [self.categoryContentarray replaceObjectAtIndex:filteredindex withObject:post];
+    [self.collectionview reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -206,6 +393,18 @@
 }
 
 - (IBAction)Checkout_buttonClick:(id)sender {
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    float sumtotal=0.0;
+    for (int i=0; i<contentArray.count; i++) {
+        sumtotal = sumtotal+[[[contentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[contentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    if (sumtotal<75) {
+        [uAppDelegate showMessage:@"Minimum order AED 75" withTitle:@"Message"];
+        return;
+    }
+
     CheckoutViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Checkoutview"];
     ViewController.passcontentarray = [[NSMutableArray alloc]init];
     ViewController.passcontentarray=self.categoryContentarray;

@@ -24,21 +24,21 @@ int lastScale = 0;
     self.quantity_view.layer.cornerRadius = 20;
     self.quantity_view.layer.masksToBounds = YES;
     NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:@"DESCRIPTION"];
-    [attributeString addAttribute:NSUnderlineStyleAttributeName
+   /* [attributeString addAttribute:NSUnderlineStyleAttributeName
                             value:[NSNumber numberWithInt:1]
-                            range:(NSRange){0,[attributeString length]}];
+                            range:(NSRange){0,[attributeString length]}];*/
     self.descriptiontitle.attributedText=attributeString;
     
     NSMutableAttributedString *attributeString1 = [[NSMutableAttributedString alloc] initWithString:@"BENEFITS"];
-    [attributeString1 addAttribute:NSUnderlineStyleAttributeName
+  /*  [attributeString1 addAttribute:NSUnderlineStyleAttributeName
                             value:[NSNumber numberWithInt:1]
-                            range:(NSRange){0,[attributeString1 length]}];
+                            range:(NSRange){0,[attributeString1 length]}];*/
     self.benifitstitle.attributedText=attributeString1;
     
-    NSMutableAttributedString *attributeString2 = [[NSMutableAttributedString alloc] initWithString:@"USE"];
-    [attributeString2 addAttribute:NSUnderlineStyleAttributeName
+    NSMutableAttributedString *attributeString2 = [[NSMutableAttributedString alloc] initWithString:@"USAGE"];
+   /* [attributeString2 addAttribute:NSUnderlineStyleAttributeName
                             value:[NSNumber numberWithInt:1]
-                            range:(NSRange){0,[attributeString2 length]}];
+                            range:(NSRange){0,[attributeString2 length]}];*/
     self.usetitle.attributedText=attributeString2;
     
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down-arrow.png"]];
@@ -85,7 +85,7 @@ int lastScale = 0;
     
     NSString *photoString = [self.innerarray valueForKey:@"ImageFile"] ;
   
-    self.itemimage.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
+   // self.itemimage.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
     NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
     
     dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
@@ -120,7 +120,37 @@ int lastScale = 0;
     
     [self.itemimage addGestureRecognizer:tapGesture1];
     // Do any additional setup after loading the view.
+    self.cart_lbl.layer.cornerRadius = 12.5;
+    self.cart_lbl.layer.masksToBounds = YES;
 }
+// Do any additional setup after loading the view.
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self cartcount];
+    NSData *data1= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * newcontentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+    float sumtotal=0.0;
+    for (int i=0; i<newcontentArray.count; i++) {
+        sumtotal = sumtotal+[[[newcontentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[newcontentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    self.sum_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
+}
+
+-(void)cartcount
+{
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * cart = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.cartcount=[NSNumber numberWithInteger:cart.count];
+    self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
+    if(appDelegate.cartcount==0)
+    {
+        self.cart_lbl.hidden=true;
+    }
+    
+}
+
 - (void) tapGesture: (id)sender
 {
     ImagefullviewViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ImagefullView"];
@@ -357,6 +387,12 @@ int lastScale = 0;
     
 
 }
+- (IBAction)Cart_buttonClick:(id)sender {
+    CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
+    [self.navigationController pushViewController:ViewController animated:YES];
+    
+}
+
 
 - (IBAction)plus_buttonClick:(id)sender {
    
@@ -395,7 +431,7 @@ int lastScale = 0;
         float currentprice =[[[contentArray valueForKey:@"ItemPrice"] objectAtIndex:0] intValue];
         
         finalquantity= [self.quantity_lbl.text intValue] + currentquantity;
-        finalprice=currentprice+[ItemPrice floatValue];
+        finalprice=currentprice;
         NSInteger index = [token indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
             return [bPredicate evaluateWithObject:obj];
         }];
@@ -439,11 +475,19 @@ int lastScale = 0;
 
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
-   // self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
+    self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
     
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    NSData *data1= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * newcontentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+    float sumtotal=0.0;
+    for (int i=0; i<newcontentArray.count; i++) {
+        sumtotal = sumtotal+[[[newcontentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[newcontentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    self.sum_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
     [uAppDelegate showMessage:@"Item Added to cart" withTitle:@"Message"];
 
 }

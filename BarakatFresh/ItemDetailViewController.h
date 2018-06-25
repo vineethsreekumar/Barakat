@@ -39,5 +39,7 @@
 @property (strong, nonatomic) IBOutlet UIView *quantity_view;
 
 @property (strong, nonatomic) IBOutlet UILabel *usetitle;
-
+@property (strong, nonatomic) IBOutlet UILabel *cart_lbl;
+- (IBAction)top_cartbuttonClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *sum_lbl;
 @end

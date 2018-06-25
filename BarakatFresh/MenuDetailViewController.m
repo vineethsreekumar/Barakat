@@ -37,9 +37,37 @@
    
     self.collectionview.delegate=self;
     self.collectionview.dataSource=self;
+    self.cart_lbl.layer.cornerRadius = 12.5;
+    self.cart_lbl.layer.masksToBounds = YES;
     
     // Do any additional setup after loading the view.
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self cartcount];
+    NSData *data1= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * newcontentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+    float sumtotal=0.0;
+    for (int i=0; i<newcontentArray.count; i++) {
+        sumtotal = sumtotal+[[[newcontentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[newcontentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    self.sum_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
+}
+-(void)cartcount
+{
+    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * cart = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.cartcount=[NSNumber numberWithInteger:cart.count];
+    self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
+    if(appDelegate.cartcount==0)
+    {
+        self.cart_lbl.hidden=true;
+    }
+    
+}
+
 -(void)loadfirstcollectionite
 {
     NSLog(@"passcurrentarray=%@",self.passcurrentarray);
@@ -413,11 +441,19 @@
     }
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
-    
+     self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
     
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    NSData *data1= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
+    NSMutableArray * newcontentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+    float sumtotal=0.0;
+    for (int i=0; i<newcontentArray.count; i++) {
+        sumtotal = sumtotal+[[[newcontentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[newcontentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
+        
+    }
+    self.sum_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
     [uAppDelegate showMessage:@"Item Added to cart" withTitle:@"Message"];
     
     
@@ -488,17 +524,7 @@
 }
 
 - (IBAction)cartbutton_Click:(id)sender {
-    NSData *data= [[NSUserDefaults standardUserDefaults] valueForKey:@"CART"];
-    NSMutableArray * contentArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    float sumtotal=0.0;
-    for (int i=0; i<contentArray.count; i++) {
-        sumtotal = sumtotal+[[[contentArray valueForKey:@"ItemQty"]objectAtIndex:i] floatValue]*[[[contentArray valueForKey:@"ItemPrice"]objectAtIndex:i] floatValue];
-        
-    }
-    if (sumtotal<75) {
-        [uAppDelegate showMessage:@"Minimum order AED 75" withTitle:@"Message"];
-        return;
-    }
+
     CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
     [self.navigationController pushViewController:ViewController animated:NO];
 }
@@ -551,9 +577,16 @@
                                             }]];
     [self presentViewController:alert animated:YES completion:nil];
 }
+- (IBAction)Cart_buttonClick:(id)sender {
+    CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
+    [self.navigationController pushViewController:ViewController animated:YES];
+    
+}
 
 - (IBAction)morebutton_Click:(id)sender {
     DefaultViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DefaultView"];
     [self.navigationController pushViewController:ViewController animated:NO];
+}
+- (IBAction)top_cartbuttonClick:(id)sender {
 }
 @end

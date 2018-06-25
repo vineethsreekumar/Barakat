@@ -59,5 +59,11 @@
 @property (strong, nonatomic) IBOutlet UIView *nameview;
 @property (strong, nonatomic) IBOutlet UIView *emailview;
 @property (strong, nonatomic) IBOutlet UIView *mobileview;
+@property (strong, nonatomic) IBOutlet UIView *landmarkview;
+@property (strong, nonatomic) IBOutlet UIView *deliveryareaview;
+@property (strong, nonatomic) IBOutlet UIView *deliveryaddressview;
+@property (strong, nonatomic) IBOutlet UIView *dateview;
+@property (strong, nonatomic) IBOutlet UIView *timeview;
+@property (strong, nonatomic) IBOutlet UILabel *vat_lbl;
 
 @end
