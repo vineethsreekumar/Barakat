@@ -1,25 +1,29 @@
 //
-//  MenuDetailViewController.m
+//  NewItemDetailViewController.m
 //  BarakatFresh
 //
-//  Created by vineeth on 4/25/18.
+//  Created by vineeth on 7/8/18.
 //  Copyright © 2018 MyOrganization. All rights reserved.
 //
 
-#import "MenuDetailViewController.h"
+#import "NewItemDetailViewController.h"
 #import "Config.h"
-@interface MenuDetailViewController ()<TSCustomPickerDelegate,TSCustomPickerDataSource>{
+@interface NewItemDetailViewController ()<TSCustomPickerDelegate,TSCustomPickerDataSource>{
     
     NSArray* dataArray;
+    NSString *descstring;
+    NSString *nutritionstring;
+    NSString *usagestring;
 }
+
 
 @end
 
-@implementation MenuDetailViewController
+@implementation NewItemDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self loaditemdescriptionanddetails];
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     pickerToolbar.barStyle = UIBarStyleBlackOpaque;
     [pickerToolbar sizeToFit];
@@ -37,13 +41,72 @@
     [viewPassIntxtFieldDate addSubview:imageViewpass];
     self.search_textfield.leftViewMode = UITextFieldViewModeAlways;
     self.search_textfield.leftView = viewPassIntxtFieldDate;
-   
-    self.collectionview.delegate=self;
-    self.collectionview.dataSource=self;
-    self.cart_lbl.layer.cornerRadius = 12.5;
-    self.cart_lbl.layer.masksToBounds = YES;
+    
+  
     
     // Do any additional setup after loading the view.
+}
+-(void)loaditemdescriptionanddetails
+{
+    NSString *newString =[self.passarray valueForKey:@"Id"];
+    NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%sHome/GetItemDetails?ItemId=%@",baseURL,newString]];
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
+    
+    //Specify method of request(Get or Post)
+    [theRequest setHTTPMethod:@"GET"];
+    
+    //Pass some default parameter(like content-type etc.)
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [theRequest setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    //Now pass your own parameter
+    
+    
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:theRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+              NSError *theError = NULL;
+              
+              NSMutableArray *dataResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&theError];
+              NSLog(@"dataResponse webresponse=%@",dataResponse);
+              NSMutableDictionary *dict =[[dataResponse valueForKey:@"data"] objectAtIndex:0];
+              // self.desc_txtview.text=[dict valueForKey:@"Description"];
+              NSAttributedString *attributedString = [[NSAttributedString alloc]
+                                                      initWithData: [[dict valueForKey:@"Description"] dataUsingEncoding:NSUnicodeStringEncoding]
+                                                      options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                                                      documentAttributes: nil
+                                                      error: nil
+                                                      ];
+              descstring = [dict valueForKey:@"Description"];
+            
+            
+              nutritionstring=[dict valueForKey:@"Bebefits"];
+              
+            
+              usagestring=[dict valueForKey:@"Usage"];
+              
+              self.collectionview.delegate=self;
+              self.collectionview.dataSource=self;
+              self.cart_lbl.layer.cornerRadius = 12.5;
+              self.cart_lbl.layer.masksToBounds = YES;
+              [self.collectionview reloadData];
+              
+              
+          });
+          
+          //  NSLog(@"Delete webresponse=%@",res);
+          
+          
+          
+          
+          
+      }] resume];
+    
+    
+    
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -74,7 +137,7 @@
 -(void)loadfirstcollectionite
 {
     NSLog(@"passcurrentarray=%@",self.passcurrentarray);
-   // NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%@&&LevelId=1",[[self.passcurrentarray valueForKey:@"CategoryId"] stringValue]]];
+    // NSURL *theURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://app.barakatfresh.ae/webservice/api/Home/LoadItemGroupBasedList?groupId=%@&&LevelId=1",[[self.passcurrentarray valueForKey:@"CategoryId"] stringValue]]];
     NSURL *theURL = [NSURL URLWithString: [NSString stringWithFormat:@"%sHome/LoadItemGroupBasedList?groupId=%@&&LevelId=1",baseURL,[[self.passcurrentarray valueForKey:@"CategoryId"] stringValue]]];
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:theURL      cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0f];
     
@@ -105,7 +168,7 @@
               for (int i =0; i<100; i++) {
                   [self.indexArray addObject:[NSNumber numberWithInt:0]];
               }
-
+              
               [self.collectionview reloadData];
               // [self loadcollectionData:dataResponse];
               
@@ -123,15 +186,37 @@
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.categoryContentarray.count;
+    return 1;
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat picDimension = self.view.frame.size.width ;
+     CGFloat picDimension = self.view.frame.size.width ;
+    if(indexPath.section==0)
+    {
+   
     return CGSizeMake(picDimension, 170);
+    }else
+    {
+        NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:descstring attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0]}];
+        CGRect cellRect = [labelString boundingRectWithSize:CGSizeMake(picDimension, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        
+        return  CGSizeMake(picDimension, UITableViewAutomaticDimension);
+    }
     
 }
-
+- (CGFloat)getTextHeightFromString:(NSString *)text ViewWidth:(CGFloat)width WithPading:(CGFloat)pading FontName:(NSString *)fontName AndFontSize:(CGFloat)fontSize
+{
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:@"Helvetica Neue" size:fontSize]};
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, MAXFLOAT)
+                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                  attributes:attributes
+                                     context:nil];
+    //NSLog(@"rect.size.height: %f", rect.size.height);
+    return rect.size.height + pading;
+}
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+    return 4;
+}
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
     return 2.0;
 }
@@ -142,11 +227,13 @@
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section==0)
+    {
     static NSString *identifier = @"Cell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
-    UILabel *title = (UILabel *)[cell viewWithTag:1];
+  /*  UILabel *title = (UILabel *)[cell viewWithTag:1];
     title.text = [[self.categoryContentarray valueForKey:@"Title"]objectAtIndex:indexPath.row];
     
     
@@ -217,24 +304,7 @@
         });
     });
     
-    
-    // recipeImageView.image = [UIImage imageNamed:];
-    
-    /*
-     NSURL *url = [NSURL URLWithString:[[self.categoryContentarray objectAtIndex:indexPath.row] valueForKey:@"Image"]];
-     NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-     if (data) {
-     UIImage *image = [UIImage imageWithData:data];
-     if (image) {
-     dispatch_async(dispatch_get_main_queue(), ^{
-     
-     recipeImageView.image = image;
-     });
-     }
-     }
-     }];
-     [task resume];*/
-    
+   
     
     UIButton *minus = (UIButton *)[cell viewWithTag:3];
     [minus addTarget:self action:@selector(minusClickEvent:event:) forControlEvents:UIControlEventTouchUpInside];
@@ -250,9 +320,19 @@
     
     UIButton *addcart = (UIButton *)[cell viewWithTag:6];
     [addcart addTarget:self action:@selector(AddtoCardButtonClick:event:) forControlEvents:UIControlEventTouchUpInside];
-    
+    */
     
     return cell;
+    }
+    else
+    {
+        static NSString *identifier = @"insidecell";
+        
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+        UITextView *textview=(UITextView*)[cell viewWithTag:30];
+        textview.text=descstring;
+        return cell;
+    }
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -322,7 +402,7 @@
 
 -(void)tsCustomPicker:(TSCustomPickerController *)picker didSelectAtIndex:(NSInteger)index{
     
-   // [self.optionButton setTitle:dataArray[index] forState:UIControlStateNormal];
+    // [self.optionButton setTitle:dataArray[index] forState:UIControlStateNormal];
     NSLog(@"index=%ld",(long)index);
     //  NSLog(@"activeindex=%ld",(long)self.activetextfield.tag);
     [self.indexArray replaceObjectAtIndex:[self.activetextfield.accessibilityValue intValue] withObject:[NSNumber numberWithInt:(int)index]];
@@ -486,7 +566,7 @@
     }
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.cartcount=[NSNumber numberWithInteger:self.tempcartarray.count];
-     self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
+    self.cart_lbl.text = [NSString stringWithFormat:@"%@",appDelegate.cartcount];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.tempcartarray];
     
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"CART"];
@@ -549,7 +629,7 @@
     [self.menuContainerViewController toggleLeftSideMenuCompletion:^{
         
     }];
-
+    
 }
 
 
@@ -560,7 +640,7 @@
     NSArray *controllers = [NSArray arrayWithObject:homeController];
     navigationController.viewControllers = controllers;
     [self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
-
+    
 }
 
 - (IBAction)searchbutton_Click:(id)sender {
@@ -569,7 +649,7 @@
 }
 
 - (IBAction)cartbutton_Click:(id)sender {
-
+    
     CartViewController *ViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CartView"];
     [self.navigationController pushViewController:ViewController animated:NO];
 }
@@ -634,4 +714,5 @@
 }
 - (IBAction)top_cartbuttonClick:(id)sender {
 }
+
 @end

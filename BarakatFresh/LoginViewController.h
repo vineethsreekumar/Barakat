@@ -11,6 +11,7 @@
 @interface LoginViewController : UIViewController<UITextFieldDelegate>
 {
     UIActivityIndicatorView *indicator;
+    
 }
 @property (strong, nonatomic) IBOutlet UITextField *email_txtfield;
 @property (strong, nonatomic) IBOutlet UITextField *password_textfield;

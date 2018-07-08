@@ -12,7 +12,12 @@
 #import "UIImage+GIF.h"
 #import "Config.h"
 
-@interface HomeViewController ()<KASlideShowDataSource, KASlideShowDelegate,MenuScrollViewDelegate>
+
+@interface HomeViewController ()<KASlideShowDataSource, KASlideShowDelegate,MenuScrollViewDelegate,TSCustomPickerDelegate,TSCustomPickerDataSource>{
+    
+    NSArray* dataArray;
+}
+@property (weak, nonatomic) IBOutlet UIButton *optionButton;
 @property (weak, nonatomic) IBOutlet MenuScrollView *menuScrollView;
 @property (weak, nonatomic) IBOutlet UILabel *textLabel;
 @property (weak, nonatomic) IBOutlet UIView *menu_underline;
@@ -413,6 +418,8 @@ NSCache *imageCache;
     newweight.delegate=self;
     newweight.rightView = arrow;
     newweight.rightViewMode = UITextFieldViewModeAlways;
+        
+        
     
     
     UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
@@ -506,6 +513,22 @@ NSCache *imageCache;
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
     self.activetextfield=textField;
+    self.activetextfield.accessibilityValue=textField.accessibilityValue;
+     NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:[textField.accessibilityValue intValue]];
+     dataArray=[temparray valueForKey:@"ItemAvailable"];
+    [textField resignFirstResponder];
+    UIStoryboard* storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    TSCustomPickerController* tsCustomPickerController = [storyBoard instantiateViewControllerWithIdentifier:@"TSCustomPickerController"];
+    tsCustomPickerController.view.tag=[textField.accessibilityValue intValue];
+    tsCustomPickerController.delegate=self;
+    tsCustomPickerController.dataSource=self;
+    tsCustomPickerController.view.alpha=0.0;
+    [self.view addSubview:tsCustomPickerController.view];
+    [self addChildViewController:tsCustomPickerController];
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        tsCustomPickerController.view.alpha=1.0;
+    }];
     UICollectionViewCell *cell;
     UIView *superview = textField.superview;
     
@@ -519,26 +542,52 @@ NSCache *imageCache;
 
     
     self.activeimageview=(UIImageView *)[cell viewWithTag:100];
-    NSMutableArray *temparray = [[self.categoryContentarray valueForKey:@"itemQtyImagePrice"] objectAtIndex:[textField.accessibilityValue intValue]];
+   
     self.dataArray = [[NSMutableArray alloc] init];
     // Add some data for demo purposes.
-    
+   
     [self.dataArray addObjectsFromArray:temparray];
-
+/*
     UIPickerView *categoryPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
     [categoryPickerView setDataSource: self];
     [categoryPickerView setDelegate: self];
     categoryPickerView.showsSelectionIndicator = YES;
     categoryPickerView.tag=[textField.accessibilityValue intValue];
+   
     
     textField.inputView = categoryPickerView;
-    
+    */
 
     
 
 
 }
+-(NSInteger)numberOfRowsInTSCustomPicker:(TSCustomPickerController *)picker{
+    
+    return  dataArray.count;
+    //return 24;
+}
+-(NSString*)tsCustomPicker:(TSCustomPickerController *)picker titleForRowAtIndex:(NSInteger)index{
+    
+    return dataArray[index];
+}
+-(NSString*)titleForTSCustomPicker:(TSCustomPickerController *)picker{
+    
+    return @"Select Size";
+}
 
+-(void)tsCustomPicker:(TSCustomPickerController *)picker didSelectAtIndex:(NSInteger)index{
+    
+    [self.optionButton setTitle:dataArray[index] forState:UIControlStateNormal];
+    NSLog(@"index=%ld",(long)index);
+  //  NSLog(@"activeindex=%ld",(long)self.activetextfield.tag);
+    [self.indexArray replaceObjectAtIndex:[self.activetextfield.accessibilityValue intValue] withObject:[NSNumber numberWithInt:(int)index]];
+      [self.collectionview reloadData];
+    /*[self.collectionview performBatchUpdates:^{
+        [self.collectionview reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.activetextfield.accessibilityValue intValue] inSection:0]]];
+    } completion:nil];*/
+  
+}
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
     // Handle the selection
     

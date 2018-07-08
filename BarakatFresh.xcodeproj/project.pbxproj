@@ -19,6 +19,8 @@
 		851DA3C020C8887000F47BFB /* SectionHeadercCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DA3BD20C8887000F47BFB /* SectionHeadercCollectionViewLayout.m */; };
 		851DA3C120C8887000F47BFB /* XDDemoCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DA3BF20C8887000F47BFB /* XDDemoCollectionViewLayout.m */; };
 		851DA3C420CAD3A200F47BFB /* XLPlainFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DA3C320CAD3A200F47BFB /* XLPlainFlowLayout.m */; };
+		8558DD3520F10F0F00921CF6 /* TSCustomPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8558DD3420F10F0F00921CF6 /* TSCustomPickerController.m */; };
+		8558DD3820F157F300921CF6 /* NewItemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8558DD3720F157F300921CF6 /* NewItemDetailViewController.m */; };
 		85686C4320DADBFA000C301C /* insta-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85686C3E20DADBF8000C301C /* insta-icon@2x.png */; };
 		85686C4420DADBFA000C301C /* facebook-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85686C3F20DADBF9000C301C /* facebook-icon@2x.png */; };
 		85686C4520DADBFA000C301C /* twitter-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85686C4020DADBF9000C301C /* twitter-icon@2x.png */; };
@@ -195,6 +197,10 @@
 		851DA3BF20C8887000F47BFB /* XDDemoCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XDDemoCollectionViewLayout.m; sourceTree = "<group>"; };
 		851DA3C220CAD3A200F47BFB /* XLPlainFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLPlainFlowLayout.h; sourceTree = "<group>"; };
 		851DA3C320CAD3A200F47BFB /* XLPlainFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLPlainFlowLayout.m; sourceTree = "<group>"; };
+		8558DD3320F10F0F00921CF6 /* TSCustomPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSCustomPickerController.h; sourceTree = "<group>"; };
+		8558DD3420F10F0F00921CF6 /* TSCustomPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSCustomPickerController.m; sourceTree = "<group>"; };
+		8558DD3620F157F300921CF6 /* NewItemDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewItemDetailViewController.h; sourceTree = "<group>"; };
+		8558DD3720F157F300921CF6 /* NewItemDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewItemDetailViewController.m; sourceTree = "<group>"; };
 		85686C3E20DADBF8000C301C /* insta-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "insta-icon@2x.png"; sourceTree = "<group>"; };
 		85686C3F20DADBF9000C301C /* facebook-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-icon@2x.png"; sourceTree = "<group>"; };
 		85686C4020DADBF9000C301C /* twitter-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon@2x.png"; sourceTree = "<group>"; };
@@ -417,6 +423,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8558DD3220F10F0F00921CF6 /* TSCustomPickerController */ = {
+			isa = PBXGroup;
+			children = (
+				8558DD3320F10F0F00921CF6 /* TSCustomPickerController.h */,
+				8558DD3420F10F0F00921CF6 /* TSCustomPickerController.m */,
+			);
+			path = TSCustomPickerController;
+			sourceTree = "<group>";
+		};
 		8584737720792B05007C778D = {
 			isa = PBXGroup;
 			children = (
@@ -458,6 +473,8 @@
 				85861A55209040CD009EB7AE /* MenuDetailViewController.m */,
 				8578849B20ACAE470081E800 /* ItemDetailViewController.h */,
 				8578849C20ACAE470081E800 /* ItemDetailViewController.m */,
+				8558DD3620F157F300921CF6 /* NewItemDetailViewController.h */,
+				8558DD3720F157F300921CF6 /* NewItemDetailViewController.m */,
 				851DA3B920C71FB000F47BFB /* ImagefullviewViewController.h */,
 				851DA3BA20C71FB000F47BFB /* ImagefullviewViewController.m */,
 				85861A7C20973473009EB7AE /* CartViewController.h */,
@@ -503,6 +520,7 @@
 				851DA3BF20C8887000F47BFB /* XDDemoCollectionViewLayout.m */,
 				851DA3C220CAD3A200F47BFB /* XLPlainFlowLayout.h */,
 				851DA3C320CAD3A200F47BFB /* XLPlainFlowLayout.m */,
+				8558DD3220F10F0F00921CF6 /* TSCustomPickerController */,
 				85861A31208E5648009EB7AE /* NewsCubeMenu */,
 				85847411207D2BA8007C778D /* MenuScroll */,
 				858473E1207CC617007C778D /* SDWebImage */,
@@ -953,6 +971,7 @@
 				858619F020853AFA009EB7AE /* categoryCell.m in Sources */,
 				851DA3C420CAD3A200F47BFB /* XLPlainFlowLayout.m in Sources */,
 				85861A83209ACEFA009EB7AE /* CheckoutViewController.m in Sources */,
+				8558DD3520F10F0F00921CF6 /* TSCustomPickerController.m in Sources */,
 				85847405207CC617007C778D /* SDWebImageManager.m in Sources */,
 				8578849A20AB0AE70081E800 /* ForgotViewController.m in Sources */,
 				858473FF207CC617007C778D /* NSData+ImageContentType.m in Sources */,
@@ -994,6 +1013,7 @@
 				856EAEBB20B8AE1600671108 /* TermsViewController.m in Sources */,
 				8584741A207E7A37007C778D /* ForHerCell.m in Sources */,
 				858619EC208533F4009EB7AE /* CustomCell.m in Sources */,
+				8558DD3820F157F300921CF6 /* NewItemDetailViewController.m in Sources */,
 				85861A36208E5648009EB7AE /* NCMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

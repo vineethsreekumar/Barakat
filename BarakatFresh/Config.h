@@ -20,6 +20,8 @@
 #import "ContactusViewController.h"
 #import "TermsViewController.h"
 #import "ImagefullviewViewController.h"
+#import "TSCustomPickerController.h"
+#import "NewItemDetailViewController.h"
 #define baseURL "http://app.barakatfresh.ae/webservice/api/"
 #define subURL "http://app.barakatfresh.ae/webservice/"
 #define uAppDelegate (AppDelegate *)[[UIApplication sharedApplication] delegate]
