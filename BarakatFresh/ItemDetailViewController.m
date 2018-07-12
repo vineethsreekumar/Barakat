@@ -9,7 +9,11 @@
 #import "ItemDetailViewController.h"
 #import "UIImage+GIF.h"
 #import "Config.h"
-@interface ItemDetailViewController ()
+@interface ItemDetailViewController ()<TSCustomPickerDelegate,TSCustomPickerDataSource>{
+    
+    NSArray* dataArray;
+}
+
 
 @end
 
@@ -72,8 +76,8 @@ int lastScale = 0;
     [categoryPickerView setDelegate: self];
     categoryPickerView.showsSelectionIndicator = YES;
     
-    self.category_txtfield.inputView = categoryPickerView;
-
+  //  self.category_txtfield.inputView = categoryPickerView;
+    self.category_txtfield.delegate=self;
     
     
     self.itemprice.text =[NSString stringWithFormat:@"Price: %@ AED", [self.innerarray valueForKey:@"Price"]];
@@ -135,6 +139,102 @@ int lastScale = 0;
         
     }
     self.sum_lbl.text =[NSString stringWithFormat:@"AED %.2f",sumtotal];
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activetextfield=textField;
+    self.activetextfield.accessibilityValue=textField.accessibilityValue;
+    NSMutableArray *temparray = [self.passarray valueForKey:@"itemQtyImagePrice"];
+    dataArray=[temparray valueForKey:@"ItemAvailable"];
+    [textField resignFirstResponder];
+    UIStoryboard* storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    TSCustomPickerController* tsCustomPickerController = [storyBoard instantiateViewControllerWithIdentifier:@"TSCustomPickerController"];
+    tsCustomPickerController.view.tag=[textField.accessibilityValue intValue];
+    tsCustomPickerController.delegate=self;
+    tsCustomPickerController.dataSource=self;
+    tsCustomPickerController.view.alpha=0.0;
+    [self.view addSubview:tsCustomPickerController.view];
+    [self addChildViewController:tsCustomPickerController];
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        tsCustomPickerController.view.alpha=1.0;
+    }];
+    UICollectionViewCell *cell;
+    UIView *superview = textField.superview;
+    
+    while (superview) {
+        if([superview isKindOfClass:[UICollectionViewCell class]]) {
+            cell = (UICollectionViewCell *)superview;
+            break;
+        }
+        superview = superview.superview;
+    }
+    
+    
+    self.activeimageview=(UIImageView *)[cell viewWithTag:100];
+    
+    self.dataArray = [[NSMutableArray alloc] init];
+    // Add some data for demo purposes.
+    
+    [self.dataArray addObjectsFromArray:temparray];
+    /*
+     UIPickerView *categoryPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+     [categoryPickerView setDataSource: self];
+     [categoryPickerView setDelegate: self];
+     categoryPickerView.showsSelectionIndicator = YES;
+     categoryPickerView.tag=[textField.accessibilityValue intValue];
+     
+     
+     textField.inputView = categoryPickerView;
+     */
+    
+    
+    
+    
+}
+-(NSInteger)numberOfRowsInTSCustomPicker:(TSCustomPickerController *)picker{
+    
+    return  dataArray.count;
+    //return 24;
+}
+-(NSString*)tsCustomPicker:(TSCustomPickerController *)picker titleForRowAtIndex:(NSInteger)index{
+    
+    return dataArray[index];
+}
+-(NSString*)titleForTSCustomPicker:(TSCustomPickerController *)picker{
+    
+    return @"Select Size";
+}
+
+-(void)tsCustomPicker:(TSCustomPickerController *)picker didSelectAtIndex:(NSInteger)index{
+    
+    // [self.optionButton setTitle:dataArray[index] forState:UIControlStateNormal];
+    NSLog(@"index=%ld",(long)index);
+ 
+    
+    selecteddetailindex=(int)index;
+    self.category_txtfield.text = [NSString stringWithFormat:@"%@",[[self.dataArray objectAtIndex:index] valueForKey:@"ItemAvailable"]];
+    
+    NSString *photoString = [[self.dataArray objectAtIndex:index] valueForKey:@"ImageFile"] ;
+    
+    self.itemimage.image= [UIImage sd_animatedGIFNamed:@"thumbnail"];
+    NSURL *url = [NSURL URLWithString:[photoString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+    
+    dispatch_queue_t queue = dispatch_queue_create("photoList", NULL);
+    
+    // Start getting the data in the background
+    dispatch_async(queue, ^{
+        NSData* photoData = [NSData dataWithContentsOfURL:url];
+        UIImage* image = [UIImage imageWithData:photoData];
+        
+        // Once we get the data, update the UI on the main thread
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            self.itemimage.image = image;
+        });
+    });
+
+    
 }
 
 -(void)cartcount
@@ -364,7 +464,11 @@ int lastScale = 0;
 }
 
 - (IBAction)menu_buttonClick:(id)sender {
-    [self.navigationController popViewControllerAnimated:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:NO];
+
+        
+    });
 }
 
 

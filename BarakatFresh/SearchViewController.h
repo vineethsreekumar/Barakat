@@ -15,6 +15,8 @@
 @property (strong, nonatomic) NSMutableArray *tempcartarray;
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property (strong, nonatomic) NSMutableArray *indexArray;
+@property(nonatomic, strong) UITextField *activetextfield;
+@property(nonatomic, strong) UIImageView *activeimageview;
 - (IBAction)home_buttonClick:(id)sender;
 - (IBAction)cart_buttonClick:(id)sender;
 - (IBAction)myccount_buttonClick:(id)sender;

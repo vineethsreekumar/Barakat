@@ -19,6 +19,7 @@
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"About" ofType:@"html"];
     NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     [self.webview loadHTMLString:htmlString baseURL: [[NSBundle mainBundle] bundleURL]];
+   
     // Do any additional setup after loading the view.
 }
 
@@ -27,7 +28,11 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)menu_buttonClick:(id)sender {
-    [self.navigationController popViewControllerAnimated:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:NO];
+        
+        
+    });
 }
 
 

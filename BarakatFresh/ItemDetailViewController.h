@@ -23,6 +23,8 @@
 @property (strong, nonatomic) NSMutableArray *innerarray;
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property (strong, nonatomic) NSNumber* indexnumber;
+@property(nonatomic, strong) UITextField *activetextfield;
+@property(nonatomic, strong) UIImageView *activeimageview;
 - (IBAction)minus_buttonClick:(id)sender;
 - (IBAction)plus_buttonClick:(id)sender;
 - (IBAction)Addtocart_buttonClick:(id)sender;
